@@ -3,6 +3,7 @@
 #include "Collision.h"
 #include "Animation.h"
 #include "Player.h"
+#include <string>
 
 class Enemy
 {
@@ -17,9 +18,14 @@ public:
 	void setScale(sf::Vector2f scale) { body.setScale(scale); }
 	void SetDirection(sf::Vector2f direction) { velocity = sf::Vector2f(velocity.x * direction.x, velocity.y * direction.y); }
 
+	sf::Vector2f GetSize() { return body.getPosition(); }
 	sf::Vector2f getPosition() { return body.getPosition(); }
 	sf::Vector2f GetVelocity() { return velocity; }
 	Collision GetCollider() { return Collision(body); }
+	sf::Vector2u GetImageCount() { return animation.GetImageCount(); }
+	float GetSwitchTime() { return animation.GetSwitchTime(); }
+	float GetSpeed() { return speed; }
+	std::string GetTexture() { return enemyTexture; }
 
 private:
 	bool KillPlayer(Player& player);
@@ -35,4 +41,6 @@ private:
 	bool faceRight = true;
 
 	sf::Vector2f velocity;
+
+	std::string enemyTexture;
 };

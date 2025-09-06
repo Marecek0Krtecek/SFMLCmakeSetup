@@ -11,6 +11,7 @@ public:
 
 	sf::Vector2u GetImageCount() { return imageCount; }
 	sf::Vector2u GetCurrentImageValue() { return currentImage; }
+	float GetSwitchTime() { return switchTime; }
 
 public:
 	sf::IntRect uvRect;

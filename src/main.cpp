@@ -9,6 +9,12 @@
 #include "imgui-SFML.h"
 #include "Background.h"
 #include "Enemy.h"
+#include <fstream>
+#include "Serializer.h"
+#include "json.hpp"
+#include "TextureManager.h"
+
+using json = nlohmann::json;
 
 const float VIEW_HEIGHT = 1024.f;
 
@@ -30,6 +36,40 @@ void SpawnEnemy(std::vector<Enemy>& enemies, sf::Texture* texture, sf::Vector2u 
 
 int main() 
 {
+
+#pragma region Testing
+
+
+	//std::ofstream file(RESOURCES_PATH "level.json");
+
+	//file << Serializer::toJSON(Platform(sf::Vector2f(50.f, 100.f), sf::Vector2f(0.f, 100.f))).dump(4);
+
+	//file.close();
+
+	//std::ifstream read(RESOURCES_PATH "level.json");
+
+	//static json j;
+	//read >> j;
+
+	//std::ofstream file(RESOURCES_PATH "test.json");
+
+	//json j;
+	//j["Hello"] = "World";
+
+	//file << j.dump(4);
+
+	//file.close();
+
+	//j = {};
+
+	//std::ifstream read(RESOURCES_PATH "test.json");
+	//read >> j;
+
+	//std::cout << j["Hello"] << '\n';
+
+#pragma endregion
+
+
 #pragma region SetupStuf
 
 	sf::RenderWindow window(sf::VideoMode(1080, 720), "myGame", sf::Style::Default);
@@ -43,28 +83,34 @@ int main()
 
 #pragma region Textures and sprites
 
-	sf::Texture playerTexture;
-	if (!playerTexture.loadFromFile(RESOURCES_PATH "brackeys_platformer_assets/sprites/knight.png"))
-		std::cout << "playerTexture not loaded\n";
+	TextureManager textures;
 
-	sf::Texture platfomrTexture;
-	if (!platfomrTexture.loadFromFile(RESOURCES_PATH "brackeys_platformer_assets/sprites/platforms.png"))
-		std::cout << "platfomrTexture not loaded\n";
+	//sf::Texture playerTexture;
+	//if (!playerTexture.loadFromFile(RESOURCES_PATH "brackeys_platformer_assets/sprites/knight.png"))
+	//	std::cout << "playerTexture not loaded\n";
+	std::string playerTexture = "brackeys_platformer_assets/sprites/knight.png";
 
-	sf::Texture backgroungTexture;
-	if (!backgroungTexture.loadFromFile(RESOURCES_PATH "Glacial-mountains-parallax-background_vnitti/background_glacial_mountains.png"))
-		std::cout << "backgroungTexture not loaded\n";
+	//sf::Texture platfomrTexture;
+	//if (!platfomrTexture.loadFromFile(RESOURCES_PATH "brackeys_platformer_assets/sprites/platforms.png"))
+	//	std::cout << "platfomrTexture not loaded\n";
+	std::string platfomrTexture = "brackeys_platformer_assets/sprites/platforms.png";
 
-	sf::Texture enemyTexture;
-	if (!enemyTexture.loadFromFile(RESOURCES_PATH "brackeys_platformer_assets/sprites/slime_green.png"))
-		std::cout << "enemyTexture not loaded\n";
+	//sf::Texture backgroungTexture;
+	//if (!backgroungTexture.loadFromFile(RESOURCES_PATH "Glacial-mountains-parallax-background_vnitti/background_glacial_mountains.png"))
+	//	std::cout << "backgroungTexture not loaded\n";
+	std::string backgroundTexture = "Glacial-mountains-parallax-background_vnitti/background_glacial_mountains.png";
 
+	//sf::Texture enemyTexture;
+	//if (!enemyTexture.loadFromFile(RESOURCES_PATH "brackeys_platformer_assets/sprites/slime_green.png"))
+	//	std::cout << "enemyTexture not loaded\n";
+	std::string enemyTexture = "brackeys_platformer_assets/sprites/slime_green.png";
 
 #pragma endregion
 
-	Player player(&playerTexture, sf::Vector2u(8, 8), 0.1f, 500.f, 200.f);
+	Player player(&textures.get(playerTexture), sf::Vector2u(8, 8), 0.1f, 500.f, 200.f);
+	//Player player(&playerTexture, sf::Vector2u(8, 8), 0.1f, 500.f, 200.f);
 	player.setScale(sf::Vector2f(2.f, 2.f));
-	player.setPosition(0.f, -1050.f);
+	//player.setPosition(0.f, -1050.f);
 
 	std::vector<Enemy> enemies;
 	enemies.reserve(10);
@@ -72,18 +118,33 @@ int main()
 	float deltaTime = 0;
 	sf::Clock clock;
 
-	Background background(&backgroungTexture);
+	Background background(&textures.get(backgroundTexture));
+	//Background background(&backgroungTexture);
 	background.SetPosition(0.f, 0.f);
 	background.SetScale(sf::Vector2f(15.f, 15.f));
 	background.parlaxStrength = 0.5f;
 
-	TerrainGeneration terrainGeneration(&platfomrTexture, sf::Vector2u(4, 8));
+	TerrainGeneration terrainGeneration(&textures.get(platfomrTexture), sf::Vector2u(4, 8));
+	//TerrainGeneration terrainGeneration(&platfomrTexture, sf::Vector2u(4, 8));
 	terrainGeneration.platforms.reserve(5002);
 	
-	terrainGeneration.AddPlatform(Platform(sf::Vector2f(1000.f, 50.f), sf::Vector2f(100.f, -1000.f)));
+	//terrainGeneration.AddPlatform(Platform(sf::Vector2f(1000.f, 50.f), sf::Vector2f(100.f, -1000.f)));
 
 	terrainGeneration.GeneratedPlatformsSinus(sf::Vector2f(0.f, 0.f), sf::Vector2f(5000.f, 2000.f));
 
+	//std::vector<Platform> platforms;
+	//platforms.reserve(3);
+
+	//platforms.push_back(Platform(sf::Vector2f(100.f, 50.f), sf::Vector2f(100.f, -1000.f), &textures.get(platfomrTexture), sf::IntRect(0, 0, textures.get(platfomrTexture).getSize().x / 4, textures.get(platfomrTexture).getSize().y / 8), platfomrTexture));
+	//platforms.push_back(Platform(sf::Vector2f(100.f, 50.f), sf::Vector2f(100.f, -1100.f), &textures.get(platfomrTexture), sf::IntRect(0, 0, textures.get(platfomrTexture).getSize().x / 4, textures.get(platfomrTexture).getSize().y / 8), platfomrTexture));
+	//platforms.push_back(Platform(sf::Vector2f(100.f, 50.f), sf::Vector2f(100.f, -1200.f), &textures.get(platfomrTexture), sf::IntRect(0, 0, textures.get(platfomrTexture).getSize().x / 4, textures.get(platfomrTexture).getSize().y / 8), platfomrTexture));
+	//std::ofstream levelfile(RESOURCES_PATH "level.json");
+	//levelfile << Serializer::savePlatforms(platforms).dump(4);
+	
+	//std::ifstream read(RESOURCES_PATH "level.json");
+	//json j;
+	//read >> j;
+	//Serializer::loadPlatforms(j, platforms, textures);
 #pragma endregion
 
 #pragma region ImGui
@@ -145,7 +206,7 @@ int main()
 		}
 
 		background.Move(-player.GetVelocity() * background.parlaxStrength * deltaTime);
-		
+
 		///collisions
 
 		sf::Vector2f direction;
@@ -156,7 +217,7 @@ int main()
 					player.OnCollision(direction);
 				}
 				if (platform.canHaveEnemy && !platform.hasEnemy) {
-					SpawnEnemy(enemies, &enemyTexture, sf::Vector2u(4, 3), 0.1f, 250.f, sf::Vector2f(platform.GetPosition().x, platform.GetPosition().y - platform.GetSize().y / 2.f));
+					SpawnEnemy(enemies, &textures.get(enemyTexture), sf::Vector2u(4, 3), 0.1f, 250.f, sf::Vector2f(platform.GetPosition().x, platform.GetPosition().y - platform.GetSize().y / 2.f));
 					platform.hasEnemy = true;
 					enemies[enemies.size() - 1].thisPlatformHasMe = &platform.hasEnemy;
 				}
@@ -167,7 +228,7 @@ int main()
 						if (enemy.getPosition().x <= minX || enemy.getPosition().x >= maxX)
 							enemy.SetDirection(sf::Vector2f(-1.f, 1.f));
 					}
-					
+
 					if (enemy.GetCollider().CheckCollision(player.GetCollider(), sf::Vector2f(), 0.5f)) {
 						if (enemy.OnPlayerColision(player)) {
 							background.Restart();
@@ -177,33 +238,34 @@ int main()
 			}
 
 		}
-		
+
 
 #pragma endregion
 
 #pragma region ImGui
-		
-	#pragma region ImGui update
+
+#pragma region ImGui update
 
 		ImGui::SFML::Update(window, clock.restart());
 		//ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 
-	#pragma endregion
+#pragma endregion
 
-		//ImGui::ShowDemoWindow();
+	//ImGui::ShowDemoWindow();
 
 		ImGui::Begin("Debug");
 		ImGui::Text("FPS: %.1f", 1.f / deltaTime);
+		ImGui::Text("Player Velocity (%.1f/%.1f)", player.GetVelocity().x, player.GetVelocity().y);
 		ImGui::Text("Player: (%.1f, %.1f)", player.getPosition().x, player.getPosition().y);
 		if (ImGui::SliderFloat("Gravity", &player.gravity, 10.f, 500.f))
 			for (auto& enemy : enemies)
 				enemy.gravity = player.gravity;
 		ImGui::Text("Enemies Count: %i", (int)enemies.size());
-		if(ImGui::Button("Spawn Enemy"))
-			SpawnEnemy(enemies, &enemyTexture, sf::Vector2u(4, 3), 0.1f, 250.f, player.getPosition());
+		if (ImGui::Button("Spawn Enemy"))
+			SpawnEnemy(enemies, &textures.get(enemyTexture), sf::Vector2u(4, 3), 0.1f, 250.f, player.getPosition());
 		if (ImGui::Button("Restart Game"))
 			RestartGame(player, background, enemies);
-		if (ImGui::Button("Stop Game")){
+		if (ImGui::Button("Stop Game")) {
 			window.close();
 			break;
 		}
@@ -217,7 +279,7 @@ int main()
 #pragma endregion
 
 #pragma region render
-		
+
 		window.clear();
 
 		view.setCenter(player.getPosition());
@@ -226,9 +288,13 @@ int main()
 		background.Draw(window);
 
 		for (auto& platform : terrainGeneration.platforms) {
-			if (player.GetDistance(platform.GetPosition()) <= view.getSize().x / 1.5f) 
+			if (player.GetDistance(platform.GetPosition()) <= view.getSize().x / 1.5f)
 				platform.Draw(window);
 		}
+
+		//for (auto& platform : platforms) {
+		//	platform.Draw(window);
+		//}
 
 		for (auto& enemy : enemies) {
 			if (player.GetDistance(enemy.getPosition()) <= view.getSize().x / 1.5f) 

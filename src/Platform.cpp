@@ -17,7 +17,7 @@ Platform::Platform(sf::Vector2f size, sf::Vector2f position, sf::Texture* textur
 		canHaveEnemy = true;
 }
 
-Platform::Platform(sf::Vector2f size, sf::Vector2f position, sf::Texture* texture, sf::IntRect& uvRect) {
+Platform::Platform(sf::Vector2f size, sf::Vector2f position, sf::Texture* texture, const sf::IntRect& uvRect) {
 	body.setSize(size);
 	body.setOrigin(size / 2.f);
 	body.setPosition(position);
@@ -29,7 +29,7 @@ Platform::Platform(sf::Vector2f size, sf::Vector2f position, sf::Texture* textur
 	this->uvRect = uvRect;
 }
 
-Platform::Platform(sf::Vector2f size, sf::Vector2f position, sf::Texture* texture, sf::IntRect& uvRect, const std::string& platfomTexture) {
+Platform::Platform(sf::Vector2f size, sf::Vector2f position, sf::Texture* texture, const sf::IntRect& uvRect, const std::string& platfomTexture) {
 	body.setSize(size);
 	body.setOrigin(size / 2.f);
 	body.setPosition(position);

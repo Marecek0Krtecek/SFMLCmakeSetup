@@ -8,11 +8,14 @@ class Platform
 public:
 	Platform(sf::Vector2f size, sf::Vector2f position);
 	Platform(sf::Vector2f size, sf::Vector2f position, sf::Texture* texture);
-	Platform(sf::Vector2f size, sf::Vector2f position, sf::Texture* texture, sf::IntRect& uvRect);
-	Platform(sf::Vector2f size, sf::Vector2f position, sf::Texture* texture, sf::IntRect& uvRect, const std::string& platfomTexture);
+	Platform(sf::Vector2f size, sf::Vector2f position, sf::Texture* texture, const sf::IntRect& uvRect);
+	Platform(sf::Vector2f size, sf::Vector2f position, sf::Texture* texture, const sf::IntRect& uvRect, const std::string& platfomTexture);
 
 	void Draw(sf::RenderWindow& window) { window.draw(body); }
-	void SetColor(sf::Color color) { body.setFillColor(color); }
+	void SetColor(sf::Color& color) { body.setFillColor(color); }
+	void SetPosition(sf::Vector2f& position) { body.setPosition(position); }
+	void SetSize(sf::Vector2f& size) { body.setSize(size); }
+	void SetTextureRect(const sf::IntRect& rect) { body.setTextureRect(rect); }
 
 	Collision GetCollider() { return Collision(body); }
 	sf::Vector2f GetPosition() { return body.getPosition(); }

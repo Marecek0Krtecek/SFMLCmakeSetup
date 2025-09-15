@@ -1,0 +1,44 @@
+{
+  "tiles": [
+    {
+      "name": "Grass",
+      "texture": "brackeys_platformer_assets/sprites/platforms.png",
+      "rect": {
+        "left": 0,
+        "top": 0,
+        "width": 16,
+        "height": 9
+      }
+    },
+    {
+      "name": "Dry Grass",
+      "texture": "brackeys_platformer_assets/sprites/platforms.png",
+      "rect": {
+        "left": 0,
+        "top": 16,
+        "width": 16,
+        "height": 9
+      }
+    },
+    {
+      "name": "Fall Grass",
+      "texture": "brackeys_platformer_assets/sprites/platforms.png",
+      "rect": {
+        "left": 0,
+        "top": 32,
+        "width": 16,
+        "height": 9
+      }
+    },
+    {
+      "name": "Winter Grass",
+      "texture": "brackeys_platformer_assets/sprites/platforms.png",
+      "rect": {
+        "left": 0,
+        "top": 48,
+        "width": 16,
+        "height": 9
+      }
+    }
+  ]
+}

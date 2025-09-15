@@ -10,12 +10,34 @@ nlohmann::json Serializer::toJSON(Platform& platform, std::string& fileName) {
 	};
 }
 
+nlohmann::json Serializer::savePlatformTiles(const std::vector<TileDef>& platformTiles) {
+	nlohmann::json j;
+	j["platformTiles"] = nlohmann::json::array();
+	for (const auto& tile : platformTiles) {
+		j["platformTiles"].push_back(
+			{
+				{"name", tile.name},
+				{"rect",
+					{
+						{"height", tile.rect.height},
+						{"width", tile.rect.width},
+						{"top", tile.rect.top},
+						{"left", tile.rect.left}
+					}
+				},
+				{"adress", tile.textureAdress}
+			}
+		);
+	}
+	return j;
+}
+
 nlohmann::json Serializer::savePlatforms(std::vector<Platform>& platforms) {
 	nlohmann::json j;
-	j["levelName"] = "TestLevel";
+	//j["levelName"] = "TestLevel";
 	//j["background"]
 	//j["music"]
-	j["playerSpawn"] = { {"x", 0.f},{"y",-50.f} };
+	//j["playerSpawn"] = { {"x", 0.f},{"y",-50.f} };
 	j["platforms"] = nlohmann::json::array();
 	for (auto& platform : platforms) {
 		j["platforms"].push_back(
@@ -24,15 +46,7 @@ nlohmann::json Serializer::savePlatforms(std::vector<Platform>& platforms) {
 				{"y", platform.GetPosition().y},
 				{"width", platform.GetSize().x},
 				{"height", platform.GetSize().y},
-				{"texture", platform.GetTexture()},
-				{"uvRect", 
-					{
-						{"height", platform.GetUvRect().height},
-						{"width", platform.GetUvRect().width},
-						{"top", platform.GetUvRect().top},
-						{"left", platform.GetUvRect().left}
-					}
-				}
+				{"tile", platform.GetTexture()}
 			}
 		);
 	}
@@ -87,8 +101,9 @@ Platform Serializer::fromJSON(const nlohmann::json& j, TextureManager& textures)
 	);
 }
 
-void Serializer::loadPlatforms(const nlohmann::json& j, std::vector<Platform>& platforms, TextureManager& textures) {
+void Serializer::loadPlatforms(const nlohmann::json& j, std::vector<Platform>& platforms, TextureManager& textures, TileManager& tiles) {
 	for (const auto& jPlatform : j["platforms"]) {
+		auto* tile = tiles.getTile(jPlatform["tile"].get<std::string>());
 		platforms.push_back(Platform(
 			sf::Vector2f(
 				jPlatform["width"].get<float>(),
@@ -99,15 +114,10 @@ void Serializer::loadPlatforms(const nlohmann::json& j, std::vector<Platform>& p
 				jPlatform["y"].get<float>()
 			),
 			&textures.get(
-				jPlatform["texture"].get<std::string>()
+				tile->textureAdress
 			),
-			sf::IntRect(/*left top width height*/
-				jPlatform["uvRect"]["left"].get<int>(),
-				jPlatform["uvRect"]["top"].get<int>(),
-				jPlatform["uvRect"]["width"].get<int>(),
-				jPlatform["uvRect"]["height"].get<int>()
-			),
-			jPlatform["texture"].get<std::string>()
+			tile->rect,
+			tile->name
 		));
 	}
 }

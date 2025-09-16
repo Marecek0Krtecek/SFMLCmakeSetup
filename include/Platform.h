@@ -14,14 +14,15 @@ public:
 	void Draw(sf::RenderWindow& window) { window.draw(body); }
 	void SetColor(sf::Color& color) { body.setFillColor(color); }
 	void SetPosition(sf::Vector2f& position) { body.setPosition(position); }
-	void SetSize(sf::Vector2f& size) { body.setSize(size); }
+	void SetSize(sf::Vector2f& size) { body.setSize(size); body.setOrigin(size / 2.f); }
 	void SetTextureRect(const sf::IntRect& rect) { body.setTextureRect(rect); }
 
 	Collision GetCollider() { return Collision(body); }
-	sf::Vector2f GetPosition() { return body.getPosition(); }
-	sf::Vector2f GetSize() { return body.getSize(); }
-	std::string GetTexture() { return platformTexture; }
-	sf::IntRect GetUvRect() { return uvRect; }
+	sf::Vector2f GetPosition() const { return body.getPosition(); }
+	sf::Vector2f GetSize() const { return body.getSize(); }
+	std::string GetTexture() const { return platformTexture; }
+	sf::IntRect GetUvRect() const { return uvRect; }
+	sf::FloatRect GetGlobalBounds() const { return body.getGlobalBounds(); }
 
 public:
 	bool canHaveEnemy = false;

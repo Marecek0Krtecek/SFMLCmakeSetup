@@ -35,6 +35,7 @@ private:
 	sf::View view;
 
 	std::vector<Platform> platforms;
+	int selectedIndex = -1;
 
 	sf::Vector2f selectPos = {};
 	sf::Vector2f selectSize = {100.f, 50.f};

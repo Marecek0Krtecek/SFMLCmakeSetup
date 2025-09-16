@@ -5,7 +5,7 @@ EditorState::EditorState(sf::RenderWindow& window) :
 {
 	ResizeView(window, view);
 
-	platforms.reserve(10);
+	platforms.reserve(100);
 
 	textures.loadTexture(platformTexture);
 
@@ -31,8 +31,7 @@ void EditorState::handleEvent(const sf::Event& event, sf::RenderWindow& window) 
 		window.close();
 		break;
 	case sf::Event::KeyPressed:
-		if (event.key.code == sf::Keyboard::Escape)
-			window.close();
+		if (event.key.code == sf::Keyboard::Escape) window.close();
 		if (event.key.code == sf::Keyboard::Q) view.zoom(zoomFactor);
 		if (event.key.code == sf::Keyboard::E) view.zoom(1.f / zoomFactor);
 
@@ -47,6 +46,19 @@ void EditorState::handleEvent(const sf::Event& event, sf::RenderWindow& window) 
 			sf::Vector2i pixelPos(event.mouseButton.x, event.mouseButton.y);
 			selectPos = window.mapPixelToCoords(pixelPos, view);
 			selectPos = snapToGridFunc(selectPos, gridSize, snapToGrid);
+		}
+		if (event.mouseButton.button == sf::Mouse::Left) {
+			sf::Vector2i pixelPos(event.mouseButton.x, event.mouseButton.y);
+			sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos, view);
+
+			int i = 0;
+			for (const auto& platform : platforms) {
+				if (platform.GetGlobalBounds().contains(worldPos)) {
+					selectedIndex = i;
+					platformEditWindow = true;
+				}
+				i++;
+			}
 		}
 		break;
 	}
@@ -192,7 +204,6 @@ void EditorState::update(float deltaTime) {
 	if (platformEditWindow) {
 		ImGui::Begin("Edit Platforms");
 
-		static int selectedIndex = -1;
 		if (selectedIndex < 0) {
 			for (int i = 0; i < platforms.size(); i++) {
 				std::string label = "Platform " + std::to_string(i);
@@ -210,8 +221,21 @@ void EditorState::update(float deltaTime) {
 			sf::Vector2f pos = platform.GetPosition();
 			sf::Vector2f size = platform.GetSize();
 
+			if (ImGui::Button("Duplicate")) {
+				platforms.push_back(Platform(
+					size, 
+					sf::Vector2f(pos.x + gridSize, pos.y + gridSize), 
+					&textures.get(tileManager.getTile(platform.GetTexture())->textureAdress), 
+					tileManager.getTile(platform.GetTexture())->rect, 
+					tileManager.getTile(platform.GetTexture())->name
+				));
+			}
+
 			if (ImGui::InputFloat2("X, Y", &pos.x, "%.1f")) {
 				platform.SetPosition(snapToGridFunc(pos, gridSize, snapToGrid));
+			}
+			else if ((sf::Mouse::isButtonPressed(sf::Mouse::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))) {
+				platform.SetPosition(snapToGridFunc(selectPos, gridSize, snapToGrid));
 			}
 			if (ImGui::InputFloat2("W, H", &size.x, "%.1f")) {
 				platform.SetSize(size);
@@ -238,7 +262,11 @@ void EditorState::update(float deltaTime) {
 		ImGui::Begin("Grid Settings");
 
 		ImGui::Checkbox("Snap To Grid", &snapToGrid);
-		ImGui::SliderFloat("Grid Size", &gridSize, 8.f, 128.f, "%.1f");
+		if (ImGui::SliderFloat("Grid Size", &gridSize, 8.f, 128.f, "%.1f")) {
+			for (auto& platform : platforms) {
+				platform.SetPosition(snapToGridFunc(platform.GetPosition(), gridSize, snapToGrid));
+			}
+		}
 
 		ImGui::End();
 	}
@@ -253,8 +281,8 @@ void EditorState::update(float deltaTime) {
 void EditorState::render(sf::RenderWindow& window) {
 	
 	window.setView(view);
-
-	drawGrid(window, gridSize);
+	if(snapToGrid)
+		drawGrid(window, gridSize);
 
 	for (auto& platform : platforms) {
 		platform.Draw(window);

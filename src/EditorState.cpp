@@ -28,24 +28,38 @@ void EditorState::handleEvent(const sf::Event& event, sf::RenderWindow& window) 
 	switch (event.type)
 	{
 	case sf::Event::Closed:
+
 		window.close();
 		break;
 	case sf::Event::KeyPressed:
+
 		if (event.key.code == sf::Keyboard::Escape) window.close();
 		if (event.key.code == sf::Keyboard::Q) view.zoom(zoomFactor);
 		if (event.key.code == sf::Keyboard::E) view.zoom(1.f / zoomFactor);
+		if (event.key.control && event.key.code == sf::Keyboard::D) duplicatePlatform(selectedIndex);
+		if (event.key.control && event.key.code == sf::Keyboard::X) deletePlatform(selectedIndex);
+		if (event.key.control && event.key.code == sf::Keyboard::Z) undo();
+		if (event.key.control && event.key.code == sf::Keyboard::Y) redo();
 
 		break;
 	case sf::Event::Resized:
+
 		ResizeView(window, view);
 		break;
 	case sf::Event::MouseWheelScrolled:
+
 		break;
 	case sf::Event::MouseButtonPressed:
+
 		if (event.mouseButton.button == sf::Mouse::Left && sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)) {
 			sf::Vector2i pixelPos(event.mouseButton.x, event.mouseButton.y);
 			selectPos = window.mapPixelToCoords(pixelPos, view);
 			selectPos = snapToGridFunc(selectPos, gridSize, snapToGrid);
+
+			if (selectedIndex >= 0) {
+				movePlatform(selectedIndex, platforms[selectedIndex].GetPosition(), selectPos);
+			}
+
 		}
 		if (event.mouseButton.button == sf::Mouse::Left) {
 			sf::Vector2i pixelPos(event.mouseButton.x, event.mouseButton.y);
@@ -188,7 +202,7 @@ void EditorState::update(float deltaTime) {
 			ImGui::Checkbox("Snap To Grid", &snapToGrid);
 
 			if (ImGui::Button("Add Platform")) {
-				platforms.push_back(Platform(selectSize, selectPos, &atlasTexture, def->rect, def->name));
+				addPlatform(Platform(selectSize, selectPos, &atlasTexture, def->rect, def->name));
 				selectPos = {};
 			}
 		}
@@ -204,7 +218,7 @@ void EditorState::update(float deltaTime) {
 	if (platformEditWindow) {
 		ImGui::Begin("Edit Platforms");
 
-		if (selectedIndex < 0) {
+		if (selectedIndex < 0 || platforms.size() == 0) {
 			for (int i = 0; i < platforms.size(); i++) {
 				std::string label = "Platform " + std::to_string(i);
 				if (ImGui::Selectable(label.c_str(), selectedIndex == i)) {
@@ -213,6 +227,9 @@ void EditorState::update(float deltaTime) {
 			}
 		}
 		else {
+			if (selectedIndex >= platforms.size())
+				selectedIndex = platforms.size() - 1;
+
 			auto& platform = platforms[selectedIndex];
 			if (ImGui::Button("Exit")) {
 				selectedIndex = -1;
@@ -222,21 +239,15 @@ void EditorState::update(float deltaTime) {
 			sf::Vector2f size = platform.GetSize();
 
 			if (ImGui::Button("Duplicate")) {
-				platforms.push_back(Platform(
-					size, 
-					sf::Vector2f(pos.x + gridSize, pos.y + gridSize), 
-					&textures.get(tileManager.getTile(platform.GetTexture())->textureAdress), 
-					tileManager.getTile(platform.GetTexture())->rect, 
-					tileManager.getTile(platform.GetTexture())->name
-				));
+				duplicatePlatform(selectedIndex);
 			}
 
 			if (ImGui::InputFloat2("X, Y", &pos.x, "%.1f")) {
-				platform.SetPosition(snapToGridFunc(pos, gridSize, snapToGrid));
+				pos = snapToGridFunc(pos, gridSize, snapToGrid);
+				if(pos != platform.GetPosition())
+					movePlatform(selectedIndex, platform.GetPosition(), pos);
 			}
-			else if ((sf::Mouse::isButtonPressed(sf::Mouse::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))) {
-				platform.SetPosition(snapToGridFunc(selectPos, gridSize, snapToGrid));
-			}
+
 			if (ImGui::InputFloat2("W, H", &size.x, "%.1f")) {
 				platform.SetSize(size);
 			}
@@ -246,8 +257,7 @@ void EditorState::update(float deltaTime) {
 			}
 
 			if (ImGui::Button("Delete Platform")) {
-				platforms.erase(platforms.begin() + selectedIndex);
-				selectedIndex = -1;
+				deletePlatform(selectedIndex);
 			}
 		}
 
@@ -329,4 +339,76 @@ void EditorState::drawGrid(sf::RenderWindow& window, const float& gridSize) {
 	}
 	
 	window.draw(lines);
+}
+
+void EditorState::addAction(std::unique_ptr<EditorAction> action) {
+	//vykonaj akciu
+	action->redo();
+
+	//ulož do undo stacku
+	undoStack.push(std::move(action));
+
+	//vyèisti redo stack
+	while (!redoStack.empty())
+		redoStack.pop();
+
+}
+
+void EditorState::undo() {
+	if (!undoStack.empty()) {
+		auto action = std::move(undoStack.top());
+		undoStack.pop();
+
+		action->undo();
+		redoStack.push(std::move(action));
+	}
+}
+
+void EditorState::redo() {
+	if (!redoStack.empty()) {
+		auto action = std::move(redoStack.top());
+		redoStack.pop();
+
+		action->redo();
+		undoStack.push(std::move(action));
+	}
+}
+
+void EditorState::addPlatform(const Platform& platform) {
+	auto action = std::make_unique<AddPlatformAction>(platforms, platform, platforms.size());
+	addAction(std::move(action));
+}
+
+void EditorState::duplicatePlatform(int& selectedIndex) {
+	if (selectedIndex >= 0) {
+		auto& platform = platforms[selectedIndex];
+
+		sf::Vector2f pos = platform.GetPosition();
+		sf::Vector2f size = platform.GetSize();
+
+		addPlatform(Platform(
+			size,
+			sf::Vector2f(pos.x + gridSize, pos.y + gridSize),
+			&textures.get(tileManager.getTile(platform.GetTexture())->textureAdress),
+			tileManager.getTile(platform.GetTexture())->rect,
+			tileManager.getTile(platform.GetTexture())->name
+		));
+		
+		selectedIndex = platforms.size() - 1;
+	}
+}
+
+void EditorState::deletePlatform(int& selectedIndex) {
+	if (selectedIndex >= 0) {
+
+		auto action = std::make_unique<DeletePlatformAction>(platforms, selectedIndex);
+		addAction(std::move(action));
+
+		selectedIndex = -1;
+	}
+}
+
+void EditorState::movePlatform(const int& selectedIndex, sf::Vector2f oldPos, sf::Vector2f newPos) {
+	auto action = std::make_unique<MovePlatformAction>(platforms, selectedIndex, oldPos, newPos);
+	addAction(std::move(action));
 }

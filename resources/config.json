@@ -40,5 +40,39 @@
         "height": 9
       }
     }
+  ],
+  "enemies": [
+    {
+      "name": "Green Slime",
+      "texture": "brackeys_platformer_assets/sprites/slime_green.png",
+      "rect": {
+        "left": 29,
+        "top": 35,
+        "width": 13,
+        "height": 12
+      },
+      "imageCount": {
+        "x": 4,
+        "y": 3
+      },
+      "switchTime": 0.1,
+      "speed": 250.0
+    },
+    {
+      "name": "Purple Slime",
+      "texture": "brackeys_platformer_assets/sprites/slime_purple.png",
+      "rect": {
+        "left": 29,
+        "top": 35,
+        "width": 13,
+        "height": 12
+      },
+      "imageCount": {
+        "x": 4,
+        "y": 3
+      },
+      "switchTime": 0.1,
+      "speed": 250.0
+    }
   ]
 }

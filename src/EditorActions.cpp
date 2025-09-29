@@ -48,3 +48,89 @@ void MovePlatformAction::undo() {
 void MovePlatformAction::redo() {
 	platforms[index].SetPosition(newPos);
 }
+
+ResizePlatformAction::ResizePlatformAction(std::vector<Platform>& platforms, size_t index, sf::Vector2f oldSize, sf::Vector2f newSize) :
+	platforms(platforms),
+	index(index),
+	oldSize(oldSize),
+	newSize(newSize)
+{
+
+}
+
+void ResizePlatformAction::undo() {
+	platforms[index].SetSize(oldSize);
+}
+
+void ResizePlatformAction::redo() {
+	platforms[index].SetSize(newSize);
+}
+
+ChangeTileAction::ChangeTileAction(std::vector<Platform>& platforms, size_t index, std::string oldTile, std::string newTile, TileManager& tileManager) :
+	platforms(platforms),
+	index(index),
+	oldTile(oldTile),
+	newTile(newTile),
+	tileManager(tileManager)
+{
+
+}
+
+void ChangeTileAction::undo() {
+	platforms[index].SetTextureRect(tileManager.getTile(oldTile)->rect);
+	platforms[index].SetTileName(tileManager.getTile(oldTile)->name);
+}
+
+void ChangeTileAction::redo() {
+	platforms[index].SetTextureRect(tileManager.getTile(newTile)->rect);
+	platforms[index].SetTileName(tileManager.getTile(newTile)->name);
+}
+
+AddEnemyAction::AddEnemyAction(std::vector<EnemySpawnPoint>& enemySpawnPoints, const EnemySpawnPoint& enemySpawnPoint, size_t index) :
+	enemySpawnPoints(enemySpawnPoints),
+	enemySpawnPoint(enemySpawnPoint),
+	index(index)
+{
+
+}
+
+void AddEnemyAction::undo() {
+	enemySpawnPoints.erase(enemySpawnPoints.begin() + index);
+}
+
+void AddEnemyAction::redo() {
+	enemySpawnPoints.insert(enemySpawnPoints.begin() + index, enemySpawnPoint);
+}
+
+DeleteEnemyAction::DeleteEnemyAction(std::vector<EnemySpawnPoint>& enemySpawnPoints, size_t index) :
+	enemySpawnPoints(enemySpawnPoints),
+	index(index),
+	enemySpawnPoint(enemySpawnPoints[index]) 
+{
+
+}
+
+void DeleteEnemyAction::undo() {
+	enemySpawnPoints.insert(enemySpawnPoints.begin() + index, enemySpawnPoint);
+}
+
+void DeleteEnemyAction::redo() {
+	enemySpawnPoints.erase(enemySpawnPoints.begin() + index);
+}
+
+MoveEnemyAction::MoveEnemyAction(std::vector<EnemySpawnPoint>& enemySpawnPoints, size_t index, sf::Vector2f oldPos, sf::Vector2f newPos) :
+	enemySpawnPoints(enemySpawnPoints),
+	index(index),
+	oldPos(oldPos),
+	newPos(newPos)
+{
+
+}
+
+void MoveEnemyAction::undo() {
+	enemySpawnPoints[index].SetPosition(oldPos);
+}
+
+void MoveEnemyAction::redo() {
+	enemySpawnPoints[index].SetPosition(newPos);
+}

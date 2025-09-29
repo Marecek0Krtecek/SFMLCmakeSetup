@@ -16,6 +16,7 @@ public:
 	void SetPosition(sf::Vector2f& position) { body.setPosition(position); }
 	void SetSize(sf::Vector2f& size) { body.setSize(size); body.setOrigin(size / 2.f); }
 	void SetTextureRect(const sf::IntRect& rect) { body.setTextureRect(rect); }
+	void SetTileName(const std::string& tile) { platformTexture = tile; }
 
 	Collision GetCollider() { return Collision(body); }
 	sf::Vector2f GetPosition() const { return body.getPosition(); }

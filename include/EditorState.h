@@ -15,6 +15,7 @@
 #include <stack>
 #include "EditorAction.h"
 #include "EditorActions.h"
+#include "EnemyManager.h"
 
 class EditorState : public State
 {
@@ -39,6 +40,12 @@ private:
 	void duplicatePlatform(int& selectedIndex);
 	void deletePlatform(int& selectedIndex);
 	void movePlatform(const int& selectedIndex, sf::Vector2f oldPos, sf::Vector2f newPos);
+	void resizePlatform(const int& selectedIndex, sf::Vector2f oldSize, sf::Vector2f newSize);
+	void changePlatformTile(const int& selectedIndex, const std::string& oldTile, const std::string& newTile);
+
+	void addEnemy(const EnemySpawnPoint& enemySpawnPoint);
+	void moveEnemy(const int& selectedIndex, sf::Vector2f oldPos, sf::Vector2f newPos);
+	void deleteEnemy(int& selectedIndex);
 
 private:
 	const float VIEW_HEIGHT = 1024.f;
@@ -66,12 +73,25 @@ private:
 	std::vector<const char*> tileNames;
 	std::vector<std::string> strTileNames;
 
+	//Enemies
+	EnemyManager enemyManager;
+
+	std::vector<const char*> enemyTxNames;
+	std::vector<std::string> strEnemyTxNames;
+	
+	std::vector<EnemySpawnPoint> enemySpawnPoints;
+
+	int eSelectedIndex = -1;
+
 	//ImGui windows active
 	bool platformWindow = false;
 	bool platformEditWindow = false;
 	bool saveWindow = false;
 	bool loadWindow = false;
 	bool gridSettingWindow = false;
+
+	bool enemyWindow = false;
+	bool enemyEditWindow = false;
 
 	//Grid
 	bool snapToGrid = true;

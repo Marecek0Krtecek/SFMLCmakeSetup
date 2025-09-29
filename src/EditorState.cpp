@@ -6,21 +6,29 @@ EditorState::EditorState(sf::RenderWindow& window) :
 	ResizeView(window, view);
 
 	platforms.reserve(100);
-
+	enemySpawnPoints.reserve(100);
+	
 	textures.loadTexture(platformTexture);
 
 	tileManager.loadFromFile(RESOURCES_PATH "config.json");
+	enemyManager.loadFromFile(RESOURCES_PATH "config.json");
 
 	tileNames.reserve(tileManager.getAllTiles().size());
 	strTileNames.reserve(tileManager.getAllTiles().size());
 
 	for (const auto& [name, def] : tileManager.getAllTiles()) {
 		strTileNames.push_back(name);
-	}
-
-	for (const auto& name : strTileNames) {
 		tileNames.push_back(name.c_str());
 	}
+
+	enemyTxNames.reserve(enemyManager.getAllEnemies().size());
+	strEnemyTxNames.reserve(enemyManager.getAllEnemies().size());
+
+	for (const auto& [name, def] : enemyManager.getAllEnemies()) {
+		strEnemyTxNames.push_back(name);
+		enemyTxNames.push_back(name.c_str());
+	}
+
 }
 
 void EditorState::handleEvent(const sf::Event& event, sf::RenderWindow& window) {
@@ -70,6 +78,7 @@ void EditorState::handleEvent(const sf::Event& event, sf::RenderWindow& window) 
 				if (platform.GetGlobalBounds().contains(worldPos)) {
 					selectedIndex = i;
 					platformEditWindow = true;
+					break;
 				}
 				i++;
 			}
@@ -168,9 +177,19 @@ void EditorState::update(float deltaTime) {
 
 	if (ImGui::Button("Platform Creation")) {
 		platformWindow = !platformWindow;
+		currentItem = 0;
 	}
 	if (ImGui::Button("Platform Editing")) {
 		platformEditWindow = !platformEditWindow;
+		currentItem = 0;
+	}
+	if (ImGui::Button("Enemy Spawn Poind Creation")) {
+		enemyWindow = !enemyWindow;
+		currentItem = 0;
+	}
+	if (ImGui::Button("Enemy SP Editing")) {
+		enemyEditWindow = !enemyEditWindow;
+		currentItem = 0;
 	}
 	if (ImGui::Button("Grid Settings")) {
 		gridSettingWindow = !gridSettingWindow;
@@ -249,11 +268,22 @@ void EditorState::update(float deltaTime) {
 			}
 
 			if (ImGui::InputFloat2("W, H", &size.x, "%.1f")) {
-				platform.SetSize(size);
+				if (size != platform.GetSize())
+					resizePlatform(selectedIndex, platform.GetSize(), size);
 			}
 
+			if (strTileNames[currentItem] != platform.GetTexture()) {
+				for (int i = 0; i < strTileNames.size(); i++) {
+					if (strTileNames[i] == platform.GetTexture()) {
+						currentItem = i;
+						break;
+					}
+				}
+			}
+
+
 			if (ImGui::Combo("Texture", &currentItem, tileNames.data(), (int)tileNames.size())) {
-				platform.SetTextureRect(tileManager.getTile(strTileNames[currentItem])->rect);
+					changePlatformTile(selectedIndex, platform.GetTexture(), strTileNames[currentItem]);
 			}
 
 			if (ImGui::Button("Delete Platform")) {
@@ -283,6 +313,88 @@ void EditorState::update(float deltaTime) {
 
 #pragma endregion
 
+#pragma region Enemies
+	
+	if (enemyWindow) {
+		ImGui::Begin("Enemy");
+
+		if (ImGui::InputFloat2("X, Y", &selectPos.x, "%.1f")) {
+			selectPos = snapToGridFunc(selectPos, gridSize, snapToGrid);
+		}
+
+		ImGui::Combo("Texture", &currentItem, enemyTxNames.data(), enemyTxNames.size());
+		auto* def = enemyManager.getEnemy(strEnemyTxNames[currentItem]);
+
+		if (def) {
+			auto& atlasTexture = textures.get(def->textureAdress);
+			sf::Sprite texturePreview(atlasTexture, def->rect);
+
+			static float scale = 5.f;
+			ImGui::SliderFloat("Set Scale", &scale, 1.f, 10.f, "%.1f");
+
+			texturePreview.setScale(scale, scale);
+			ImGui::Image(texturePreview);
+
+			ImGui::Checkbox("Snap To Grid", &snapToGrid);
+
+			if (ImGui::Button("Add Enemy")) {
+				addEnemy(EnemySpawnPoint(def->name, selectPos));
+
+				selectPos = {};
+			}
+		}
+
+
+		ImGui::End();
+	}
+
+	if (enemyEditWindow) {
+		ImGui::Begin("Enemy Editing");
+
+		if (eSelectedIndex < 0 || enemySpawnPoints.size() == 0) {
+			for (int i = 0; i < enemySpawnPoints.size(); i++) {
+				std::string label = "Enemy " + std::to_string(i);
+				if (ImGui::Selectable(label.c_str(), eSelectedIndex == i)) {
+					eSelectedIndex = i;
+				}
+			}
+		}
+		else {
+			if (eSelectedIndex >= enemySpawnPoints.size())
+				eSelectedIndex = enemySpawnPoints.size() - 1;
+
+			auto& enemySP = enemySpawnPoints[eSelectedIndex];
+			if (ImGui::Button("Exit")) {
+				eSelectedIndex = -1;
+			}
+
+			sf::Vector2f pos = enemySP.GetPosition();
+
+			if (ImGui::InputFloat2("X, Y", &pos.x, "%.1f")) {
+				pos = snapToGridFunc(pos, gridSize, snapToGrid);
+				if (pos != enemySP.GetPosition())
+					moveEnemy(eSelectedIndex, enemySP.GetPosition(), pos);
+			}
+
+			if (strEnemyTxNames[currentItem] != enemySP.GetName()) {
+				for (int i = 0; i < strEnemyTxNames.size(); i++) {
+					if (strEnemyTxNames[i] == enemySP.GetName()) {
+						currentItem = i;
+						break;
+					}
+				}
+			}
+
+			if (ImGui::Button("Delete Platform")) {
+				deleteEnemy(eSelectedIndex);
+			}
+		}
+
+		ImGui::End();
+	}
+
+#pragma endregion
+
 
 #pragma endregion
 
@@ -296,6 +408,10 @@ void EditorState::render(sf::RenderWindow& window) {
 
 	for (auto& platform : platforms) {
 		platform.Draw(window);
+	}
+
+	for (auto& enemySpawnPoint : enemySpawnPoints) {
+		enemySpawnPoint.draw(window);
 	}
 
 }
@@ -411,4 +527,34 @@ void EditorState::deletePlatform(int& selectedIndex) {
 void EditorState::movePlatform(const int& selectedIndex, sf::Vector2f oldPos, sf::Vector2f newPos) {
 	auto action = std::make_unique<MovePlatformAction>(platforms, selectedIndex, oldPos, newPos);
 	addAction(std::move(action));
+}
+
+void EditorState::resizePlatform(const int& selectedIndex, sf::Vector2f oldSize, sf::Vector2f newSize) {
+	auto action = std::make_unique<ResizePlatformAction>(platforms, selectedIndex, oldSize, newSize);
+	addAction(std::move(action));
+}
+
+void EditorState::changePlatformTile(const int& selectedIndex, const std::string& oldTile, const std::string& newTile) {
+	auto action = std::make_unique<ChangeTileAction>(platforms, selectedIndex, oldTile, newTile, tileManager);
+	addAction(std::move(action));
+}
+
+void EditorState::addEnemy(const EnemySpawnPoint& enemySpawnPoint) {
+	auto action = std::make_unique<AddEnemyAction>(enemySpawnPoints, enemySpawnPoint, enemySpawnPoints.size());
+	addAction(std::move(action));
+}
+
+void EditorState::moveEnemy(const int& selectedIndex, sf::Vector2f oldPos, sf::Vector2f newPos) {
+	auto action = std::make_unique<MoveEnemyAction>(enemySpawnPoints, selectedIndex, oldPos, newPos);
+	addAction(std::move(action));
+}
+
+void EditorState::deleteEnemy(int& selectedIndex) {
+	if (selectedIndex >= 0) {
+
+		auto action = std::make_unique<DeleteEnemyAction>(enemySpawnPoints, selectedIndex);
+		addAction(std::move(action));
+
+		selectedIndex = -1;
+	}
 }

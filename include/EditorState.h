@@ -16,7 +16,9 @@
 #include "EditorAction.h"
 #include "EditorActions.h"
 #include "EnemyManager.h"
-
+#include "ImGuiFileDialog.h"
+#include <filesystem>
+	
 class EditorState : public State
 {
 public:
@@ -30,6 +32,8 @@ private:
 	void ResizeView(const sf::RenderWindow& window, sf::View& view);
 	sf::Vector2f snapToGridFunc(const sf::Vector2f& pos, const float& gridSize, bool enabled);
 	void drawGrid(sf::RenderWindow& window, const float& gridSize);
+	std::string normalizePath(std::string& path);
+	std::string fileFinding(const std::string& filePathName);
 
 	void addAction(std::unique_ptr<EditorAction> action);
 
@@ -46,6 +50,8 @@ private:
 	void addEnemy(const EnemySpawnPoint& enemySpawnPoint);
 	void moveEnemy(const int& selectedIndex, sf::Vector2f oldPos, sf::Vector2f newPos);
 	void deleteEnemy(int& selectedIndex);
+	void changeEnemyType(const int& selectedIndex, const std::string& oldType, const std::string& newType);
+	void duplicateEnemy(int& selectedIndex);
 
 private:
 	const float VIEW_HEIGHT = 1024.f;
@@ -93,6 +99,8 @@ private:
 	bool enemyWindow = false;
 	bool enemyEditWindow = false;
 
+	bool newLevelIsNotSaved = false;
+
 	//Grid
 	bool snapToGrid = true;
 	float gridSize = 32.f;
@@ -100,5 +108,15 @@ private:
 	//Undo / Redo action variables
 	std::stack<std::unique_ptr<EditorAction>> undoStack;
 	std::stack<std::unique_ptr<EditorAction>> redoStack;
+
+	//Saving / Loading
+	std::string currentFilePath;
+	bool isSaved = true;
+
+#if PRODUCTION_BUILD 
+	const char* resourcesPath = RESOURCES_PATH "levels";
+#else
+	const char* resourcesPath = "../../../resources/levels";
+#endif
 
 };

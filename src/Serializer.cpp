@@ -32,12 +32,13 @@ nlohmann::json Serializer::savePlatformTiles(const std::vector<TileDef>& platfor
 	return j;
 }
 
-nlohmann::json Serializer::savePlatforms(std::vector<Platform>& platforms) {
+nlohmann::json Serializer::savePlatforms(const std::vector<Platform>& platforms) {
 	nlohmann::json j;
 	//j["levelName"] = "TestLevel";
 	//j["background"]
 	//j["music"]
 	//j["playerSpawn"] = { {"x", 0.f},{"y",-50.f} };
+	j["platformCount"] = platforms.size();
 	j["platforms"] = nlohmann::json::array();
 	for (auto& platform : platforms) {
 		j["platforms"].push_back(
@@ -55,30 +56,21 @@ nlohmann::json Serializer::savePlatforms(std::vector<Platform>& platforms) {
 	return j;
 }
 
-nlohmann::json Serializer::saveEnemies(std::vector<Enemy>& enemies) {
+nlohmann::json Serializer::saveEnemySpawnPoints(const std::vector<EnemySpawnPoint>& enemySpawnPoints) {
 	nlohmann::json j;
-	j["levelName"] = "TestLevel";
+	//j["levelName"] = "TestLevel";
 	//j["background"]
 	//j["music"]
-	j["playerSpawn"] = { {"x", 0.f},{"y",-50.f} };
+	//j["playerSpawn"] = { {"x", 0.f},{"y",-50.f} };
 	//j["platforms"] = nlohmann::json::array();
-	j["enemies"] = nlohmann::json::array();
-	for (auto& enemy : enemies) {
-		j["enemies"].push_back(
+	j["enemyCount"] = enemySpawnPoints.size();
+	j["enemySpawnPoints"] = nlohmann::json::array();
+	for (const auto& enemy : enemySpawnPoints) {
+		j["enemySpawnPoints"].push_back(
 			{
-				{"x", enemy.getPosition().x},
-				{"y", enemy.getPosition().y},
-				{"width", enemy.GetSize().x},
-				{"height", enemy.GetSize().y},
-				{"texture", enemy.GetTexture()},
-				{"speed", enemy.GetSpeed()},
-				{"switchTime", enemy.GetSwitchTime()},
-				{"imageCount",
-					{
-						{"x", enemy.GetImageCount().x},
-						{"y", enemy.GetImageCount().y}
-					}
-				}
+				{ "type", enemy.GetName() },
+				{ "x", enemy.GetPosition().x },
+				{ "y", enemy.GetPosition().y }
 			}
 		);
 	}
@@ -102,22 +94,72 @@ Platform Serializer::fromJSON(const nlohmann::json& j, TextureManager& textures)
 }
 
 void Serializer::loadPlatforms(const nlohmann::json& j, std::vector<Platform>& platforms, TextureManager& textures, TileManager& tiles) {
-	for (const auto& jPlatform : j["platforms"]) {
-		auto* tile = tiles.getTile(jPlatform["tile"].get<std::string>());
-		platforms.push_back(Platform(
-			sf::Vector2f(
-				jPlatform["width"].get<float>(),
-				jPlatform["height"].get<float>()
-			),
-			sf::Vector2f(
-				jPlatform["x"].get<float>(),
-				jPlatform["y"].get<float>()
-			),
-			&textures.get(
-				tile->textureAdress
-			),
-			tile->rect,
-			tile->name
-		));
+	if (j.contains("platforms")) {
+		for (const auto& jPlatform : j["platforms"]) {
+			auto* tile = tiles.getTile(jPlatform["tile"].get<std::string>());
+			platforms.push_back(Platform(
+				sf::Vector2f(
+					jPlatform["width"].get<float>(),
+					jPlatform["height"].get<float>()
+				),
+				sf::Vector2f(
+					jPlatform["x"].get<float>(),
+					jPlatform["y"].get<float>()
+				),
+				&textures.get(
+					tile->textureAdress
+				),
+				tile->rect,
+				tile->name
+			));
+		}
+	}
+
+	if (j.contains("platform")) {
+		const auto& jPatform = j["platform"];
+		if (jPatform.contains("platformCount")) {
+			platforms.reserve(jPatform["platformCount"].get<size_t>());
+		}
+		if (jPatform.contains("platforms")) {
+			for (const auto& jPlatform : jPatform["platforms"]) {
+				auto* tile = tiles.getTile(jPlatform["tile"].get<std::string>());
+				platforms.push_back(Platform(
+					sf::Vector2f(
+						jPlatform["width"].get<float>(),
+						jPlatform["height"].get<float>()
+					),
+					sf::Vector2f(
+						jPlatform["x"].get<float>(),
+						jPlatform["y"].get<float>()
+					),
+					&textures.get(
+						tile->textureAdress
+					),
+					tile->rect,
+					tile->name
+				));
+			}
+
+		}
+	}
+}
+
+void Serializer::loadEnemySpawnPoints(const nlohmann::json& j, std::vector<EnemySpawnPoint>& enemySpawnPoints) {
+	if (j.contains("enemy")) {
+		const auto& jEnemy = j["enemy"];
+		if (jEnemy.contains("enemyCount")) {
+			enemySpawnPoints.reserve(jEnemy["enemyCount"].get<size_t>());
+		}
+		if (jEnemy.contains("enemySpawnPoints")) {
+			for (const auto& jEnemySP : jEnemy["enemySpawnPoints"]) {
+				enemySpawnPoints.push_back(EnemySpawnPoint(
+					jEnemySP["type"].get<std::string>(),
+					sf::Vector2f(
+						jEnemySP["x"].get<float>(),
+						jEnemySP["y"].get<float>()
+					)
+				));
+			}
+		}
 	}
 }

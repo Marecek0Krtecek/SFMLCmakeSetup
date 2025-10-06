@@ -23,9 +23,11 @@ public:
 	void draw(sf::RenderWindow& window) { window.draw(point); }
 
 	void SetPosition(const sf::Vector2f& position) { point.setPosition(position.x - point.getRadius(), position.y - point.getRadius()); }
+	void SetName(std::string name) { this->name = name; }
 
-	sf::Vector2f GetPosition() { return sf::Vector2f(point.getPosition().x + point.getRadius(), point.getPosition().y + point.getRadius()); }
-	std::string GetName() { return name; }
+	const sf::Vector2f GetPosition() const { return sf::Vector2f(point.getPosition().x + point.getRadius(), point.getPosition().y + point.getRadius()); }
+	const std::string GetName() const { return name; }
+	const sf::FloatRect GetGlobalBounds() const { return point.getGlobalBounds(); }
 private:
 	std::string name;
 	sf::CircleShape point;

@@ -114,3 +114,17 @@ private:
 	sf::Vector2f oldPos;
 	sf::Vector2f newPos;
 };
+
+struct ChangeEnemyTypeAction : EditorAction
+{
+	ChangeEnemyTypeAction(EnemySpawnPoint& enemySpawnPoint, std::string oldName, std::string newName, EnemyManager& enemyManager);
+
+	void undo() override;
+	void redo() override;
+
+private:
+	EnemySpawnPoint& enemySpawnPoint;
+	std::string oldName;
+	std::string newName;
+	EnemyManager& enemyManager;
+};

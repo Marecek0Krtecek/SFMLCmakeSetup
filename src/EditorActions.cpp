@@ -134,3 +134,20 @@ void MoveEnemyAction::undo() {
 void MoveEnemyAction::redo() {
 	enemySpawnPoints[index].SetPosition(newPos);
 }
+
+ChangeEnemyTypeAction::ChangeEnemyTypeAction(EnemySpawnPoint& enemySpawnPoint, std::string oldName, std::string newName, EnemyManager& enemyManager) :
+	enemySpawnPoint(enemySpawnPoint),
+	oldName(oldName),
+	newName(newName),
+	enemyManager(enemyManager)
+{
+
+}
+
+void ChangeEnemyTypeAction::undo() {
+	enemySpawnPoint.SetName(oldName);
+}
+
+void ChangeEnemyTypeAction::redo() {
+	enemySpawnPoint.SetName(newName);
+}

@@ -44,8 +44,14 @@ void EditorState::handleEvent(const sf::Event& event, sf::RenderWindow& window) 
 		if (event.key.code == sf::Keyboard::Escape) window.close();
 		if (event.key.code == sf::Keyboard::Q) view.zoom(zoomFactor);
 		if (event.key.code == sf::Keyboard::E) view.zoom(1.f / zoomFactor);
-		if (event.key.control && event.key.code == sf::Keyboard::D) duplicatePlatform(selectedIndex);
-		if (event.key.control && event.key.code == sf::Keyboard::X) deletePlatform(selectedIndex);
+		if (event.key.control && event.key.code == sf::Keyboard::D) {
+			duplicatePlatform(selectedIndex);
+			duplicateEnemy(eSelectedIndex);
+		}
+		if (event.key.control && event.key.code == sf::Keyboard::X) {
+			deletePlatform(selectedIndex);
+			deleteEnemy(eSelectedIndex);
+		}
 		if (event.key.control && event.key.code == sf::Keyboard::Z) undo();
 		if (event.key.control && event.key.code == sf::Keyboard::Y) redo();
 
@@ -67,6 +73,9 @@ void EditorState::handleEvent(const sf::Event& event, sf::RenderWindow& window) 
 			if (selectedIndex >= 0) {
 				movePlatform(selectedIndex, platforms[selectedIndex].GetPosition(), selectPos);
 			}
+			if (eSelectedIndex >= 0) {
+				moveEnemy(eSelectedIndex, enemySpawnPoints[eSelectedIndex].GetPosition(), selectPos);
+			}
 
 		}
 		if (event.mouseButton.button == sf::Mouse::Left) {
@@ -78,6 +87,16 @@ void EditorState::handleEvent(const sf::Event& event, sf::RenderWindow& window) 
 				if (platform.GetGlobalBounds().contains(worldPos)) {
 					selectedIndex = i;
 					platformEditWindow = true;
+					break;
+				}
+				i++;
+			}
+
+			i = 0;
+			for (const auto& enemySP : enemySpawnPoints) {
+				if (enemySP.GetGlobalBounds().contains(worldPos)) {
+					eSelectedIndex = i;
+					enemyEditWindow = true;
 					break;
 				}
 				i++;
@@ -104,7 +123,112 @@ void EditorState::update(float deltaTime) {
 
 	ImGui::Begin("File");
 
+	std::string info = "Selected File : \t" + currentFilePath;
+	ImGui::Text(info.c_str());
+
+	if (ImGui::Button("New Level")) {
+		// TODO: vypr·zdniù platformy, spawnpointy, atÔ.
+
+		if (isSaved) {
+			platforms.clear();
+			enemySpawnPoints.clear();
+
+			platforms.reserve(platforms.size() + 100);
+			enemySpawnPoints.reserve(enemySpawnPoints.size() + 100);
+		}
+		else{
+			newLevelIsNotSaved = true;
+		}
+
+	}
+
+	if (newLevelIsNotSaved) {
+
+		ImGui::Begin("Are You Sure?");
+
+		ImGui::Text("The Level Is Not Saved,\ndo you wish to clear the level?");
+		if (ImGui::Button("Yes")) {
+			platforms.clear();
+			enemySpawnPoints.clear();
+
+			platforms.reserve(platforms.size() + 100);
+			enemySpawnPoints.reserve(enemySpawnPoints.size() + 100);
+			newLevelIsNotSaved = false;
+		}
+
+		if (ImGui::Button("Save")) {
+			if (currentFilePath != std::string()) {
+				std::ofstream save(RESOURCES_PATH + currentFilePath);
+
+				nlohmann::json j;
+				j["platform"] = Serializer::savePlatforms(platforms);
+				j["enemy"] = Serializer::saveEnemySpawnPoints(enemySpawnPoints);
+				save << j.dump(4);
+
+				save.close();
+
+				isSaved = true;
+			}
+			else {
+				IGFD::FileDialogConfig config;
+				config.path = resourcesPath;
+
+				ImGuiFileDialog::Instance()->OpenDialog("SaveFileDlgKey", "Save File As", ".json", config);
+			}
+			newLevelIsNotSaved = false;
+		}
+
+		if (ImGui::Button("Cancel")) {
+			newLevelIsNotSaved = false;
+		}
+
+		ImGui::End();
+	}
+
+	if (ImGui::Button("Load Level")) {
+		// TODO: zatiaæ natvrdo "level.json", neskÙr prid·me file dialog
+		IGFD::FileDialogConfig config;
+		config.path = resourcesPath;
+		ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".json", config);
+		
+		//currentFilePath = "level.json";
+	}
+
 	if (ImGui::Button("Save Level")) {
+		// TODO: uloûiù na posledn˙ zn·mu cestu
+		if (currentFilePath != std::string()) {
+			std::ofstream save(RESOURCES_PATH + currentFilePath);
+
+			nlohmann::json j;
+			j["platform"] = Serializer::savePlatforms(platforms);
+			j["enemy"] = Serializer::saveEnemySpawnPoints(enemySpawnPoints);
+			save << j.dump(4);
+
+			save.close();
+
+			isSaved = true;
+		}
+		else {
+			IGFD::FileDialogConfig config;
+			config.path = resourcesPath;
+
+			ImGuiFileDialog::Instance()->OpenDialog("SaveFileDlgKey", "Save File As", ".json", config);
+		}
+
+	}
+
+	if (ImGui::Button("Save Level As...")) {
+		// TODO: uloûiù na nov˙ cestu (zatÌm staËÌ hardcode)
+		IGFD::FileDialogConfig config;
+		config.path = resourcesPath;
+		
+		ImGuiFileDialog::Instance()->OpenDialog("SaveFileDlgKey", "Save File As", ".json", config);
+
+		//currentFilePath = "level.json";
+
+	}
+
+	if (ImGui::Button("Save Level old")) {
 		saveWindow = !saveWindow;
 	}
 	
@@ -124,16 +248,20 @@ void EditorState::update(float deltaTime) {
 
 		if (isChosen) {
 			std::ofstream save(RESOURCES_PATH + saveDirectory);
-			save << Serializer::savePlatforms(platforms).dump(4);
+			nlohmann::json j;
+			j["platform"] = Serializer::savePlatforms(platforms);
+			j["enemy"] = Serializer::saveEnemySpawnPoints(enemySpawnPoints);
+			save << j.dump(4);
 
 			save.close();
 
 			saveWindow = false;
 			isChosen = false;
+			isSaved = true;
 		}
 	}
 
-	if (ImGui::Button("Load Level")) {
+	if (ImGui::Button("Load Level old")) {
 		loadWindow = !loadWindow;
 	}
 
@@ -161,17 +289,82 @@ void EditorState::update(float deltaTime) {
 				platforms.erase(platforms.begin(), platforms.end());
 				Serializer::loadPlatforms(j, platforms, textures, tileManager);
 
+
+				enemySpawnPoints.erase(enemySpawnPoints.begin(), enemySpawnPoints.end());
+				Serializer::loadEnemySpawnPoints(j, enemySpawnPoints);
+
+				platforms.reserve(platforms.size() + 100);
+				enemySpawnPoints.reserve(enemySpawnPoints.size() + 100);
+
 				file.close();
 
 				loadWindow = false;
 				isChosen = false;
+
+				isSaved = true;
 			}
 		}
 	}
 
 	ImGui::End();
 
+	if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) {
+		if (ImGuiFileDialog::Instance()->IsOk()) {
+			std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+
+			currentFilePath = fileFinding(filePathName);
+
+			std::ifstream file(RESOURCES_PATH + currentFilePath);
+
+			if (!file.is_open()) {
+				std::cout << "File " << RESOURCES_PATH + currentFilePath << "\t is not opened";
+			}
+			else {
+				nlohmann::json j;
+				file >> j;
+
+				platforms.clear();
+				Serializer::loadPlatforms(j, platforms, textures, tileManager);
+
+				enemySpawnPoints.clear();
+				Serializer::loadEnemySpawnPoints(j, enemySpawnPoints);
+
+				file.close();
+
+				isSaved = true;
+			}
+
+		}
+
+		ImGuiFileDialog::Instance()->Close();
+	}
+
+	if (ImGuiFileDialog::Instance()->Display("SaveFileDlgKey")) {
+		if (ImGuiFileDialog::Instance()->IsOk()) {
+			std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+
+			currentFilePath = fileFinding(filePathName);
+
+			std::ofstream file(RESOURCES_PATH + currentFilePath);
+
+			nlohmann::json j;
+			j["enemy"] = Serializer::saveEnemySpawnPoints(enemySpawnPoints);
+			j["platform"] = Serializer::savePlatforms(platforms);
+
+			file << j.dump(4);
+
+			file.close();
+
+			isSaved = true;
+
+		}
+
+		ImGuiFileDialog::Instance()->Close();
+	}
+
 #pragma endregion
+
+#pragma region WindowManagment
 
 	ImGui::Begin("Editor Window");
 
@@ -196,6 +389,8 @@ void EditorState::update(float deltaTime) {
 	}
 
 	ImGui::End();
+
+#pragma endregion
 
 #pragma region Platforms
 
@@ -368,6 +563,10 @@ void EditorState::update(float deltaTime) {
 				eSelectedIndex = -1;
 			}
 
+			if (ImGui::Button("Duplicate")) {
+				duplicateEnemy(eSelectedIndex);
+			}
+
 			sf::Vector2f pos = enemySP.GetPosition();
 
 			if (ImGui::InputFloat2("X, Y", &pos.x, "%.1f")) {
@@ -383,6 +582,22 @@ void EditorState::update(float deltaTime) {
 						break;
 					}
 				}
+			}
+
+			if (ImGui::Combo("Enemy Type", &currentItem, enemyTxNames.data(), enemyTxNames.size())) {
+				changeEnemyType(eSelectedIndex, enemySP.GetName(), strEnemyTxNames[currentItem]);
+			}
+
+			auto* def = enemyManager.getEnemy(enemySP.GetName());
+			if (def) {
+				auto& textureAtlas = textures.get(def->textureAdress);
+				sf::Sprite preview(textureAtlas, def->rect);
+				
+				static float scale = 3.f;
+				ImGui::SliderFloat("Set Scale", &scale, 1.f, 10.f, "%.1f");
+				preview.setScale(scale, scale);
+				
+				ImGui::Image(preview);
 			}
 
 			if (ImGui::Button("Delete Platform")) {
@@ -415,6 +630,14 @@ void EditorState::render(sf::RenderWindow& window) {
 	}
 
 }
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 
 void EditorState::ResizeView(const sf::RenderWindow& window, sf::View& view)
 {
@@ -457,6 +680,25 @@ void EditorState::drawGrid(sf::RenderWindow& window, const float& gridSize) {
 	window.draw(lines);
 }
 
+std::string EditorState::normalizePath(std::string& path)
+{
+	std::replace(path.begin(), path.end(), '\\', '/');
+
+	return path;
+}
+
+std::string EditorState::fileFinding(const std::string& filePathName) {
+	if (filePathName.rfind(".json") != std::string::npos) {
+
+		size_t dirPos = filePathName.rfind("\\levels\\");
+		
+		std::string filePath = filePathName.substr(dirPos, filePathName.size() - dirPos);
+
+		return normalizePath(filePath);
+	}
+	return std::string();
+}
+
 void EditorState::addAction(std::unique_ptr<EditorAction> action) {
 	//vykonaj akciu
 	action->redo();
@@ -468,6 +710,7 @@ void EditorState::addAction(std::unique_ptr<EditorAction> action) {
 	while (!redoStack.empty())
 		redoStack.pop();
 
+	isSaved = false;
 }
 
 void EditorState::undo() {
@@ -477,6 +720,8 @@ void EditorState::undo() {
 
 		action->undo();
 		redoStack.push(std::move(action));
+
+		isSaved = false;
 	}
 }
 
@@ -487,6 +732,8 @@ void EditorState::redo() {
 
 		action->redo();
 		undoStack.push(std::move(action));
+
+		isSaved = false;
 	}
 }
 
@@ -556,5 +803,22 @@ void EditorState::deleteEnemy(int& selectedIndex) {
 		addAction(std::move(action));
 
 		selectedIndex = -1;
+	}
+}
+
+void EditorState::changeEnemyType(const int& selectedIndex, const std::string& oldType, const std::string& newType) {
+	auto action = std::make_unique<ChangeEnemyTypeAction>(enemySpawnPoints[selectedIndex], oldType, newType, enemyManager);
+	addAction(std::move(action));
+}
+
+void EditorState::duplicateEnemy(int& selectedIndex) {
+	if (selectedIndex >= 0) {
+		auto& enemySP = enemySpawnPoints[selectedIndex];
+
+		sf::Vector2f pos = enemySP.GetPosition();
+
+		addEnemy(EnemySpawnPoint(enemySP.GetName(), sf::Vector2f(pos.x + gridSize, pos.y + gridSize)));
+
+		selectedIndex = enemySpawnPoints.size() - 1;
 	}
 }

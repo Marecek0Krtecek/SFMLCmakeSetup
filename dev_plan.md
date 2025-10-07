@@ -9,7 +9,7 @@ Každý víkend máš priestor na väčšie úlohy alebo refaktorovanie.
 **Cieľ:** Doladiť workflow v editore a pripraviť pôdu pre prácu s nepriateľmi.
 
 - [ ] 🧩 Zjednotiť ukladanie a načítanie (spawn pointy, platformy, pozadie)
-- [ ] 🧰 Upratať kód v `EditorState` – presunúť opakujúce sa časti do funkcií
+- [x] 🧰 Upratať kód v `EditorState` – presunúť opakujúce sa časti do funkcií
 - [ ] 💾 Vyriešiť správne otváranie a ukladanie súborov cez ImGuiFileDialog (prípadne pridať fallback)
 - [ ] 🧠 Pridať možnosť Undo/Redo pre nepriateľov
 - [ ] 🔍 Otestovať všetky tri akcie (Add, Move, Delete) pre platformy aj nepriateľov

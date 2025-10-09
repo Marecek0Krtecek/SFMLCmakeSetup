@@ -5,7 +5,7 @@
 #include "TileManager.h"
 #include "EnemyManager.h"
 
-struct AddPlatformAction : EditorAction
+struct AddPlatformAction : public EditorAction
 {
 	AddPlatformAction(std::vector<Platform>& platforms, const Platform& newPlatform, size_t index);
 
@@ -18,7 +18,7 @@ private:
 	size_t index;
 };
 
-struct DeletePlatformAction : EditorAction
+struct DeletePlatformAction : public EditorAction
 {
 	DeletePlatformAction(std::vector<Platform>& platforms, size_t index);
 
@@ -31,7 +31,7 @@ private:
 	size_t index;
 };
 
-struct MovePlatformAction : EditorAction
+struct MovePlatformAction : public EditorAction
 {
 	MovePlatformAction(std::vector<Platform>& platforms, size_t index, sf::Vector2f oldPos, sf::Vector2f newPos);
 
@@ -45,7 +45,7 @@ private:
 	sf::Vector2f newPos;
 };
 
-struct ResizePlatformAction : EditorAction
+struct ResizePlatformAction : public EditorAction
 {
 	ResizePlatformAction(std::vector<Platform>& platforms, size_t index, sf::Vector2f oldSize, sf::Vector2f newSize);
 
@@ -60,7 +60,7 @@ private:
 
 };
 
-struct ChangeTileAction : EditorAction
+struct ChangeTileAction : public EditorAction
 {
 	ChangeTileAction(std::vector<Platform>& platforms, size_t index, std::string oldTile, std::string newTile, TileManager& tileManager);
 
@@ -75,7 +75,7 @@ private:
 	TileManager& tileManager;
 };
 
-struct AddEnemyAction : EditorAction
+struct AddEnemyAction : public EditorAction
 {
 	AddEnemyAction(std::vector<EnemySpawnPoint>& enemySpawnPoints, const EnemySpawnPoint& enemySpawnPoint, size_t index);
 
@@ -88,7 +88,7 @@ private:
 	size_t index;
 };
 
-struct DeleteEnemyAction : EditorAction
+struct DeleteEnemyAction : public EditorAction
 {
 	DeleteEnemyAction(std::vector<EnemySpawnPoint>& enemySpawnPoints, size_t index);
 
@@ -101,7 +101,7 @@ private:
 	EnemySpawnPoint enemySpawnPoint;
 };
 
-struct MoveEnemyAction : EditorAction
+struct MoveEnemyAction : public EditorAction
 {
 	MoveEnemyAction(std::vector<EnemySpawnPoint>& enemySpawnPoints, size_t index, sf::Vector2f oldPos, sf::Vector2f newPos);
 
@@ -115,7 +115,7 @@ private:
 	sf::Vector2f newPos;
 };
 
-struct ChangeEnemyTypeAction : EditorAction
+struct ChangeEnemyTypeAction : public EditorAction
 {
 	ChangeEnemyTypeAction(EnemySpawnPoint& enemySpawnPoint, std::string oldName, std::string newName, EnemyManager& enemyManager);
 

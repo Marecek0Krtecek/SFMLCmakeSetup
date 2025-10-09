@@ -7,11 +7,13 @@
 #include "Enemy.h"
 #include "Background.h"
 #include "TerrainGeneration.h"
+#include "StateManager.h"
+#include "EditorState.h"
 
 class GameState : public State
 {
 public:
-	GameState(sf::RenderWindow& window);
+	GameState(sf::RenderWindow& window, StateManager& manager);
 
 	void handleEvent(const sf::Event& event, sf::RenderWindow& window) override;
 	void update(float deltaTime) override;
@@ -23,6 +25,10 @@ private:
 	void SpawnEnemy(std::vector<Enemy>& enemies, sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position);
 
 private:
+	//State references
+	StateManager& stateManager;
+
+	//Game variables
 	const float VIEW_HEIGHT = 1024.f;
 
 	sf::View view;

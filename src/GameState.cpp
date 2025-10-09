@@ -1,6 +1,7 @@
 #include "GameState.h"
 
-GameState::GameState(sf::RenderWindow& window) :
+GameState::GameState(sf::RenderWindow& window, StateManager& manager) :
+	stateManager(manager),
 	view(sf::Vector2f(0.f, 0.f), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT)),
 	player(&textures.get(playerTexture), sf::Vector2u(8, 8), 0.1f, 500.f, 200.f),
 	background(&textures.get(backgroundTexture)),
@@ -29,8 +30,10 @@ void GameState::handleEvent(const sf::Event& event, sf::RenderWindow& window) {
 		window.close();
 		break;
 	case sf::Event::KeyPressed:
-		if (event.key.code == sf::Keyboard::Escape)
-			window.close();
+		if (event.key.code == sf::Keyboard::Escape) window.close();
+
+		if (event.key.code == sf::Keyboard::F5) stateManager.changeState<EditorState>(window, stateManager);
+
 		break;
 	case sf::Event::Resized:
 		ResizeView(window, view);

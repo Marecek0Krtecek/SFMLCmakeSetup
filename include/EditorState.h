@@ -18,11 +18,13 @@
 #include "EnemyManager.h"
 #include "ImGuiFileDialog.h"
 #include <filesystem>
+#include "StateManager.h"
+#include "GameState.h"
 	
 class EditorState : public State
 {
 public:
-	EditorState(sf::RenderWindow& window);
+	EditorState(sf::RenderWindow& window, StateManager& manager);
 
 	void handleEvent(const sf::Event& event, sf::RenderWindow& window) override;
 	void update(float deltaTime) override;
@@ -34,6 +36,13 @@ private:
 	void drawGrid(sf::RenderWindow& window, const float& gridSize);
 	std::string normalizePath(std::string& path);
 	std::string fileFinding(const std::string& filePathName);
+	
+	void clearLevel();
+	void save();
+	void saveAs();
+	
+	void loadLevel();
+	void load();
 
 	void addAction(std::unique_ptr<EditorAction> action);
 
@@ -54,6 +63,10 @@ private:
 	void duplicateEnemy(int& selectedIndex);
 
 private:
+	//State references
+	StateManager& stateManager;
+
+	//Editor variables
 	const float VIEW_HEIGHT = 1024.f;
 
 	float panSpeed = 300.f;
@@ -100,6 +113,8 @@ private:
 	bool enemyEditWindow = false;
 
 	bool newLevelIsNotSaved = false;
+
+	bool showHelpWindow = false;
 
 	//Grid
 	bool snapToGrid = true;

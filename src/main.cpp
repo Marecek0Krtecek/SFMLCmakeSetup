@@ -10,6 +10,7 @@
 #include "EditorState.h"
 #include "imgui.h"
 #include "imgui-SFML.h"
+#include "StateManager.h"
 
 using json = nlohmann::json;
 
@@ -17,7 +18,7 @@ int main()
 {
 #pragma region SetupStuf
 
-	sf::RenderWindow window(sf::VideoMode(1080, 720), "myGame", sf::Style::Default);
+	sf::RenderWindow window(sf::VideoMode(1280, 720), "myGame", sf::Style::Default);
 
 	window.setFramerateLimit(60);
 
@@ -26,8 +27,11 @@ int main()
 	float deltaTime = 0;
 	sf::Clock clock;
 
+	StateManager stateManager;
+	
+	stateManager.changeState<EditorState>(window, stateManager);
 	//std::unique_ptr<State> currentState = std::make_unique<GameState>(window);
-	std::unique_ptr<State> currentState = std::make_unique<EditorState>(window);
+	//std::unique_ptr<State> currentState = std::make_unique<EditorState>(window);
 
 #pragma endregion
 
@@ -51,7 +55,11 @@ int main()
 		while (window.pollEvent(ev)) {
 			ImGui::SFML::ProcessEvent(window, ev);
 
-			currentState->handleEvent(ev, window);
+			if (ev.type == sf::Event::Closed) {
+				window.close();
+			}
+
+			stateManager.handleEvent(ev, window);
 		}
 
 #pragma endregion
@@ -67,11 +75,11 @@ int main()
 
 #pragma endregion
 
-		currentState->update(deltaTime);
+		stateManager.update(deltaTime);
 
 		window.clear();
 
-		currentState->render(window);
+		stateManager.render(window);
 
 		ImGui::SFML::Render(window);
 

@@ -4,6 +4,7 @@
 #include "imgui-SFML.h"
 #include "TextureManager.h"
 #include "Player.h"
+#include "EnemyManager.h"
 #include "Enemy.h"
 #include "Background.h"
 #include "TerrainGeneration.h"
@@ -22,7 +23,7 @@ public:
 private:
 	void ResizeView(const sf::RenderWindow& window, sf::View& view);
 	void RestartGame(Player& player, Background& background, std::vector<Enemy>& enemies);
-	void SpawnEnemy(std::vector<Enemy>& enemies, sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position);
+	void SpawnEnemy(std::vector<Enemy>& enemies, const EnemySpawnPoint& spawnPoint);
 
 private:
 	//State references
@@ -35,6 +36,7 @@ private:
 
 	//Textures
 	TextureManager textures;
+	TileManager tiles;
 	std::string playerTexture = "brackeys_platformer_assets/sprites/knight.png";
 	std::string platfomrTexture = "brackeys_platformer_assets/sprites/platforms.png";
 	std::string backgroundTexture = "Glacial-mountains-parallax-background_vnitti/background_glacial_mountains.png";
@@ -44,12 +46,14 @@ private:
 	Player player;
 
 	//Enemies
+	EnemyManager enemyManager;
+	std::vector<EnemySpawnPoint> enemySpawnPoints;
 	std::vector<Enemy> enemies;
+
+	//Platforms
+	std::vector<Platform> platforms;
 
 	//Background
 	Background background;
-
-	//Terrain Generation
-	TerrainGeneration terrainGeneration;
 
 };

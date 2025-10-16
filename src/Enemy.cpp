@@ -1,15 +1,17 @@
 #include "Enemy.h"
 
-Enemy::Enemy(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f position):
-	animation(texture, imageCount, switchTime)
+Enemy::Enemy(const EnemyManager& enemyManager, const EnemySpawnPoint& spawnPoint, TextureManager& textures) :
+	name(spawnPoint.GetName()),
+	animation(&textures.get(enemyManager.getEnemy(spawnPoint.GetName())->textureAdress), enemyManager.getEnemy(spawnPoint.GetName())->imageCount, enemyManager.getEnemy(spawnPoint.GetName())->switchTime),
+	speed(enemyManager.getEnemy(spawnPoint.GetName())->speed)
 {
-	this->speed = speed;
-	velocity.x = speed;
-
 	body.setSize(sf::Vector2f(50.f, 70.f));
 	body.setOrigin(sf::Vector2f(body.getSize() / 2.f));
-	body.setPosition(position);
-	body.setTexture(texture);
+	body.setPosition(spawnPoint.GetPosition());
+	body.setTexture(&textures.get(enemyManager.getEnemy(name)->textureAdress));
+	body.setTextureRect(enemyManager.getEnemy(name)->rect);
+
+	velocity.x = speed;
 }
 
 void Enemy::Update(float deltaTime) {
@@ -21,6 +23,14 @@ void Enemy::Update(float deltaTime) {
 			faceRight = true;
 		else
 			faceRight = false;
+	}
+
+	static float timer = 0;
+	timer += deltaTime;
+
+	if (timer >= 1.f) {
+		timer -= 1.f;
+		velocity.x = -velocity.x;
 	}
 
 	velocity.y += (9.81f * gravity) * deltaTime;

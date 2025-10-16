@@ -9,7 +9,7 @@ EditorState::EditorState(sf::RenderWindow& window, StateManager& manager) :
 	platforms.reserve(100);
 	enemySpawnPoints.reserve(100);
 	
-	textures.loadTexture(platformTexture);
+	//textures.loadTexture(platformTexture);
 
 	tileManager.loadFromFile(RESOURCES_PATH "config.json");
 	enemyManager.loadFromFile(RESOURCES_PATH "config.json");
@@ -480,7 +480,7 @@ void EditorState::update(float deltaTime) {
 		ImGui::Text("P: Pridat platformu");
 		ImGui::Text("Ctrl + D: Duplikovat platformu");
 		ImGui::Separator();
-		ImGui::Text("Ctrl + X: Zmazat oznacenu platformu alebo spawn point");
+		ImGui::Text("Ctrl + X: Zmazat oznacenu platformu\n alebo spawn point");
 		ImGui::Separator();
 		ImGui::Text("Ctrl + E: Pridat nepriatela");
 		ImGui::Text("Ctrl + Shift + D: Duplikovat spawn point");
@@ -492,13 +492,12 @@ void EditorState::update(float deltaTime) {
 		ImGui::Text("E: Zoom +");
 		ImGui::Separator(); 
 		ImGui::Text("F1: Zobrazit tuto napovedu");
-		ImGui::Text("F5: Zmeniù mod");
+		ImGui::Text("F5: Zmenit mod");
 
 		ImGui::End();
 	}
 
 #pragma endregion
-
 
 #pragma region Enemies
 	

@@ -1,6 +1,5 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Enemy.h"
 #include <map>
 #include "json.hpp"
 #include <fstream>

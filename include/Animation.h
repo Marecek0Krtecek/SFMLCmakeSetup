@@ -9,9 +9,9 @@ public:
 
 	void Update(int row, float deltaTime, bool faceRight, unsigned int amount);
 
-	sf::Vector2u GetImageCount() { return imageCount; }
-	sf::Vector2u GetCurrentImageValue() { return currentImage; }
-	float GetSwitchTime() { return switchTime; }
+	sf::Vector2u GetImageCount() const { return imageCount; }
+	sf::Vector2u GetCurrentImageValue() const { return currentImage; }
+	float GetSwitchTime() const { return switchTime; }
 
 public:
 	sf::IntRect uvRect;

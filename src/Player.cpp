@@ -8,7 +8,7 @@ Player::Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, 
 	
 	body.setSize(sf::Vector2f(50.f, 50.f));
 	body.setOrigin(sf::Vector2f(body.getSize() / 2.f));
-	body.setPosition(sf::Vector2f(0.f, -50.f));
+	body.setPosition(sf::Vector2f(200.f, 0.f));
 	body.setTexture(texture);
 }
 
@@ -21,7 +21,7 @@ Player::Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, 
 	
 	body.setSize(sf::Vector2f(50.f, 50.f));
 	body.setOrigin(sf::Vector2f(body.getSize() / 2.f));
-	body.setPosition(sf::Vector2f(0.f, -50.f));
+	body.setPosition(sf::Vector2f(200.f, 0.f));
 	body.setTexture(texture);
 }
 
@@ -30,7 +30,7 @@ Player::Player(sf::Vector2f size, sf::Texture* texture):
 {
 	body.setSize(size);
 	body.setOrigin(sf::Vector2f(body.getSize() / 2.f));
-	body.setPosition(sf::Vector2f(0.f, 0.f));
+	body.setPosition(sf::Vector2f(200.f, 0.f));
 	body.setTexture(texture);
 }
 

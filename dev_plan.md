@@ -21,10 +21,10 @@ Každý víkend máš priestor na väčšie úlohy alebo refaktorovanie.
 ## 🗓️ Týždeň 2 – Nepriatelia a ich správanie
 **Cieľ:** Zaviesť prvú verziu systému nepriateľov.
 
-- [ ] 👾 Vytvoriť základnú triedu `Enemy` a systém `EnemyManager`
-- [ ] 🔁 Prepojiť `EnemySpawnPoint` s `EnemyDef`
+- [x] 👾 Vytvoriť základnú triedu `Enemy` a systém `EnemyManager`
+- [x] 🔁 Prepojiť `EnemySpawnPoint` s `EnemyDef`
 - [ ] 🧱 Implementovať jednoduché správanie (napr. chôdza tam a späť)
-- [ ] 🎨 V editore pridať zmenu typu nepriateľa a farby/ikonky podľa typu
+- [x] 🎨 V editore pridať zmenu typu nepriateľa a farby/ikonky podľa typu
 - [ ] 🧪 Otestovať spawnovanie počas gameplayu
 
 > 🎯 **Cieľ týždňa:** Nepriatelia sa správne objavujú a hýbu podľa definície v levele.

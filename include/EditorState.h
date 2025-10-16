@@ -81,10 +81,6 @@ private:
 
 	//Textures
 	TextureManager textures;
-	std::string playerTexture = "brackeys_platformer_assets/sprites/knight.png";
-	std::string platformTexture = "brackeys_platformer_assets/sprites/platforms.png";
-	std::string backgroundTexture = "Glacial-mountains-parallax-background_vnitti/background_glacial_mountains.png";
-	std::string enemyTexture = "brackeys_platformer_assets/sprites/slime_green.png";
 
 	TileManager tileManager;
 

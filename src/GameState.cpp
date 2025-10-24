@@ -25,7 +25,6 @@ GameState::GameState(sf::RenderWindow& window, StateManager& manager) :
 	enemies.reserve(10);
 
 	background.SetPosition(0.f, 0.f);
-	background.SetScale(sf::Vector2f(15.f, 15.f));
 	background.parlaxStrength = 0.5f;
 }
 
@@ -51,8 +50,6 @@ void GameState::handleEvent(const sf::Event& event, sf::RenderWindow& window) {
 void GameState::update(float deltaTime) {
 #pragma region updates and colisions
 
-
-	background.Move(-player.GetVelocity() * background.parlaxStrength * deltaTime);
 
 	player.Update(deltaTime);
 

@@ -8,6 +8,7 @@ EditorState::EditorState(sf::RenderWindow& window, StateManager& manager) :
 
 	platforms.reserve(100);
 	enemySpawnPoints.reserve(100);
+	backgrounds.reserve(5);
 	
 	//textures.loadTexture(platformTexture);
 
@@ -29,7 +30,6 @@ EditorState::EditorState(sf::RenderWindow& window, StateManager& manager) :
 		strEnemyTxNames.push_back(name);
 		enemyTxNames.push_back(name.c_str());
 	}
-
 }
 
 void EditorState::handleEvent(const sf::Event& event, sf::RenderWindow& window) {
@@ -343,6 +343,9 @@ void EditorState::update(float deltaTime) {
 	if (ImGui::Button("Grid Settings")) {
 		gridSettingWindow = !gridSettingWindow;
 	}
+	if (ImGui::Button("Background")) {
+		backgroundWindow = !backgroundWindow;
+	}
 
 	ImGui::End();
 
@@ -591,8 +594,96 @@ void EditorState::update(float deltaTime) {
 				ImGui::Image(preview);
 			}
 
-			if (ImGui::Button("Delete Platform")) {
+			if (ImGui::Button("Delete Enemy")) {
 				deleteEnemy(eSelectedIndex);
+			}
+		}
+
+		ImGui::End();
+	}
+
+#pragma endregion
+
+#pragma region Backgrounds
+
+	if (backgroundWindow) {
+		ImGui::Begin("Background");
+
+		static bool add = false;
+		if (!add) {
+			if (ImGui::Button("+ Add Background")) {
+				add = true;
+				bSelectedIndex = -1;
+			}
+		}
+
+		if (add) {
+			if (ImGui::Button("Exit")) add = false;
+
+			static sf::Vector2f backgroundSize;
+			ImGui::InputFloat2("Position", &selectPos.x, "%.1f");
+			ImGui::InputFloat2("Size", &backgroundSize.x, "%.1f");
+			
+			static std::string label = "Choose Texture";
+
+			if (ImGui::Button(label.c_str())) {
+				selectTexture("Glacial-mountains-parallax-background_vnitti");
+			}
+
+			static std::string backgroundTexPath;
+			if (ImGuiFileDialog::Instance()->Display("ChooseTextureDlgKey")) {
+				if (ImGuiFileDialog::Instance()->IsOk()) {
+					std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+
+					backgroundTexPath = fileFinding(filePathName);
+
+					label = "Choose Texture (" + backgroundTexPath + ")";
+
+				}
+
+				ImGuiFileDialog::Instance()->Close();
+			}
+			
+			if (ImGui::Button("Add Background")) {
+
+				backgrounds.push_back(Background(&textures.get(backgroundTexPath), backgroundSize, selectPos));
+
+				selectPos = {};
+				backgroundSize = {};
+				add = false;
+			}
+
+		}
+		else {
+			if (bSelectedIndex < 0 || backgrounds.size() == 0) {
+				for (int i = 0; i < backgrounds.size(); i++) {
+					std::string label = "Background " + std::to_string(i);
+					if (ImGui::Selectable(label.c_str(), bSelectedIndex == i)) {
+						bSelectedIndex = i;
+					}
+				}
+			}
+			else {
+				if (bSelectedIndex >= backgrounds.size()) bSelectedIndex = backgrounds.size() - 1;
+				
+				auto& background = backgrounds[bSelectedIndex];
+
+				if (ImGui::Button("Exit")) bSelectedIndex = -1;
+
+				auto pos = background.GetPosition();
+				auto size = background.GetSize();
+
+				if (ImGui::InputFloat2("Position", &pos.x, "%.1f")) {
+					if (pos != background.GetPosition()) {
+						background.SetPosition(pos);
+					}
+				}
+				if (ImGui::InputFloat2("Size", &size.x, "%.1f")) {
+					if (size != background.GetSize()) {
+						background.SetSize(size);
+					}
+				}
+				
 			}
 		}
 
@@ -609,6 +700,11 @@ void EditorState::update(float deltaTime) {
 void EditorState::render(sf::RenderWindow& window) {
 	
 	window.setView(view);
+
+	for (auto& background : backgrounds) {
+		background.Draw(window);
+	}
+
 	if(snapToGrid)
 		drawGrid(window, gridSize);
 
@@ -687,6 +783,15 @@ std::string EditorState::fileFinding(const std::string& filePathName) {
 
 		return normalizePath(filePath);
 	}
+
+	if (filePathName.rfind(".png") != std::string::npos) {
+		size_t dirPos = filePathName.rfind("\\Glacial-mountains-parallax-background_vnitti\\");
+		
+		std::string filePath = filePathName.substr(dirPos, filePathName.size() - dirPos);
+
+		return normalizePath(filePath);
+	}
+
 	return std::string();
 }
 
@@ -710,14 +815,14 @@ void EditorState::save() {
 
 void EditorState::saveAs() {
 	IGFD::FileDialogConfig config;
-	config.path = resourcesPath;
+	config.path = std::string(resourcesPath) + "levels";
 
 	ImGuiFileDialog::Instance()->OpenDialog("SaveFileDlgKey", "Save File As", ".json", config);
 }
 
 void EditorState::loadLevel() {
 	IGFD::FileDialogConfig config;
-	config.path = resourcesPath;
+	config.path = std::string(resourcesPath) + "levels";
 	ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".json", config);
 }
 
@@ -742,6 +847,12 @@ void EditorState::load() {
 
 		isSaved = true;
 	}
+}
+
+void EditorState::selectTexture(const std::string& dirPath) {
+	IGFD::FileDialogConfig config;
+	config.path = std::string(resourcesPath) + dirPath;
+	ImGuiFileDialog::Instance()->OpenDialog("ChooseTextureDlgKey", "Choose Texture", ".png", config);
 }
 
 void EditorState::addAction(std::unique_ptr<EditorAction> action) {

@@ -43,6 +43,8 @@ private:
 	
 	void loadLevel();
 	void load();
+	
+	void selectTexture(const std::string& dirPath);
 
 	void addAction(std::unique_ptr<EditorAction> action);
 
@@ -98,6 +100,11 @@ private:
 
 	int eSelectedIndex = -1;
 
+	//Backgrounds
+	std::vector<Background> backgrounds;
+
+	int bSelectedIndex = -1;
+
 	//ImGui windows active
 	bool platformWindow = false;
 	bool platformEditWindow = false;
@@ -112,6 +119,8 @@ private:
 
 	bool showHelpWindow = false;
 
+	bool backgroundWindow = false;
+
 	//Grid
 	bool snapToGrid = true;
 	float gridSize = 32.f;
@@ -125,9 +134,9 @@ private:
 	bool isSaved = true;
 
 #if PRODUCTION_BUILD 
-	const char* resourcesPath = RESOURCES_PATH "levels";
+	const char* resourcesPath = RESOURCES_PATH;
 #else
-	const char* resourcesPath = "../../../resources/levels";
+	const char* resourcesPath = "../../../resources/";
 #endif
 
 };

@@ -34,7 +34,7 @@ Každý víkend máš priestor na väčšie úlohy alebo refaktorovanie.
 ## 🗓️ Týždeň 3 – Background a vizuálne prvky
 **Cieľ:** Pridať vizuálne vrstvy, ktoré spravia hru živšou.
 
-- [ ] 🌄 Implementovať dynamické pozadie (parallax)
+- [x] 🌄 Implementovať dynamické pozadie (parallax)
 - [ ] 🧮 Pridať možnosť meniť vrstvy v editore
 - [ ] 📂 Vylepšiť načítanie/ukladanie pozadia do JSON
 - [ ] 🎨 Otestovať kombináciu pozadia, platforiem a nepriateľov v levele

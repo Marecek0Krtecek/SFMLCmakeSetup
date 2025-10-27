@@ -5,7 +5,7 @@ class Background
 {
 public:
 	Background(sf::Texture* backgroundTexture);
-	Background(sf::Texture* backgroundTexture, sf::Vector2f size, sf::Vector2f position);
+	Background(sf::Texture* backgroundTexture, sf::Vector2f size, float parllax, const std::string& texturePath);
 
 	void Draw(sf::RenderWindow& window);
 	void Move(sf::Vector2f offset) { background.move(offset); }
@@ -21,11 +21,13 @@ public:
 	sf::Vector2f GetPosition() const { return background.getPosition(); }
 	sf::Vector2f GetSize() const { return background.getSize(); }
 	sf::Vector2f GetScale() const { return background.getScale(); }
+	std::string GetTexPath() const { return texturePath; }
 
 public:
 	float parlaxStrength = 1.f;
 
 private:
 	sf::RectangleShape background;
+	std::string texturePath;
 };
 

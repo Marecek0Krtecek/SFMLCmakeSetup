@@ -1,4 +1,15 @@
 {
+    "background": {
+        "backgroundCount": 1,
+        "backgrounds": [
+            {
+                "height": 2160.0,
+                "parllax": 0.5,
+                "texture": "/Glacial-mountains-parallax-background_vnitti/background_glacial_mountains.png",
+                "width": 3840.0
+            }
+        ]
+    },
     "enemy": {
         "enemyCount": 0,
         "enemySpawnPoints": []

@@ -2,7 +2,6 @@
 #include "State.h"
 #include "Platform.h"
 #include "Enemy.h"
-#include "Background.h"
 #include "TextureManager.h"
 #include <vector>
 #include "imgui.h"
@@ -34,7 +33,7 @@ private:
 	void ResizeView(const sf::RenderWindow& window, sf::View& view);
 	sf::Vector2f snapToGridFunc(const sf::Vector2f& pos, const float& gridSize, bool enabled);
 	void drawGrid(sf::RenderWindow& window, const float& gridSize);
-	std::string normalizePath(std::string& path);
+	std::string normalizePath(std::string path);
 	std::string fileFinding(const std::string& filePathName);
 	
 	void clearLevel();
@@ -63,6 +62,11 @@ private:
 	void deleteEnemy(int& selectedIndex);
 	void changeEnemyType(const int& selectedIndex, const std::string& oldType, const std::string& newType);
 	void duplicateEnemy(int& selectedIndex);
+
+	void addBackground(const Background& background);
+	void deleteBackground(int& selectedIndex);
+	void changeBackgroundSize(Background& background, sf::Vector2f newSize);
+	void changeParllax(Background& background, float newParllax);
 
 private:
 	//State references

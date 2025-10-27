@@ -156,6 +156,7 @@ void EditorState::update(float deltaTime) {
 
 			platforms.reserve(platforms.size() + 100);
 			enemySpawnPoints.reserve(enemySpawnPoints.size() + 100);
+			backgrounds.reserve(backgrounds.size() + 10);
 		}
 		else{
 			newLevelIsNotSaved = true;
@@ -621,8 +622,9 @@ void EditorState::update(float deltaTime) {
 			if (ImGui::Button("Exit")) add = false;
 
 			static sf::Vector2f backgroundSize;
-			ImGui::InputFloat2("Position", &selectPos.x, "%.1f");
+			static float parllax = 1.f;
 			ImGui::InputFloat2("Size", &backgroundSize.x, "%.1f");
+			ImGui::InputFloat("Parllax", &parllax);
 			
 			static std::string label = "Choose Texture";
 
@@ -645,12 +647,12 @@ void EditorState::update(float deltaTime) {
 			}
 			
 			if (ImGui::Button("Add Background")) {
+				if (backgroundTexPath != std::string()) {
+					addBackground(Background(&textures.get(backgroundTexPath), backgroundSize, parllax, backgroundTexPath));
 
-				backgrounds.push_back(Background(&textures.get(backgroundTexPath), backgroundSize, selectPos));
-
-				selectPos = {};
-				backgroundSize = {};
-				add = false;
+					backgroundSize = {};
+					add = false;
+				}
 			}
 
 		}
@@ -672,6 +674,7 @@ void EditorState::update(float deltaTime) {
 
 				auto pos = background.GetPosition();
 				auto size = background.GetSize();
+				auto parllax = background.parlaxStrength;
 
 				if (ImGui::InputFloat2("Position", &pos.x, "%.1f")) {
 					if (pos != background.GetPosition()) {
@@ -680,8 +683,16 @@ void EditorState::update(float deltaTime) {
 				}
 				if (ImGui::InputFloat2("Size", &size.x, "%.1f")) {
 					if (size != background.GetSize()) {
-						background.SetSize(size);
+						changeBackgroundSize(background, size);
 					}
+				}
+				if (ImGui::InputFloat("Parllax", &parllax)) {
+					if (parllax != background.parlaxStrength) { 
+						changeParllax(background, parllax);
+					}
+				}
+				if (ImGui::Button("Delete")) {
+					deleteBackground(bSelectedIndex);
 				}
 				
 			}
@@ -767,7 +778,7 @@ void EditorState::drawGrid(sf::RenderWindow& window, const float& gridSize) {
 	window.draw(lines);
 }
 
-std::string EditorState::normalizePath(std::string& path)
+std::string EditorState::normalizePath(std::string path)
 {
 	std::replace(path.begin(), path.end(), '\\', '/');
 
@@ -798,6 +809,7 @@ std::string EditorState::fileFinding(const std::string& filePathName) {
 void EditorState::clearLevel() {
 	platforms.clear();
 	enemySpawnPoints.clear();
+	backgrounds.clear();
 }
 
 void EditorState::save() {
@@ -806,6 +818,7 @@ void EditorState::save() {
 	nlohmann::json j;
 	j["platform"] = Serializer::savePlatforms(platforms);
 	j["enemy"] = Serializer::saveEnemySpawnPoints(enemySpawnPoints);
+	j["background"] = Serializer::saveBackgrounds(backgrounds);
 	save << j.dump(4);
 
 	save.close();
@@ -842,6 +855,9 @@ void EditorState::load() {
 
 		enemySpawnPoints.clear();
 		Serializer::loadEnemySpawnPoints(j, enemySpawnPoints);
+
+		backgrounds.clear();
+		Serializer::loadBackgrounds(j, backgrounds, textures);
 
 		file.close();
 
@@ -977,4 +993,30 @@ void EditorState::duplicateEnemy(int& selectedIndex) {
 
 		selectedIndex = enemySpawnPoints.size() - 1;
 	}
+}
+
+void EditorState::addBackground(const Background& background){
+	auto action = std::make_unique<AddBackgroundAction>(backgrounds, background, backgrounds.size());
+	addAction(std::move(action));
+}
+
+void EditorState::deleteBackground(int& selectedIndex) {
+	if (selectedIndex >= 0) {
+		auto action = std::make_unique<DeleteBackgroundAction>(backgrounds, backgrounds[selectedIndex], selectedIndex);
+		addAction(std::move(action));
+
+		selectedIndex = -1;
+	}
+
+}
+
+void EditorState::changeBackgroundSize(Background& background, sf::Vector2f newSize) {
+	auto action = std::make_unique<ChangeBackgroundSizeAction>(background, background.GetSize(), newSize);
+	addAction(std::move(action));
+}
+
+void EditorState::changeParllax(Background& background, float newParllax) {
+	auto action = std::make_unique<ChangeParllaxStrengthAction>(background, background.parlaxStrength, newParllax);
+
+	addAction(std::move(action));
 }

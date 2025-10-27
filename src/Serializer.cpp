@@ -77,7 +77,26 @@ nlohmann::json Serializer::saveEnemySpawnPoints(const std::vector<EnemySpawnPoin
 
 	return j;
 
-} 
+}
+nlohmann::json Serializer::saveBackgrounds(const std::vector<Background>& backgrounds)
+{
+	nlohmann::json j;
+	j["backgroundCount"] = backgrounds.size();
+	j["backgrounds"] = nlohmann::json::array();
+	for (const auto& background : backgrounds) {
+		j["backgrounds"].push_back(
+			{
+				{ "width", background.GetSize().x },
+				{ "height", background.GetSize().y},
+				{ "parllax", background.parlaxStrength },
+				{ "texture", background.GetTexPath() }
+			}
+		);
+	}
+
+	return j;
+}
+
 
 Platform Serializer::fromJSON(const nlohmann::json& j, TextureManager& textures) {
 	return Platform(
@@ -158,6 +177,29 @@ void Serializer::loadEnemySpawnPoints(const nlohmann::json& j, std::vector<Enemy
 						jEnemySP["x"].get<float>(),
 						jEnemySP["y"].get<float>()
 					)
+				));
+			}
+		}
+	}
+}
+
+void Serializer::loadBackgrounds(const nlohmann::json& j, std::vector<Background>& backgrounds, TextureManager& textures) {
+	if (j.contains("background")) {
+		const auto& jBackground = j["background"];
+
+		if (jBackground.contains("backgroundCount")) {
+			backgrounds.reserve(jBackground["backgroundCount"].get<size_t>());
+		}
+		if (jBackground.contains("backgrounds")) {
+			for (const auto& jB : jBackground["backgrounds"]) {
+				backgrounds.push_back(Background(
+					&textures.get(jB["texture"].get<std::string>()),
+					sf::Vector2f(
+						jB["width"].get<float>(),
+						jB["height"].get<float>()
+					),
+					jB["parllax"].get<float>(),
+					jB["texture"].get<std::string>()
 				));
 			}
 		}

@@ -3,8 +3,7 @@
 GameState::GameState(sf::RenderWindow& window, StateManager& manager) :
 	stateManager(manager),
 	view(sf::Vector2f(0.f, 0.f), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT)),
-	player(&textures.get(playerTexture), sf::Vector2u(8, 8), 0.1f, 500.f, 200.f),
-	background(&textures.get(backgroundTexture))
+	player(&textures.get(playerTexture), sf::Vector2u(8, 8), 0.1f, 500.f, 200.f)
 {
 	ResizeView(window, view);
 
@@ -18,14 +17,12 @@ GameState::GameState(sf::RenderWindow& window, StateManager& manager) :
 
 	Serializer::loadPlatforms(j, platforms, textures, tiles);
 	Serializer::loadEnemySpawnPoints(j, enemySpawnPoints);
-
+	Serializer::loadBackgrounds(j, backgrounds, textures);
 	
 	player.setScale(sf::Vector2f(2.f, 2.f));
 
 	enemies.reserve(10);
 
-	background.SetPosition(0.f, 0.f);
-	background.parlaxStrength = 0.5f;
 }
 
 void GameState::handleEvent(const sf::Event& event, sf::RenderWindow& window) {
@@ -92,7 +89,7 @@ void GameState::update(float deltaTime) {
 	if (ImGui::Button("Spawn Enemy"))
 		SpawnEnemy(enemies, EnemySpawnPoint("Green Slime", player.getPosition()));
 	if (ImGui::Button("Restart Game"))
-		RestartGame(player, background, enemies);
+		RestartGame(player, enemies);
 
 	ImGui::End();
 
@@ -107,7 +104,9 @@ void GameState::render(sf::RenderWindow& window) {
 	view.setCenter(player.getPosition());
 	window.setView(view);
 
-	background.Draw(window);
+	for(auto& background : backgrounds) {
+		background.Draw(window);
+	}
 
 	for (auto& platform : platforms) {
 		if (player.GetDistance(platform.GetPosition()) <= view.getSize().x / 1.5f)
@@ -139,9 +138,8 @@ void GameState::ResizeView(const sf::RenderWindow& window, sf::View& view)
 	view.setSize(VIEW_HEIGHT * aspectRatio, VIEW_HEIGHT);
 }
 
-void GameState::RestartGame(Player& player, Background& background, std::vector<Enemy>& enemies) {
+void GameState::RestartGame(Player& player, std::vector<Enemy>& enemies) {
 	player.Restrart();
-	background.Restart();
 	enemies.erase(enemies.begin(), enemies.end());
 }
 

@@ -151,3 +151,67 @@ void ChangeEnemyTypeAction::undo() {
 void ChangeEnemyTypeAction::redo() {
 	enemySpawnPoint.SetName(newName);
 }
+
+AddBackgroundAction::AddBackgroundAction(std::vector<Background>& backgrounds, const Background& background, size_t index) :
+	backgrounds(backgrounds),
+	background(background),
+	index(index)
+{
+
+}
+
+void AddBackgroundAction::undo() {
+	backgrounds.erase(backgrounds.begin() + index);
+}
+
+void AddBackgroundAction::redo() {
+	backgrounds.insert(backgrounds.begin() + index, background);
+}
+
+DeleteBackgroundAction::DeleteBackgroundAction(std::vector<Background>& backgrounds, const Background& background, size_t index) :
+	backgrounds(backgrounds),
+	background(background),
+	index(index)
+{
+
+}
+
+void DeleteBackgroundAction::undo() {
+	backgrounds.insert(backgrounds.begin() + index, background);
+}
+
+void DeleteBackgroundAction::redo() {
+	backgrounds.erase(backgrounds.begin() + index);
+}
+
+ChangeBackgroundSizeAction::ChangeBackgroundSizeAction(Background& background, const sf::Vector2f& oldSize, const sf::Vector2f& newSize) :
+	background(background),
+	oldSize(oldSize),
+	newSize(newSize)
+{
+
+}
+
+void ChangeBackgroundSizeAction::undo() {
+	background.SetSize(oldSize);
+}
+
+void ChangeBackgroundSizeAction::redo() {
+	background.SetSize(newSize);
+}
+
+ChangeParllaxStrengthAction::ChangeParllaxStrengthAction(Background& background, const float& oldParllax, const float& newParllax) :
+	background(background),
+	oldParllax(oldParllax),
+	newParllax(newParllax)
+{
+
+}
+
+void ChangeParllaxStrengthAction::undo() {
+	background.parlaxStrength = oldParllax;
+}
+
+void ChangeParllaxStrengthAction::redo(){
+	background.parlaxStrength = newParllax;
+}

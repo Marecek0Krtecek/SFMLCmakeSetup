@@ -35,9 +35,9 @@ Každý víkend máš priestor na väčšie úlohy alebo refaktorovanie.
 **Cieľ:** Pridať vizuálne vrstvy, ktoré spravia hru živšou.
 
 - [x] 🌄 Implementovať dynamické pozadie (parallax)
-- [ ] 🧮 Pridať možnosť meniť vrstvy v editore
-- [ ] 📂 Vylepšiť načítanie/ukladanie pozadia do JSON
-- [ ] 🎨 Otestovať kombináciu pozadia, platforiem a nepriateľov v levele
+- [x] 🧮 Pridať možnosť meniť vrstvy v editore
+- [x] 📂 Vylepšiť načítanie/ukladanie pozadia do JSON
+- [x] 🎨 Otestovať kombináciu pozadia, platforiem a nepriateľov v levele
 - [ ] 🪶 Optimalizovať renderovanie, ak sa začnú prejavovať framedropy
 
 > 🎯 **Cieľ týždňa:** Level editor podporuje vrstvené pozadie a všetko sa správne renderuje.
@@ -47,7 +47,7 @@ Každý víkend máš priestor na väčšie úlohy alebo refaktorovanie.
 ## 🗓️ Týždeň 4 – Gameplay testovanie a polish
 **Cieľ:** Všetko, čo si vytvoril, prepojiť do hrateľného základu.
 
-- [ ] 🎮 Spustiť level z editora a otestovať gameplay loop
+- [x] 🎮 Spustiť level z editora a otestovať gameplay loop
 - [ ] ⚙️ Doladiť pohyb hráča (kolízie, rýchlosť, skok)
 - [ ] 💥 Implementovať základný systém kolízie s nepriateľmi
 - [ ] 💡 Začať pripravovať základ pre UI (HP, skóre, level name)

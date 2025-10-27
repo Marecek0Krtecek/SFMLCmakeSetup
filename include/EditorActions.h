@@ -4,6 +4,7 @@
 #include <vector>
 #include "TileManager.h"
 #include "EnemyManager.h"
+#include "Background.h"
 
 struct AddPlatformAction : public EditorAction
 {
@@ -127,4 +128,56 @@ private:
 	std::string oldName;
 	std::string newName;
 	EnemyManager& enemyManager;
+};
+
+struct AddBackgroundAction : public EditorAction
+{
+	AddBackgroundAction(std::vector<Background>& backgrounds, const Background& background, size_t index);
+
+	void undo() override;
+	void redo() override;
+
+private:
+	std::vector<Background>& backgrounds;
+	Background background;
+	size_t index;
+};
+
+struct DeleteBackgroundAction : public EditorAction
+{
+	DeleteBackgroundAction(std::vector<Background>& backgrounds, const Background& background, size_t index);
+
+	void undo() override;
+	void redo() override;
+
+private:
+	std::vector<Background>& backgrounds;
+	Background background;
+	size_t index;
+};
+
+struct ChangeBackgroundSizeAction : public EditorAction
+{
+	ChangeBackgroundSizeAction(Background& background, const sf::Vector2f& oldSize, const sf::Vector2f& newSize);
+
+	void undo() override;
+	void redo() override;
+
+private:
+	Background& background;
+	sf::Vector2f oldSize;
+	sf::Vector2f newSize;
+};
+
+struct ChangeParllaxStrengthAction : public EditorAction
+{
+	ChangeParllaxStrengthAction(Background& background, const float& oldParllax, const float& newParllax);
+
+	void undo() override;
+	void redo() override;
+
+private:
+	Background& background;
+	float oldParllax;
+	float newParllax;
 };

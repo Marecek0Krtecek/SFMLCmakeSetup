@@ -8,11 +8,13 @@ Background::Background(sf::Texture* backgroundTexture) {
 	background.setPosition(sf::Vector2f(0.f, 0.f));
 }
 
-Background::Background(sf::Texture* backgroundTexture, sf::Vector2f size, sf::Vector2f position) {
+Background::Background(sf::Texture* backgroundTexture, sf::Vector2f size, float parllax, const std::string& texturePath) {
 	background.setTexture(backgroundTexture);
 	background.setSize(size);
 	background.setOrigin(size / 2.f);
-	background.setPosition(position);
+
+	parlaxStrength = parllax;
+	this->texturePath = texturePath;
 }
 
 void Background::Draw(sf::RenderWindow& window) {

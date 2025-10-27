@@ -22,7 +22,7 @@ public:
 
 private:
 	void ResizeView(const sf::RenderWindow& window, sf::View& view);
-	void RestartGame(Player& player, Background& background, std::vector<Enemy>& enemies);
+	void RestartGame(Player& player, std::vector<Enemy>& enemies);
 	void SpawnEnemy(std::vector<Enemy>& enemies, const EnemySpawnPoint& spawnPoint);
 
 private:
@@ -54,6 +54,6 @@ private:
 	std::vector<Platform> platforms;
 
 	//Background
-	Background background;
+	std::vector<Background> backgrounds;
 
 };

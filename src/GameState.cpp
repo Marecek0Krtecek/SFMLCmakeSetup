@@ -49,9 +49,12 @@ void GameState::update(float deltaTime) {
 
 
 	player.Update(deltaTime);
-
+	
 	for (auto& enemy : enemies) {
 		enemy.Update(deltaTime);
+		if (enemy.GetCollider().CheckCollision(player.GetCollider(), sf::Vector2f(), 0.5f)) {
+			enemy.OnPlayerColision(player);
+		}
 	}
 
 	///collisions

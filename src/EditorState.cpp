@@ -9,6 +9,7 @@ EditorState::EditorState(sf::RenderWindow& window, StateManager& manager) :
 	platforms.reserve(100);
 	enemySpawnPoints.reserve(100);
 	backgrounds.reserve(5);
+	checkpoints.reserve(10);
 	
 	//textures.loadTexture(platformTexture);
 
@@ -43,9 +44,9 @@ void EditorState::handleEvent(const sf::Event& event, sf::RenderWindow& window) 
 		if (event.key.control && event.key.code == sf::Keyboard::E);
 		else if (event.key.code == sf::Keyboard::E) view.zoom(1.f / zoomFactor);
 		if (event.key.control && event.key.shift && event.key.code == sf::Keyboard::D) duplicateEnemy(eSelectedIndex);
-		if (event.key.control && event.key.code == sf::Keyboard::D) duplicatePlatform(selectedIndex);
+		if (event.key.control && event.key.code == sf::Keyboard::D) duplicatePlatform(pSelectedIndex);
 		if (event.key.control && event.key.code == sf::Keyboard::X) {
-			deletePlatform(selectedIndex);
+			deletePlatform(pSelectedIndex);
 			deleteEnemy(eSelectedIndex);
 		}
 		if (event.key.control && event.key.code == sf::Keyboard::Z) undo();
@@ -92,8 +93,8 @@ void EditorState::handleEvent(const sf::Event& event, sf::RenderWindow& window) 
 			selectPos = window.mapPixelToCoords(pixelPos, view);
 			selectPos = snapToGridFunc(selectPos, gridSize, snapToGrid);
 
-			if (selectedIndex >= 0) {
-				movePlatform(selectedIndex, platforms[selectedIndex].GetPosition(), selectPos);
+			if (pSelectedIndex >= 0) {
+				movePlatform(pSelectedIndex, platforms[pSelectedIndex].GetPosition(), selectPos);
 			}
 			if (eSelectedIndex >= 0) {
 				moveEnemy(eSelectedIndex, enemySpawnPoints[eSelectedIndex].GetPosition(), selectPos);
@@ -107,7 +108,7 @@ void EditorState::handleEvent(const sf::Event& event, sf::RenderWindow& window) 
 			int i = 0;
 			for (const auto& platform : platforms) {
 				if (platform.GetGlobalBounds().contains(worldPos)) {
-					selectedIndex = i;
+					pSelectedIndex = i;
 					platformEditWindow = true;
 					break;
 				}
@@ -347,6 +348,9 @@ void EditorState::update(float deltaTime) {
 	if (ImGui::Button("Background")) {
 		backgroundWindow = !backgroundWindow;
 	}
+	if (ImGui::Button("Player Checkpoints")) {
+		playerCheckpoints = !playerCheckpoints;
+	}
 
 	ImGui::End();
 
@@ -392,39 +396,39 @@ void EditorState::update(float deltaTime) {
 	if (platformEditWindow) {
 		ImGui::Begin("Edit Platforms");
 
-		if (selectedIndex < 0 || platforms.size() == 0) {
+		if (pSelectedIndex < 0 || platforms.size() == 0) {
 			for (int i = 0; i < platforms.size(); i++) {
 				std::string label = "Platform " + std::to_string(i);
-				if (ImGui::Selectable(label.c_str(), selectedIndex == i)) {
-					selectedIndex = i;
+				if (ImGui::Selectable(label.c_str(), pSelectedIndex == i)) {
+					pSelectedIndex = i;
 				}
 			}
 		}
 		else {
-			if (selectedIndex >= platforms.size())
-				selectedIndex = platforms.size() - 1;
+			if (pSelectedIndex >= platforms.size())
+				pSelectedIndex = platforms.size() - 1;
 
-			auto& platform = platforms[selectedIndex];
+			auto& platform = platforms[pSelectedIndex];
 			if (ImGui::Button("Exit")) {
-				selectedIndex = -1;
+				pSelectedIndex = -1;
 			}
 			
 			sf::Vector2f pos = platform.GetPosition();
 			sf::Vector2f size = platform.GetSize();
 
 			if (ImGui::Button("Duplicate")) {
-				duplicatePlatform(selectedIndex);
+				duplicatePlatform(pSelectedIndex);
 			}
 
 			if (ImGui::InputFloat2("X, Y", &pos.x, "%.1f")) {
 				pos = snapToGridFunc(pos, gridSize, snapToGrid);
 				if(pos != platform.GetPosition())
-					movePlatform(selectedIndex, platform.GetPosition(), pos);
+					movePlatform(pSelectedIndex, platform.GetPosition(), pos);
 			}
 
 			if (ImGui::InputFloat2("W, H", &size.x, "%.1f")) {
 				if (size != platform.GetSize())
-					resizePlatform(selectedIndex, platform.GetSize(), size);
+					resizePlatform(pSelectedIndex, platform.GetSize(), size);
 			}
 
 			if (strTileNames[currentItem] != platform.GetTexture()) {
@@ -438,11 +442,11 @@ void EditorState::update(float deltaTime) {
 
 
 			if (ImGui::Combo("Texture", &currentItem, tileNames.data(), (int)tileNames.size())) {
-					changePlatformTile(selectedIndex, platform.GetTexture(), strTileNames[currentItem]);
+					changePlatformTile(pSelectedIndex, platform.GetTexture(), strTileNames[currentItem]);
 			}
 
 			if (ImGui::Button("Delete Platform")) {
-				deletePlatform(selectedIndex);
+				deletePlatform(pSelectedIndex);
 			}
 		}
 
@@ -629,7 +633,7 @@ void EditorState::update(float deltaTime) {
 			static std::string label = "Choose Texture";
 
 			if (ImGui::Button(label.c_str())) {
-				selectTexture("Glacial-mountains-parallax-background_vnitti");
+				selectTexture("backgrounds");
 			}
 
 			static std::string backgroundTexPath;
@@ -703,6 +707,81 @@ void EditorState::update(float deltaTime) {
 
 #pragma endregion
 
+#pragma region Checkpoints
+
+	if (playerCheckpoints) {
+		ImGui::Begin("Checkpoints");
+		
+		static bool add = false;
+
+		if (!add) {
+			if (ImGui::Button("+ Add Checkpoint")) {
+				add = true;
+				cSelectedIndex = -1;
+			}
+		}
+
+		if (add) {
+			static std::string name = "spawn";
+			ImGui::InputText("Checkpoint Name", &name);
+			
+			if (ImGui::InputFloat2("Position", &selectPos.x, "%.1f")) {
+				selectPos = snapToGridFunc(selectPos, gridSize, snapToGrid);
+			}
+
+			if (ImGui::Button("Add Checkpoint")) {
+				//checkpoints.push_back(Checkpoint(selectPos, name));
+				addCheckpoint(Checkpoint(selectPos, name));
+				add = false;
+			}
+		}
+		else {
+			if (cSelectedIndex < 0 || checkpoints.size() == 0) {
+				for (int i = 0; i < checkpoints.size(); i++) {
+					std::string label = "Background " + std::to_string(i);
+					if (ImGui::Selectable(label.c_str(), cSelectedIndex == i)) {
+						cSelectedIndex = i;
+					}
+				}
+			}
+			else {
+				if (cSelectedIndex >= checkpoints.size()) cSelectedIndex = checkpoints.size() - 1;
+
+				auto& checkpoint = checkpoints[cSelectedIndex];
+
+				if (ImGui::Button("Exit")) cSelectedIndex = -1;
+
+				auto pos = checkpoint.GetPosition();
+				static std::string name = checkpoint.GetName();
+				static bool changing = false;
+
+				if (!changing && name != checkpoint.GetName()) name = checkpoint.GetName();
+
+				if (ImGui::InputFloat2("Position", &pos.x, "%.1f")) {
+					pos = snapToGridFunc(pos, gridSize, snapToGrid);
+					if (pos != checkpoint.GetPosition()) {
+						moveCheckpoint(checkpoint, pos);
+					}
+				}
+				if (ImGui::InputText("Name", &name)) changing = true;
+				if (ImGui::Button("Submit Name")) {
+					if (name != checkpoint.GetName()) {
+						changeCheckpointName(checkpoint, name);
+						changing = false;
+					}
+				}
+
+				if (ImGui::Button("Delete Checkpoint")) {
+					deleteCheckpoint(cSelectedIndex);
+				}
+			}
+		}
+
+		ImGui::End();
+	}
+
+#pragma endregion
+
 
 #pragma endregion
 
@@ -725,6 +804,10 @@ void EditorState::render(sf::RenderWindow& window) {
 
 	for (auto& enemySpawnPoint : enemySpawnPoints) {
 		enemySpawnPoint.draw(window);
+	}
+
+	for (auto& checkpoint : checkpoints) {
+		checkpoint.Draw(window);
 	}
 
 }
@@ -796,7 +879,7 @@ std::string EditorState::fileFinding(const std::string& filePathName) {
 	}
 
 	if (filePathName.rfind(".png") != std::string::npos) {
-		size_t dirPos = filePathName.rfind("\\Glacial-mountains-parallax-background_vnitti\\");
+		size_t dirPos = filePathName.rfind("\\backgrounds\\");
 		
 		std::string filePath = filePathName.substr(dirPos, filePathName.size() - dirPos);
 
@@ -1017,6 +1100,34 @@ void EditorState::changeBackgroundSize(Background& background, sf::Vector2f newS
 
 void EditorState::changeParllax(Background& background, float newParllax) {
 	auto action = std::make_unique<ChangeParllaxStrengthAction>(background, background.parlaxStrength, newParllax);
+
+	addAction(std::move(action));
+}
+
+void EditorState::addCheckpoint(const Checkpoint& checkpoint) {
+	auto action = std::make_unique<AddCheckpointAction>(checkpoints, checkpoint, checkpoints.size());
+
+	addAction(std::move(action));
+}
+
+void EditorState::moveCheckpoint(Checkpoint& checkpoint, sf::Vector2f newPos) {
+	auto action = std::make_unique<MoveCheckpointAction>(checkpoint, checkpoint.GetPosition(), newPos);
+
+	addAction(std::move(action));
+}
+
+void EditorState::deleteCheckpoint(int& selectetIndex) {
+	if (selectetIndex >= 0) {
+		auto action = std::make_unique<DeleteCheckpointAction>(checkpoints, checkpoints[selectetIndex], selectetIndex);
+
+		addAction(std::move(action));
+
+		selectetIndex = -1;
+	}
+}
+
+void EditorState::changeCheckpointName(Checkpoint& checkpoint, const std::string& newName) {
+	auto action = std::make_unique<ChangeCheckpointNameAction>(checkpoint, checkpoint.GetName(), newName);
 
 	addAction(std::move(action));
 }

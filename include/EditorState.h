@@ -18,7 +18,9 @@
 #include "ImGuiFileDialog.h"
 #include <filesystem>
 #include "StateManager.h"
+#include "Checkpoint.h"
 #include "GameState.h"
+
 	
 class EditorState : public State
 {
@@ -68,6 +70,11 @@ private:
 	void changeBackgroundSize(Background& background, sf::Vector2f newSize);
 	void changeParllax(Background& background, float newParllax);
 
+	void addCheckpoint(const Checkpoint& checkpoint);
+	void moveCheckpoint(Checkpoint& checkpoint, sf::Vector2f newPos);
+	void deleteCheckpoint(int& selectetIndex);
+	void changeCheckpointName(Checkpoint& checkpoint, const std::string& newName);
+
 private:
 	//State references
 	StateManager& stateManager;
@@ -79,8 +86,9 @@ private:
 	float zoomFactor = 1.1f;
 	sf::View view;
 
+	//Platforms
 	std::vector<Platform> platforms;
-	int selectedIndex = -1;
+	int pSelectedIndex = -1;
 
 	sf::Vector2f selectPos = {};
 	sf::Vector2f selectSize = {100.f, 50.f};
@@ -109,6 +117,11 @@ private:
 
 	int bSelectedIndex = -1;
 
+	//Player Checkpoints
+	std::vector<Checkpoint> checkpoints;
+
+	int cSelectedIndex = -1;
+
 	//ImGui windows active
 	bool platformWindow = false;
 	bool platformEditWindow = false;
@@ -124,6 +137,8 @@ private:
 	bool showHelpWindow = false;
 
 	bool backgroundWindow = false;
+
+	bool playerCheckpoints = false;
 
 	//Grid
 	bool snapToGrid = true;

@@ -215,3 +215,67 @@ void ChangeParllaxStrengthAction::undo() {
 void ChangeParllaxStrengthAction::redo(){
 	background.parlaxStrength = newParllax;
 }
+
+AddCheckpointAction::AddCheckpointAction(std::vector<Checkpoint>& checkpoints, const Checkpoint& checkpoint, size_t index) :
+	checkpoints(checkpoints),
+	checkpoint(checkpoint),
+	index(index)
+{
+
+}
+
+void AddCheckpointAction::undo() {
+	checkpoints.erase(checkpoints.begin() + index);
+}
+
+void AddCheckpointAction::redo() {
+	checkpoints.insert(checkpoints.begin() + index, checkpoint);
+}
+
+DeleteCheckpointAction::DeleteCheckpointAction(std::vector<Checkpoint>& checkpoints, const Checkpoint& checkpoint, size_t index) :
+	checkpoints(checkpoints),
+	checkpoint(checkpoint),
+	index(index)
+{
+
+}
+
+void DeleteCheckpointAction::undo() {
+	checkpoints.insert(checkpoints.begin() + index, checkpoint);
+}
+
+void DeleteCheckpointAction::redo() {
+	checkpoints.erase(checkpoints.begin() + index);
+}
+
+MoveCheckpointAction::MoveCheckpointAction(Checkpoint& checkpoint, const sf::Vector2f& oldPos, const sf::Vector2f& newPos) :
+	checkpoint(checkpoint),
+	oldPos(oldPos),
+	newPos(newPos)
+{
+	
+}
+
+void MoveCheckpointAction::undo() {
+	checkpoint.SetPosition(oldPos);
+}
+
+void MoveCheckpointAction::redo() {
+	checkpoint.SetPosition(newPos);
+}
+
+ChangeCheckpointNameAction::ChangeCheckpointNameAction(Checkpoint& checkpoint, const std::string& oldName, const std::string& newName) :
+	checkpoint(checkpoint),
+	oldName(oldName),
+	newName(newName)
+{
+	
+}
+
+void ChangeCheckpointNameAction::undo() {
+	checkpoint.SetName(oldName);
+}
+
+void ChangeCheckpointNameAction::redo() {
+	checkpoint.SetName(newName);
+}

@@ -5,6 +5,7 @@
 #include "TileManager.h"
 #include "EnemyManager.h"
 #include "Background.h"
+#include "Checkpoint.h"
 
 struct AddPlatformAction : public EditorAction
 {
@@ -180,4 +181,56 @@ private:
 	Background& background;
 	float oldParllax;
 	float newParllax;
+};
+
+struct AddCheckpointAction : public EditorAction
+{
+	AddCheckpointAction(std::vector<Checkpoint>& checkpoints, const Checkpoint& checkpoint, size_t index);
+
+	void undo() override;
+	void redo() override;
+
+private:
+	std::vector<Checkpoint>& checkpoints;
+	Checkpoint checkpoint;
+	size_t index;
+};
+
+struct DeleteCheckpointAction : public EditorAction
+{
+	DeleteCheckpointAction(std::vector<Checkpoint>& checkpoints, const Checkpoint& checkpoint, size_t index);
+
+	void undo() override;
+	void redo() override;
+
+private:
+	std::vector<Checkpoint>& checkpoints;
+	Checkpoint checkpoint;
+	size_t index;
+};
+
+struct MoveCheckpointAction : public EditorAction
+{
+	MoveCheckpointAction(Checkpoint& checkpoint, const sf::Vector2f& oldPos, const sf::Vector2f& newPos);
+
+	void undo() override;
+	void redo() override;
+
+private:
+	Checkpoint& checkpoint;
+	sf::Vector2f oldPos;
+	sf::Vector2f newPos;
+};
+
+struct ChangeCheckpointNameAction : public EditorAction
+{
+	ChangeCheckpointNameAction(Checkpoint& checkpoint, const std::string& oldName, const std::string& newName);
+
+	void undo() override;
+	void redo() override;
+
+private:
+	Checkpoint& checkpoint;
+	std::string oldName;
+	std::string newName;
 };

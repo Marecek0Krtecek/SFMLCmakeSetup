@@ -112,7 +112,6 @@ nlohmann::json Serializer::saveCheckpoints(const std::vector<Checkpoint>& checkp
 	return j;
 }
 
-
 Platform Serializer::fromJSON(const nlohmann::json& j, TextureManager& textures) {
 	return Platform(
 		sf::Vector2f(
@@ -236,6 +235,26 @@ void Serializer::loadCheckpoints(const nlohmann::json& j, std::vector<Checkpoint
 					),
 					jCP["name"].get<std::string>()
 				));
+			}
+		}
+	}
+}
+
+void Serializer::loadCheckpoints(const nlohmann::json& j, std::unordered_map<std::string, Checkpoint>& checkpoints) {
+	if (j.contains("checkpoint")) {
+		const auto& jCheckpoint = j["checkpoint"];
+		if (jCheckpoint.contains("checkpointCount")) {
+			checkpoints.reserve(jCheckpoint["checkpointCount"].get<size_t>());
+		}
+		if (jCheckpoint.contains("checkpoints")) {
+			for (const auto& jCP : jCheckpoint["checkpoints"]) {
+				checkpoints[jCP["name"].get<std::string>()] = Checkpoint(
+					sf::Vector2f(
+						jCP["x"].get<float>(),
+						jCP["y"].get<float>()
+					),
+					jCP["name"].get<std::string>()
+				);
 			}
 		}
 	}

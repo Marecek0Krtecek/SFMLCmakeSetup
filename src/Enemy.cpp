@@ -71,6 +71,6 @@ bool Enemy::OnPlayerColision(Player& player) {
 }
 
 bool Enemy::KillPlayer(Player& player) {
-	player.Restrart();
+	player.Die();
 	return true;
 }

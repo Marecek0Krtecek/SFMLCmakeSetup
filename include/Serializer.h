@@ -8,6 +8,7 @@
 #include "EnemyManager.h"
 #include "Background.h"
 #include "Checkpoint.h"
+#include <unordered_map>
 
 namespace Serializer {
 
@@ -24,4 +25,5 @@ namespace Serializer {
 	void loadEnemySpawnPoints(const nlohmann::json& j, std::vector<EnemySpawnPoint>& enemySpawnPoints);
 	void loadBackgrounds(const nlohmann::json& j, std::vector<Background>& backgrounds, TextureManager& textures);
 	void loadCheckpoints(const nlohmann::json& j, std::vector<Checkpoint>& checkpoints);
+	void loadCheckpoints(const nlohmann::json& j, std::unordered_map<std::string, Checkpoint>& checkpoints);
 }

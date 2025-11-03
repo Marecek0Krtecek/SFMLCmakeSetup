@@ -3,7 +3,7 @@
 GameState::GameState(sf::RenderWindow& window, StateManager& manager) :
 	stateManager(manager),
 	view(sf::Vector2f(0.f, 0.f), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT)),
-	player(&textures.get(playerTexture), sf::Vector2u(8, 8), 0.1f, 500.f, 200.f)
+	player(&textures.get(playerTexture), sf::Vector2u(8, 8), 0.1f, 500.f, 200.f, 1.f, checkpoints)
 {
 	ResizeView(window, view);
 
@@ -18,8 +18,12 @@ GameState::GameState(sf::RenderWindow& window, StateManager& manager) :
 	Serializer::loadPlatforms(j, platforms, textures, tiles);
 	Serializer::loadEnemySpawnPoints(j, enemySpawnPoints);
 	Serializer::loadBackgrounds(j, backgrounds, textures);
-	
+	Serializer::loadCheckpoints(j, checkpoints);
+
+	file.close();
+
 	player.setScale(sf::Vector2f(2.f, 2.f));
+	player.setPosition(checkpoints["spawn"].GetPosition());
 
 	enemies.reserve(10);
 
@@ -74,6 +78,21 @@ void GameState::update(float deltaTime) {
 
 	}
 
+	///spawning enemies
+	for (auto& enemySP : enemySpawnPoints) {
+		if (enemySP.eIndex < 0) {
+			if (player.GetDistance(enemySP.GetPosition()) <= view.getSize().x / 1.8f) {
+				enemySP.eIndex = enemies.size();
+				SpawnEnemy(enemies, enemySP);
+			}
+		}
+		else {
+			if (player.GetDistance(enemies[enemySP.eIndex].getPosition()) > view.getSize().x / 1.8f) {
+				enemies.erase(enemies.begin() + enemySP.eIndex);
+				enemySP.eIndex = -1;
+			}
+		}
+	}
 
 #pragma endregion
 

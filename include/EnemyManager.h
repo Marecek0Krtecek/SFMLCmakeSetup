@@ -27,6 +27,10 @@ public:
 	const sf::Vector2f GetPosition() const { return sf::Vector2f(point.getPosition().x + point.getRadius(), point.getPosition().y + point.getRadius()); }
 	const std::string GetName() const { return name; }
 	const sf::FloatRect GetGlobalBounds() const { return point.getGlobalBounds(); }
+
+public:
+	int eIndex = -1;
+
 private:
 	std::string name;
 	sf::CircleShape point;

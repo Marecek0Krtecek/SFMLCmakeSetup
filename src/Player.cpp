@@ -1,19 +1,8 @@
 #include "Player.h"
 
-Player::Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed, float jumpHeit) :
-	animation(texture, imageCount, switchTime)
-{
-	this->speed = speed;
-	this->jumpHeit = jumpHeit;
-	
-	body.setSize(sf::Vector2f(50.f, 50.f));
-	body.setOrigin(sf::Vector2f(body.getSize() / 2.f));
-	body.setPosition(sf::Vector2f(200.f, 0.f));
-	body.setTexture(texture);
-}
-
-Player::Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed, float jumpHeit, float maxHealth) :
-	animation(texture, imageCount, switchTime)
+Player::Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed, float jumpHeit, float maxHealth, std::unordered_map<std::string, Checkpoint>& checkpoints) :
+	animation(texture, imageCount, switchTime),
+	checkpoints(checkpoints)
 {
 	this->speed = speed;
 	this->jumpHeit = jumpHeit;
@@ -21,16 +10,7 @@ Player::Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, 
 	
 	body.setSize(sf::Vector2f(50.f, 50.f));
 	body.setOrigin(sf::Vector2f(body.getSize() / 2.f));
-	body.setPosition(sf::Vector2f(200.f, 0.f));
-	body.setTexture(texture);
-}
-
-Player::Player(sf::Vector2f size, sf::Texture* texture):
-	animation(nullptr, sf::Vector2u(0, 0), 0.f)
-{
-	body.setSize(size);
-	body.setOrigin(sf::Vector2f(body.getSize() / 2.f));
-	body.setPosition(sf::Vector2f(200.f, 0.f));
+	//body.setPosition(checkpoints["spawn"].GetPosition());
 	body.setTexture(texture);
 }
 
@@ -101,11 +81,18 @@ void Player::OnCollision(sf::Vector2f direction) {
 }
 
 void Player::Restrart() {
-	body.setPosition(sf::Vector2f(0.f, -50.f));
+	body.setPosition(checkpoints["spawn"].GetPosition());
 	health = maxHealth;
+	velocity = sf::Vector2f();
 }
 
-float Player::GetDistance(sf::Vector2f otherPosition) {
+void Player::Die() {
+	body.setPosition(checkpoints[lastCheckpoint].GetPosition());
+	health = maxHealth;
+	velocity = sf::Vector2f();
+}
+
+float Player::GetDistance(sf::Vector2f otherPosition) const {
 	return sqrtf(powf(otherPosition.x - getPosition().x, 2.f) + powf(otherPosition.y - getPosition().y, 2.f));
 		//sqrt((x2-x1)^2+(y2-y1)^2)
 }

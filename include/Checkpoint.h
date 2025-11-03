@@ -5,6 +5,7 @@
 class Checkpoint
 {
 public:
+	Checkpoint() {};
 	Checkpoint(sf::Vector2f position, const std::string& name);
 	~Checkpoint() = default;
 

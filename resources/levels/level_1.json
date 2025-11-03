@@ -10,9 +10,25 @@
             }
         ]
     },
+    "checkpoint": {
+        "checkpointCount": 1,
+        "checkpoints": [
+            {
+                "name": "spawn",
+                "x": 224.0,
+                "y": 0.0
+            }
+        ]
+    },
     "enemy": {
-        "enemyCount": 0,
-        "enemySpawnPoints": []
+        "enemyCount": 1,
+        "enemySpawnPoints": [
+            {
+                "type": "Purple Slime",
+                "x": 416.0,
+                "y": 0.0
+            }
+        ]
     },
     "platform": {
         "platformCount": 55,

@@ -44,6 +44,7 @@ private:
 
 	//Player
 	Player player;
+	std::unordered_map<std::string, Checkpoint> checkpoints;
 
 	//Enemies
 	EnemyManager enemyManager;

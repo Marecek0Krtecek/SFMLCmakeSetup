@@ -48,6 +48,8 @@ void EditorState::handleEvent(const sf::Event& event, sf::RenderWindow& window) 
 		if (event.key.control && event.key.code == sf::Keyboard::X) {
 			deletePlatform(pSelectedIndex);
 			deleteEnemy(eSelectedIndex);
+			deleteBackground(bSelectedIndex);
+			deleteCheckpoint(cSelectedIndex);
 		}
 		if (event.key.control && event.key.code == sf::Keyboard::Z) undo();
 		if (event.key.control && event.key.code == sf::Keyboard::Y) redo();
@@ -69,6 +71,8 @@ void EditorState::handleEvent(const sf::Event& event, sf::RenderWindow& window) 
 
 				platforms.reserve(platforms.size() + 100);
 				enemySpawnPoints.reserve(enemySpawnPoints.size() + 100);
+				backgrounds.reserve(backgrounds.size() + 5);
+				checkpoints.reserve(checkpoints.size() + 10);
 			}
 			else {
 				newLevelIsNotSaved = true;
@@ -99,6 +103,9 @@ void EditorState::handleEvent(const sf::Event& event, sf::RenderWindow& window) 
 			if (eSelectedIndex >= 0) {
 				moveEnemy(eSelectedIndex, enemySpawnPoints[eSelectedIndex].GetPosition(), selectPos);
 			}
+			if (cSelectedIndex >= 0) {
+				moveCheckpoint(checkpoints[cSelectedIndex], selectPos);
+			}
 
 		}
 		if (event.mouseButton.button == sf::Mouse::Left) {
@@ -120,6 +127,16 @@ void EditorState::handleEvent(const sf::Event& event, sf::RenderWindow& window) 
 				if (enemySP.GetGlobalBounds().contains(worldPos)) {
 					eSelectedIndex = i;
 					enemyEditWindow = true;
+					break;
+				}
+				i++;
+			}
+
+			i = 0;
+			for (const auto& checkpoint : checkpoints) {
+				if (checkpoint.GetGlobalBounds().contains(worldPos)) {
+					cSelectedIndex = i;
+					playerCheckpointsWindow = true;
 					break;
 				}
 				i++;
@@ -349,8 +366,13 @@ void EditorState::update(float deltaTime) {
 		backgroundWindow = !backgroundWindow;
 	}
 	if (ImGui::Button("Player Checkpoints")) {
-		playerCheckpoints = !playerCheckpoints;
+		playerCheckpointsWindow = !playerCheckpointsWindow;
 	}
+
+	if (!platformEditWindow) pSelectedIndex = -1;
+	if (!enemyEditWindow) eSelectedIndex = -1;
+	if (!backgroundWindow) bSelectedIndex = -1;
+	if (!playerCheckpointsWindow) cSelectedIndex = -1;
 
 	ImGui::End();
 
@@ -709,7 +731,7 @@ void EditorState::update(float deltaTime) {
 
 #pragma region Checkpoints
 
-	if (playerCheckpoints) {
+	if (playerCheckpointsWindow) {
 		ImGui::Begin("Checkpoints");
 		
 		static bool add = false;
@@ -893,6 +915,7 @@ void EditorState::clearLevel() {
 	platforms.clear();
 	enemySpawnPoints.clear();
 	backgrounds.clear();
+	checkpoints.clear();
 }
 
 void EditorState::save() {
@@ -902,6 +925,7 @@ void EditorState::save() {
 	j["platform"] = Serializer::savePlatforms(platforms);
 	j["enemy"] = Serializer::saveEnemySpawnPoints(enemySpawnPoints);
 	j["background"] = Serializer::saveBackgrounds(backgrounds);
+	j["checkpoint"] = Serializer::saveCheckpoints(checkpoints);
 	save << j.dump(4);
 
 	save.close();
@@ -941,6 +965,9 @@ void EditorState::load() {
 
 		backgrounds.clear();
 		Serializer::loadBackgrounds(j, backgrounds, textures);
+
+		checkpoints.clear();
+		Serializer::loadCheckpoints(j, checkpoints);
 
 		file.close();
 

@@ -7,6 +7,7 @@
 #include "TileManager.h"
 #include "EnemyManager.h"
 #include "Background.h"
+#include "Checkpoint.h"
 
 namespace Serializer {
 
@@ -15,11 +16,12 @@ namespace Serializer {
 	nlohmann::json savePlatforms(const std::vector<Platform>& platforms);
 	nlohmann::json saveEnemySpawnPoints(const std::vector<EnemySpawnPoint>& enemySpawnPoints);
 	nlohmann::json saveBackgrounds(const std::vector<Background>& backgrounds);
+	nlohmann::json saveCheckpoints(const std::vector<Checkpoint>& checkpoints);
 
 	Platform fromJSON(const nlohmann::json& j, TextureManager& textures);
 
 	void loadPlatforms(const nlohmann::json& j, std::vector<Platform>& platforms, TextureManager& textures, TileManager& tiles);
 	void loadEnemySpawnPoints(const nlohmann::json& j, std::vector<EnemySpawnPoint>& enemySpawnPoints);
 	void loadBackgrounds(const nlohmann::json& j, std::vector<Background>& backgrounds, TextureManager& textures);
-	
+	void loadCheckpoints(const nlohmann::json& j, std::vector<Checkpoint>& checkpoints);
 }

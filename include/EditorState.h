@@ -138,7 +138,7 @@ private:
 
 	bool backgroundWindow = false;
 
-	bool playerCheckpoints = false;
+	bool playerCheckpointsWindow = false;
 
 	//Grid
 	bool snapToGrid = true;

@@ -10,12 +10,55 @@
             }
         ]
     },
+    "checkpoint": {
+        "checkpointCount": 1,
+        "checkpoints": [
+            {
+                "name": "spawn",
+                "x": -192.0,
+                "y": -64.0
+            }
+        ]
+    },
     "enemy": {
-        "enemyCount": 0,
-        "enemySpawnPoints": []
+        "enemyCount": 2,
+        "enemySpawnPoints": [
+            {
+                "type": "Green Slime",
+                "x": 320.0,
+                "y": -64.0
+            },
+            {
+                "type": "Purple Slime",
+                "x": 0.0,
+                "y": -64.0
+            }
+        ]
     },
     "platform": {
-        "platformCount": 0,
-        "platforms": []
+        "platformCount": 3,
+        "platforms": [
+            {
+                "height": 50.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": 0.0,
+                "y": 0.0
+            },
+            {
+                "height": 50.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": 320.0,
+                "y": 32.0
+            },
+            {
+                "height": 50.0,
+                "tile": "Winter Grass",
+                "width": 100.0,
+                "x": -192.0,
+                "y": -32.0
+            }
+        ]
     }
 }

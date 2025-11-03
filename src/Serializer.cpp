@@ -78,8 +78,8 @@ nlohmann::json Serializer::saveEnemySpawnPoints(const std::vector<EnemySpawnPoin
 	return j;
 
 }
-nlohmann::json Serializer::saveBackgrounds(const std::vector<Background>& backgrounds)
-{
+
+nlohmann::json Serializer::saveBackgrounds(const std::vector<Background>& backgrounds) {
 	nlohmann::json j;
 	j["backgroundCount"] = backgrounds.size();
 	j["backgrounds"] = nlohmann::json::array();
@@ -92,6 +92,21 @@ nlohmann::json Serializer::saveBackgrounds(const std::vector<Background>& backgr
 				{ "texture", background.GetTexPath() }
 			}
 		);
+	}
+
+	return j;
+}
+
+nlohmann::json Serializer::saveCheckpoints(const std::vector<Checkpoint>& checkpoints) {
+	nlohmann::json j;
+	j["checkpointCount"] = checkpoints.size();
+	j["checkpoints"] = nlohmann::json::array();
+	for (const auto& checkpoint : checkpoints) {
+		j["checkpoints"].push_back({
+			{ "x", checkpoint.GetPosition().x },
+			{ "y", checkpoint.GetPosition().y },
+			{ "name", checkpoint.GetName() }
+		});
 	}
 
 	return j;
@@ -200,6 +215,26 @@ void Serializer::loadBackgrounds(const nlohmann::json& j, std::vector<Background
 					),
 					jB["parllax"].get<float>(),
 					jB["texture"].get<std::string>()
+				));
+			}
+		}
+	}
+}
+
+void Serializer::loadCheckpoints(const nlohmann::json& j, std::vector<Checkpoint>& checkpoints) {
+	if (j.contains("checkpoint")) {
+		const auto& jCheckpoint = j["checkpoint"];
+		if (jCheckpoint.contains("checkpointCount")) {
+			checkpoints.reserve(jCheckpoint["checkpointCount"].get<size_t>());
+		}
+		if (jCheckpoint.contains("checkpoints")) {
+			for (const auto& jCP : jCheckpoint["checkpoints"]) {
+				checkpoints.push_back(Checkpoint(
+					sf::Vector2f(
+						jCP["x"].get<float>(),
+						jCP["y"].get<float>()
+					),
+					jCP["name"].get<std::string>()
 				));
 			}
 		}

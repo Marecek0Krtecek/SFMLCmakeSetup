@@ -15,8 +15,8 @@
         "checkpoints": [
             {
                 "name": "spawn",
-                "x": 224.0,
-                "y": 0.0
+                "x": -1280.0,
+                "y": 192.0
             }
         ]
     },
@@ -25,7 +25,6 @@
         "enemySpawnPoints": [
             {
                 "type": "Purple Slime",
-
                 "x": 2400.0,
                 "y": 224.0
             }

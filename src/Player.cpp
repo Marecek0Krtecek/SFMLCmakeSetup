@@ -7,6 +7,7 @@ Player::Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, 
 	this->speed = speed;
 	this->jumpHeit = jumpHeit;
 	this->maxHealth = maxHealth;
+	this->health = maxHealth;
 	
 	body.setSize(sf::Vector2f(50.f, 50.f));
 	body.setOrigin(sf::Vector2f(body.getSize() / 2.f));
@@ -37,11 +38,13 @@ void Player::Update(float deltaTime) {
 
 	if (velocity.y > 25.f)
 		canJump = false;
+	if (velocity.y > 3000.f)
+		Die();
 
 	if (velocity.x == 0)
 		row = 0;
 	else {
-		row = 2;
+		row = 1;
 
 		if (velocity.x > 0.f)
 			faceRight = true;
@@ -49,7 +52,7 @@ void Player::Update(float deltaTime) {
 			faceRight = false;
 	}
 
-	if (row == 0 || row == 6 || row == 7)	//only 4 sprites on these lines out of 8
+	if (row == 0 || row == 2)	//only 4 sprites on these lines out of 8
 		animation.Update(row, deltaTime, faceRight, 4);
 	else
 		animation.Update(row, deltaTime, faceRight, animation.GetImageCount().x);
@@ -84,6 +87,15 @@ void Player::Restrart() {
 	body.setPosition(checkpoints["spawn"].GetPosition());
 	health = maxHealth;
 	velocity = sf::Vector2f();
+}
+
+bool Player::Hit(float damage) {
+	health -= damage;
+	if (health <= 0.f) { 
+		Die(); 
+		return true;
+	}
+	return false;
 }
 
 void Player::Die() {

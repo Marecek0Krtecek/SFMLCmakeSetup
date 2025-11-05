@@ -3,7 +3,7 @@
 GameState::GameState(sf::RenderWindow& window, StateManager& manager) :
 	stateManager(manager),
 	view(sf::Vector2f(0.f, 0.f), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT)),
-	player(&textures.get(playerTexture), sf::Vector2u(8, 8), 0.1f, 500.f, 200.f, 1.f, checkpoints)
+	player(&textures.get(playerTexture), sf::Vector2u(8, 4), 0.1f, 500.f, 200.f, 1.f, checkpoints)
 {
 	ResizeView(window, view);
 

@@ -62,15 +62,5 @@ void Enemy::OnCollision(sf::Vector2f direction) {
 }
 
 bool Enemy::OnPlayerColision(Player& player) {
-	player.health -= 1.f;
-
-	if (player.health <= 0.f)
-		return KillPlayer(player);
-
-	return false;
-}
-
-bool Enemy::KillPlayer(Player& player) {
-	player.Die();
-	return true;
+	return player.Hit(1.f);
 }

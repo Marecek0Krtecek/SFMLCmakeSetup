@@ -12,7 +12,7 @@ public:
 	void Update(float deltaTime);
 	void OnCollision(sf::Vector2f direction);
 	void Restrart();
-	void Die();
+	bool Hit(float damage);
 
 	void draw(sf::RenderWindow& window) { window.draw(body); }
 	void setScale(sf::Vector2f scale) { body.setScale(scale); }
@@ -25,6 +25,10 @@ public:
 	Collision GetCollider() { return Collision(body); }
 	float GetDistance(sf::Vector2f objectPosition) const;
 	std::string GetLastCheckpoint() const { return lastCheckpoint; }
+
+private:
+	void Die();
+
 
 public:
 	float gravity = 50.f;

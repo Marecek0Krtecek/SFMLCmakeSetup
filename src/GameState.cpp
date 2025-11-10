@@ -3,7 +3,8 @@
 GameState::GameState(sf::RenderWindow& window, StateManager& manager) :
 	stateManager(manager),
 	view(sf::Vector2f(0.f, 0.f), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT)),
-	player(&textures.get(playerTexture), sf::Vector2u(8, 4), 0.1f, 500.f, 200.f, 1.f, checkpoints)
+	player(&textures.get(playerTexture), sf::Vector2u(8, 4), 0.1f, 500.f, 200.f, 1.f, checkpoints),
+	gameUI(view, player)
 {
 	ResizeView(window, view);
 
@@ -53,6 +54,8 @@ void GameState::update(float deltaTime) {
 
 
 	player.Update(deltaTime);
+
+	gameUI.update(deltaTime);
 	
 	for (auto& enemy : enemies) {
 		enemy.Update(deltaTime);
@@ -86,12 +89,18 @@ void GameState::update(float deltaTime) {
 				SpawnEnemy(enemies, enemySP);
 			}
 		}
-		else {
+		else if (enemySP.eIndex >= 0 && enemySP.eIndex < (int)enemies.size()) {
 			if (player.GetDistance(enemies[enemySP.eIndex].getPosition()) > view.getSize().x / 1.8f) {
-				enemies.erase(enemies.begin() + enemySP.eIndex);
+				int removed = enemySP.eIndex;
+				enemies.erase(enemies.begin() + removed);
 				enemySP.eIndex = -1;
+				
+				for (auto& sp : enemySpawnPoints) {
+					if (sp.eIndex > removed) --sp.eIndex;
+				}
 			}
 		}
+		else enemySP.eIndex = -1;
 	}
 
 #pragma endregion
@@ -142,6 +151,8 @@ void GameState::render(sf::RenderWindow& window) {
 
 	player.draw(window);
 
+	gameUI.Draw(window);
+
 #pragma endregion
 
 }
@@ -162,7 +173,9 @@ void GameState::ResizeView(const sf::RenderWindow& window, sf::View& view)
 
 void GameState::RestartGame(Player& player, std::vector<Enemy>& enemies) {
 	player.Restrart();
-	enemies.erase(enemies.begin(), enemies.end());
+	enemies.clear();
+
+	for (auto& sp : enemySpawnPoints) sp.eIndex = -1;
 }
 
 void GameState::SpawnEnemy(std::vector<Enemy>& enemies,const EnemySpawnPoint& spawnPoint) {

@@ -30,9 +30,6 @@ public:
 	float GetSpeed() const { return speed; }
 	std::string GetEnemyName() const { return name; }
 
-private:
-	bool KillPlayer(Player& player);
-
 public:
 	float gravity = 50.f;
 

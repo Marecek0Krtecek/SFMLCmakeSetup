@@ -25,6 +25,7 @@ public:
 	Collision GetCollider() { return Collision(body); }
 	float GetDistance(sf::Vector2f objectPosition) const;
 	std::string GetLastCheckpoint() const { return lastCheckpoint; }
+	float GetMaxHealth() const { return maxHealth; }
 
 private:
 	void Die();
@@ -40,6 +41,7 @@ private:
 	unsigned int row = 0;
 	float speed = 500;
 	bool faceRight = true;
+	float hitDuration = 0.f;
 
 	sf::Vector2f velocity;
 	bool canJump = false;

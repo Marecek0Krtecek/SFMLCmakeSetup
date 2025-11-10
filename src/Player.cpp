@@ -1,4 +1,5 @@
 #include "Player.h"
+#include <iostream>
 
 Player::Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed, float jumpHeit, float maxHealth, std::unordered_map<std::string, Checkpoint>& checkpoints) :
 	animation(texture, imageCount, switchTime),
@@ -16,6 +17,8 @@ Player::Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, 
 }
 
 void Player::Update(float deltaTime) {
+	health = std::min(std::max(health, 0.f), maxHealth);	// clamping health
+
 	velocity.x = 0.f;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
@@ -50,6 +53,11 @@ void Player::Update(float deltaTime) {
 			faceRight = true;
 		else
 			faceRight = false;
+	}
+
+	if (hitDuration > 0.f) {
+		hitDuration -= deltaTime;
+		row = 2;
 	}
 
 	if (row == 0 || row == 2)	//only 4 sprites on these lines out of 8
@@ -91,6 +99,9 @@ void Player::Restrart() {
 
 bool Player::Hit(float damage) {
 	health -= damage;
+
+	hitDuration = animation.GetSwitchTime() * 4;
+
 	if (health <= 0.f) { 
 		Die(); 
 		return true;

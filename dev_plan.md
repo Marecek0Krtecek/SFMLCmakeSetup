@@ -82,7 +82,7 @@ Väčšina systémov už existuje, teraz ide o ich prepojenie, testovanie a dola
 
 - [ ] 👣 Zjednotiť pohyb hráča (vyhladený pohyb, lepší skok)
 - [x] 💥 Implementovať systém poškodenia (hráč stratí HP pri kontakte s nepriateľom)
-- [ ] ❤️ Pridať HP bar alebo jednoduchý indikátor zdravia
+- [x] ❤️ Pridať HP bar alebo jednoduchý indikátor zdravia
 - [ ] ⚙️ Rozšíriť EnemyManager o update logiku (napr. patrolovanie, sledovanie hráča)
 - [x] 💀 Implementovať respawn alebo restart levelu po smrti hráča
 > 🎯 **Cieľ týždňa:** Nepriatelia a hráč majú základnú interakciu – dá sa „zomrieť“ a znova hrať.

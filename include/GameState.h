@@ -10,6 +10,7 @@
 #include "TerrainGeneration.h"
 #include "StateManager.h"
 #include "EditorState.h"
+#include "GameUI.h"
 
 class GameState : public State
 {
@@ -33,6 +34,8 @@ private:
 	const float VIEW_HEIGHT = 1024.f;
 
 	sf::View view;
+
+	GameUI gameUI;
 
 	//Textures
 	TextureManager textures;

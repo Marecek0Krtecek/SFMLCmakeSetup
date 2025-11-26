@@ -29,7 +29,8 @@ int main()
 
 	StateManager stateManager;
 	
-	stateManager.changeState<EditorState>(window, stateManager);
+	stateManager.changeState<GameState>(window, stateManager);
+	//stateManager.changeState<EditorState>(window, stateManager);
 	//std::unique_ptr<State> currentState = std::make_unique<GameState>(window);
 	//std::unique_ptr<State> currentState = std::make_unique<EditorState>(window);
 

@@ -45,6 +45,7 @@ private:
 
 	sf::Vector2f velocity;
 	bool canJump = false;
+	bool canDash = false;
 	float jumpHeit = 100.f;
 	float maxHealth = 1.f;
 	

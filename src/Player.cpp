@@ -31,16 +31,31 @@ void Player::Update(float deltaTime) {
 	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Space) || sf::Keyboard::isKeyPressed(sf::Keyboard::W)) && canJump) {
 		canJump = false;
 		if (velocity.x == 0)
-			velocity.y = -sqrtf(2.f * (9.81f * gravity) * (jumpHeit * 1.5));
+			velocity.y = -sqrtf(2.f * (9.81f * gravity) * (jumpHeit * 1.5f));
 		else
-			velocity.y = -sqrtf(2.f * (9.81f * gravity) * jumpHeit);
-			
+			velocity.y = -sqrtf(2.f * (9.81f * gravity) * jumpHeit * 0.8f);
+
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && canDash) {
+		if (velocity.y < -50.f) {
+			velocity.y = 0.f;
+		}
+		else {
+			canDash = false;
+			velocity.y += sqrtf(2.f * (9.81f * gravity) * jumpHeit);
+		}
 	}
 
 	velocity.y += (9.81f * gravity) * deltaTime;
 
-	if (velocity.y > 25.f)
+	if (velocity.y > 25.f) {
 		canJump = false;
+	}
+
+	if (velocity.y < 0.f && !canDash) {
+		canDash = true;
+	}
+
 	if (velocity.y > 3000.f)
 		Die();
 

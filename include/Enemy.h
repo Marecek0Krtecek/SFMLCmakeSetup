@@ -10,7 +10,7 @@
 class Enemy
 {
 public:
-	Enemy(const EnemyManager& enemyManager, const EnemySpawnPoint& spawnPoint, TextureManager& textures);
+	Enemy(const EnemyManager& enemyManager, const EnemySpawnPoint& spawnPoint, TextureManager& textures, int SPID);
 
 	void Update(float deltaTime);
 	void OnCollision(sf::Vector2f direction);
@@ -32,6 +32,7 @@ public:
 
 public:
 	float gravity = 50.f;
+	int spawnPointID = -1;
 
 private:
 	sf::RectangleShape body;

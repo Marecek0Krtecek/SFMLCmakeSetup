@@ -24,7 +24,7 @@ public:
 private:
 	void ResizeView(const sf::RenderWindow& window, sf::View& view);
 	void RestartGame(Player& player, std::vector<Enemy>& enemies);
-	void SpawnEnemy(std::vector<Enemy>& enemies, const EnemySpawnPoint& spawnPoint);
+	void SpawnEnemy(std::vector<Enemy>& enemies, const EnemySpawnPoint& spawnPoint, int SPID);
 
 private:
 	//State references

@@ -29,7 +29,8 @@ public:
 	const sf::FloatRect GetGlobalBounds() const { return point.getGlobalBounds(); }
 
 public:
-	int eIndex = -1;
+	//int eIndex = -1;
+	bool hasChild = false;
 
 private:
 	std::string name;

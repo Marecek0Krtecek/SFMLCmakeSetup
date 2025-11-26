@@ -57,10 +57,18 @@ void GameState::update(float deltaTime) {
 
 	gameUI.update(deltaTime);
 	
-	for (auto& enemy : enemies) {
+	for (size_t i = 0; i < enemies.size(); i++) {
+		auto& enemy = enemies[i];
+
 		enemy.Update(deltaTime);
 		if (enemy.GetCollider().CheckCollision(player.GetCollider(), sf::Vector2f(), 0.5f)) {
 			enemy.OnPlayerColision(player);
+		}
+
+		if (player.GetDistance(enemy.getPosition()) > view.getSize().x / 1.5f) {
+			enemySpawnPoints[enemy.spawnPointID].hasChild = false;
+
+			enemies.erase(enemies.begin() + i);
 		}
 	}
 
@@ -82,25 +90,16 @@ void GameState::update(float deltaTime) {
 	}
 
 	///spawning enemies
-	for (auto& enemySP : enemySpawnPoints) {
-		if (enemySP.eIndex < 0) {
+	for (size_t i = 0; i < enemySpawnPoints.size(); i++) {
+		const auto& enemySP = enemySpawnPoints[i];
+
+		if (!enemySP.hasChild) {
 			if (player.GetDistance(enemySP.GetPosition()) <= view.getSize().x / 1.8f) {
-				enemySP.eIndex = enemies.size();
-				SpawnEnemy(enemies, enemySP);
+				SpawnEnemy(enemies, enemySP, i);
+				enemySpawnPoints[i].hasChild = true;
 			}
 		}
-		else if (enemySP.eIndex >= 0 && enemySP.eIndex < (int)enemies.size()) {
-			if (player.GetDistance(enemies[enemySP.eIndex].getPosition()) > view.getSize().x / 1.8f) {
-				int removed = enemySP.eIndex;
-				enemies.erase(enemies.begin() + removed);
-				enemySP.eIndex = -1;
-				
-				for (auto& sp : enemySpawnPoints) {
-					if (sp.eIndex > removed) --sp.eIndex;
-				}
-			}
-		}
-		else enemySP.eIndex = -1;
+		
 	}
 
 #pragma endregion
@@ -118,7 +117,7 @@ void GameState::update(float deltaTime) {
 			enemy.gravity = player.gravity;
 	ImGui::Text("Enemies Count: %i", (int)enemies.size());
 	if (ImGui::Button("Spawn Enemy"))
-		SpawnEnemy(enemies, EnemySpawnPoint("Green Slime", player.getPosition()));
+		SpawnEnemy(enemies, EnemySpawnPoint("Green Slime", player.getPosition()), -1);
 	if (ImGui::Button("Restart Game"))
 		RestartGame(player, enemies);
 
@@ -174,10 +173,8 @@ void GameState::ResizeView(const sf::RenderWindow& window, sf::View& view)
 void GameState::RestartGame(Player& player, std::vector<Enemy>& enemies) {
 	player.Restrart();
 	enemies.clear();
-
-	for (auto& sp : enemySpawnPoints) sp.eIndex = -1;
 }
 
-void GameState::SpawnEnemy(std::vector<Enemy>& enemies,const EnemySpawnPoint& spawnPoint) {
-	enemies.push_back(Enemy(enemyManager, spawnPoint, textures));
+void GameState::SpawnEnemy(std::vector<Enemy>& enemies,const EnemySpawnPoint& spawnPoint, int SPID) {
+	enemies.push_back(Enemy(enemyManager, spawnPoint, textures, SPID));
 }

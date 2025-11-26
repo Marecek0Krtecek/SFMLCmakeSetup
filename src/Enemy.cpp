@@ -1,6 +1,6 @@
 #include "Enemy.h"
 
-Enemy::Enemy(const EnemyManager& enemyManager, const EnemySpawnPoint& spawnPoint, TextureManager& textures) :
+Enemy::Enemy(const EnemyManager& enemyManager, const EnemySpawnPoint& spawnPoint, TextureManager& textures, int SPID) :
 	name(spawnPoint.GetName()),
 	animation(&textures.get(enemyManager.getEnemy(spawnPoint.GetName())->textureAdress), enemyManager.getEnemy(spawnPoint.GetName())->imageCount, enemyManager.getEnemy(spawnPoint.GetName())->switchTime),
 	speed(enemyManager.getEnemy(spawnPoint.GetName())->speed)
@@ -12,6 +12,8 @@ Enemy::Enemy(const EnemyManager& enemyManager, const EnemySpawnPoint& spawnPoint
 	body.setTextureRect(enemyManager.getEnemy(name)->rect);
 
 	velocity.x = speed;
+
+	this->spawnPointID = SPID;
 }
 
 void Enemy::Update(float deltaTime) {

@@ -1,5 +1,4 @@
 #pragma once
-#include <SFML/Graphics.hpp>
 #include "Collision.h"
 #include "Animation.h"
 #include "Checkpoint.h"

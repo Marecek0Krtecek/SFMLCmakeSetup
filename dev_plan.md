@@ -51,7 +51,7 @@ Každý víkend máš priestor na väčšie úlohy alebo refaktorovanie.
 - [ ] ⚙️ Doladiť pohyb hráča (kolízie, rýchlosť, skok)
 - [x] 💥 Implementovať základný systém kolízie s nepriateľmi
 - [x] 💡 Začať pripravovať základ pre UI (HP, skóre, level name)
-- [ ] 🧹 Refaktor: vyčistiť redundantné include-y a premenovať funkcie pre čitateľnosť
+- [x] 🧹 Refaktor: vyčistiť redundantné include-y a premenovať funkcie pre čitateľnosť
 
 > 🎯 **Cieľ mesiaca:** Hrateľný základ – môžeš otvoriť level, hrať ho, uložiť a vrátiť sa do editora bez crashu.
 

@@ -1,7 +1,7 @@
 #pragma once
 #include "EditorAction.h"
-#include "Platform.h"
 #include <vector>
+#include "Platform.h"
 #include "TileManager.h"
 #include "EnemyManager.h"
 #include "Background.h"

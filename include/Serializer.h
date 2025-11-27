@@ -1,14 +1,14 @@
 #pragma once
 #include "json.hpp"
+#include <vector>
+#include <unordered_map>
 #include "Platform.h"
 #include "TextureManager.h"
 #include "Enemy.h"
-#include <vector>
 #include "TileManager.h"
 #include "EnemyManager.h"
 #include "Background.h"
 #include "Checkpoint.h"
-#include <unordered_map>
 
 namespace Serializer {
 

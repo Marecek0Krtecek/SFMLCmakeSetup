@@ -1,15 +1,6 @@
 #pragma once
-#include "State.h"
-#include "imgui.h"
-#include "imgui-SFML.h"
-#include "TextureManager.h"
-#include "Player.h"
-#include "EnemyManager.h"
-#include "Enemy.h"
-#include "Background.h"
-#include "TerrainGeneration.h"
-#include "StateManager.h"
 #include "EditorState.h"
+#include "Player.h"
 #include "GameUI.h"
 
 class GameState : public State

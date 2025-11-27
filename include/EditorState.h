@@ -1,5 +1,5 @@
 #pragma once
-#include "State.h"
+#include "StateManager.h"
 #include "Platform.h"
 #include "Enemy.h"
 #include "TextureManager.h"
@@ -15,8 +15,6 @@
 #include "EditorActions.h"
 #include "EnemyManager.h"
 #include "ImGuiFileDialog.h"
-#include <filesystem>
-#include "StateManager.h"
 #include "Checkpoint.h"
 #include "GameState.h"
 

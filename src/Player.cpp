@@ -48,7 +48,7 @@ void Player::Update(float deltaTime) {
 
 	velocity.y += (9.81f * gravity) * deltaTime;
 
-	if (velocity.y > 25.f) {
+	if (velocity.y > 50.f) {
 		canJump = false;
 	}
 

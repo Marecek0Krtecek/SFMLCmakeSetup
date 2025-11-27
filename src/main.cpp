@@ -1,16 +1,4 @@
-#include <SFML/Graphics.hpp>
-#include <vector>
-#include <iostream>
-#include <fstream>
-#include "Serializer.h"
-#include "json.hpp"
-#include <memory>
-#include "State.h"
-#include "GameState.h"
-#include "EditorState.h"
-#include "imgui.h"
-#include "imgui-SFML.h"
-#include "StateManager.h"
+#include "MenuState.h"
 
 using json = nlohmann::json;
 
@@ -29,11 +17,10 @@ int main()
 
 	StateManager stateManager;
 	
-	stateManager.changeState<GameState>(window, stateManager);
+	stateManager.changeState<MenuState>(window, stateManager);
+	//stateManager.changeState<GameState>(window, stateManager);
 	//stateManager.changeState<EditorState>(window, stateManager);
-	//std::unique_ptr<State> currentState = std::make_unique<GameState>(window);
-	//std::unique_ptr<State> currentState = std::make_unique<EditorState>(window);
-
+	
 #pragma endregion
 
 #pragma region ImGui SetUp

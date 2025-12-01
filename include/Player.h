@@ -17,6 +17,7 @@ public:
 	void setScale(sf::Vector2f scale) { body.setScale(scale); }
 	void setPosition(sf::Vector2f position) { body.setPosition(position); }
 	void setPosition(float x, float y) { body.setPosition(x, y); }
+	void setCheckpoint(std::string checkpoint) { lastCheckpoint = checkpoint; }
 
 	sf::Vector2f getPosition() const { return body.getPosition(); }
 	sf::Vector2f GetVelocity() const { return velocity; }

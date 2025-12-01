@@ -56,7 +56,7 @@ void Player::Update(float deltaTime) {
 		canDash = true;
 	}
 
-	if (velocity.y > 3000.f)
+	if (velocity.y > 2000.f)
 		Die();
 
 	if (velocity.x == 0)

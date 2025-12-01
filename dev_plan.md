@@ -97,7 +97,7 @@ Väčšina systémov už existuje, teraz ide o ich prepojenie, testovanie a dola
 - [x] 🗂️ Uistite sa, že všetky entity (platformy, spawn pointy, pozadie) sa správne prenášajú medzi stavmi
 - [ ] 🖋️ Zobraz názov levelu počas hrania (z JSON súboru)
 - [ ] 💾 Pridaj autosave/autoload pre rýchle testovanie (voliteľné)
-- [ ] 🧹 Refaktor: vyčisti include-y, odstráň nepoužívané premenné, zjednoť naming konvencie
+- [x] 🧹 Refaktor: vyčisti include-y, odstráň nepoužívané premenné, zjednoť naming konvencie
 > 🎯 **Cieľ týždňa:** Levely sa dajú hrať priamo z editora bez reštartu hry.
 
 ---
@@ -108,7 +108,7 @@ Väčšina systémov už existuje, teraz ide o ich prepojenie, testovanie a dola
 
 - [ ] 🧱 Pridaj základné UI (HP, skóre, level name)
 - [ ] 🕶️ Pridaj jednoduché animácie – napr. pohyb nepriateľa, bliknutie pri poškodení
-- [ ] 🌫️ Pridaj vizuálne efekty (napr. fade-in/out medzi levelmi)
+- [x] 🌫️ Pridaj vizuálne efekty (napr. fade-in/out medzi levelmi)
 - [ ] 🎧 Voliteľné: základný sound system (SFX pri skoku, zásahu, respawne)
 > 🎯 **Cieľ týždňa:** Hra pôsobí živšie, hráč má spätnú väzbu na svoje akcie.
 

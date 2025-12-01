@@ -102,6 +102,13 @@ void GameState::update(float deltaTime) {
 		
 	}
 
+	///checkpoints
+	for (const auto& [name, checkpoint] : checkpoints) {
+		if (player.GetDistance(checkpoint.GetPosition()) < player.GetSize().x * 2.f) {
+			player.setCheckpoint(name);
+		}
+	}
+
 #pragma endregion
 
 #pragma region ImGui

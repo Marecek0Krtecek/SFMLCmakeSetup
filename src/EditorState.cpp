@@ -760,7 +760,7 @@ void EditorState::update(float deltaTime) {
 		else {
 			if (cSelectedIndex < 0 || checkpoints.size() == 0) {
 				for (int i = 0; i < checkpoints.size(); i++) {
-					std::string label = "Background " + std::to_string(i);
+					std::string label = "Checkpoint " + checkpoints[i].GetName();
 					if (ImGui::Selectable(label.c_str(), cSelectedIndex == i)) {
 						cSelectedIndex = i;
 					}

@@ -42,6 +42,9 @@ bool EnemyManager::loadFromFile(const std::string& fileName) {
 
 		return true;
 	}
+	else {
+		std::cout << "File \"" << fileName << "\" was not found!";
+	}
 
 	return false;
 }

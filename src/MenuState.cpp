@@ -1,5 +1,4 @@
 #include "MenuState.h"
-#include "MenuState.h"
 
 MenuState::MenuState(sf::RenderWindow& window, StateManager& manager) :
 	manager(manager),

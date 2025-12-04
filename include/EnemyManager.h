@@ -3,6 +3,7 @@
 #include <map>
 #include "json.hpp"
 #include <fstream>
+#include <iostream>
 
 struct EnemyDef
 {

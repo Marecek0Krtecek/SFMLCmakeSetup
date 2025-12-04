@@ -6,7 +6,7 @@ int main()
 {
 #pragma region SetupStuf
 
-	sf::RenderWindow window(sf::VideoMode(1280, 720), "myGame", sf::Style::Default);
+	sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "myGame", sf::Style::Default);
 
 	window.setFramerateLimit(60);
 

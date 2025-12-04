@@ -35,6 +35,7 @@
             }
         ]
     },
+    "level": "Level 0",
     "platform": {
         "platformCount": 3,
         "platforms": [

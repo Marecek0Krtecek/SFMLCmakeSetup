@@ -233,83 +233,83 @@ void EditorState::update(float deltaTime) {
 		saveAs();
 	}
 
-	if (ImGui::Button("Save Level old")) {
-		saveWindow = !saveWindow;
-	}
-	
-	if(saveWindow){
-		static std::string saveDirectory = "";
-		static bool isChosen = false;
+	//if (ImGui::Button("Save Level old")) {
+	//	saveWindow = !saveWindow;
+	//}
+	//
+	//if(saveWindow){
+	//	static std::string saveDirectory = "";
+	//	static bool isChosen = false;
 
-		ImGui::Begin("Save To File");
-		
-		ImGui::InputText("File Name To Save To", &saveDirectory);
+	//	ImGui::Begin("Save To File");
+	//	
+	//	ImGui::InputText("File Name To Save To", &saveDirectory);
 
-		if (ImGui::Button("Choose")) {
-			isChosen = true;
-		}
+	//	if (ImGui::Button("Choose")) {
+	//		isChosen = true;
+	//	}
 
-		ImGui::End();
+	//	ImGui::End();
 
-		if (isChosen) {
-			std::ofstream save(RESOURCES_PATH + saveDirectory);
-			nlohmann::json j;
-			j["platform"] = Serializer::savePlatforms(platforms);
-			j["enemy"] = Serializer::saveEnemySpawnPoints(enemySpawnPoints);
-			save << j.dump(4);
+	//	if (isChosen) {
+	//		std::ofstream save(RESOURCES_PATH + saveDirectory);
+	//		nlohmann::json j;
+	//		j["platform"] = Serializer::savePlatforms(platforms);
+	//		j["enemy"] = Serializer::saveEnemySpawnPoints(enemySpawnPoints);
+	//		save << j.dump(4);
 
-			save.close();
+	//		save.close();
 
-			saveWindow = false;
-			isChosen = false;
-			isSaved = true;
-		}
-	}
+	//		saveWindow = false;
+	//		isChosen = false;
+	//		isSaved = true;
+	//	}
+	//}
 
-	if (ImGui::Button("Load Level old")) {
-		loadWindow = !loadWindow;
-	}
+	//if (ImGui::Button("Load Level old")) {
+	//	loadWindow = !loadWindow;
+	//}
 
-	if (loadWindow) {
-		static std::string loadDirectory = "";
-		static bool isChosen = false;
-		
-		ImGui::Begin("Load From File");
+	//if (loadWindow) {
+	//	static std::string loadDirectory = "";
+	//	static bool isChosen = false;
+	//	
+	//	ImGui::Begin("Load From File");
 
-		ImGui::InputText("File Name To Load From", &loadDirectory);
+	//	ImGui::InputText("File Name To Load From", &loadDirectory);
 
-		if (ImGui::Button("Choose")) {
-			isChosen = true;
-		}
+	//	if (ImGui::Button("Choose")) {
+	//		isChosen = true;
+	//	}
 
-		ImGui::End();
+	//	ImGui::End();
 
-		if (isChosen) {
-			std::ifstream file(RESOURCES_PATH + loadDirectory);
-			if (file.is_open()) {
-				nlohmann::json j;
-				
-				file >> j;
-				
-				platforms.erase(platforms.begin(), platforms.end());
-				Serializer::loadPlatforms(j, platforms, textures, tileManager);
+	//	if (isChosen) {
+	//		std::ifstream file(RESOURCES_PATH + loadDirectory);
+	//		if (file.is_open()) {
+	//			nlohmann::json j;
+	//			
+	//			file >> j;
+	//			
+	//			platforms.erase(platforms.begin(), platforms.end());
+	//			Serializer::loadPlatforms(j, platforms, textures, tileManager);
 
 
-				enemySpawnPoints.erase(enemySpawnPoints.begin(), enemySpawnPoints.end());
-				Serializer::loadEnemySpawnPoints(j, enemySpawnPoints);
+	//			enemySpawnPoints.erase(enemySpawnPoints.begin(), enemySpawnPoints.end());
+	//			Serializer::loadEnemySpawnPoints(j, enemySpawnPoints);
 
-				platforms.reserve(platforms.size() + 100);
-				enemySpawnPoints.reserve(enemySpawnPoints.size() + 100);
+	//			platforms.reserve(platforms.size() + 100);
+	//			enemySpawnPoints.reserve(enemySpawnPoints.size() + 100);
 
-				file.close();
+	//			file.close();
 
-				loadWindow = false;
-				isChosen = false;
+	//			loadWindow = false;
+	//			isChosen = false;
 
-				isSaved = true;
-			}
-		}
-	}
+	//			isSaved = true;
+	//		}
+	//	}
+	//}
 
 	ImGui::End();
 
@@ -367,6 +367,9 @@ void EditorState::update(float deltaTime) {
 	}
 	if (ImGui::Button("Player Checkpoints")) {
 		playerCheckpointsWindow = !playerCheckpointsWindow;
+	}
+	if (ImGui::Button("Level Name Settings")) {
+		levelNameWindow = !levelNameWindow;
 	}
 
 	if (!platformEditWindow) pSelectedIndex = -1;
@@ -804,6 +807,22 @@ void EditorState::update(float deltaTime) {
 
 #pragma endregion
 
+#pragma region Level Name
+
+	if (levelNameWindow) {
+		ImGui::Begin("Level name");
+
+		ImGui::InputText("Level name", &levelName);
+
+		if (ImGui::Button("Set Name")) {
+			levelNameWindow = false;
+		}
+
+		ImGui::End();
+	}
+
+#pragma endregion
+
 
 #pragma endregion
 
@@ -922,6 +941,7 @@ void EditorState::save() {
 	std::ofstream save(RESOURCES_PATH + currentFilePath);
 
 	nlohmann::json j;
+	j["level"] = levelName;
 	j["platform"] = Serializer::savePlatforms(platforms);
 	j["enemy"] = Serializer::saveEnemySpawnPoints(enemySpawnPoints);
 	j["background"] = Serializer::saveBackgrounds(backgrounds);
@@ -968,6 +988,10 @@ void EditorState::load() {
 
 		checkpoints.clear();
 		Serializer::loadCheckpoints(j, checkpoints);
+
+		if (j.contains("level")) {
+			levelName = j["level"].get<std::string>();
+		}
 
 		file.close();
 

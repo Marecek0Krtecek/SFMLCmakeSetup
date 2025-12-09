@@ -137,6 +137,8 @@ private:
 
 	bool playerCheckpointsWindow = false;
 
+	bool levelNameWindow = false;
+
 	//Grid
 	bool snapToGrid = true;
 	float gridSize = 32.f;
@@ -148,6 +150,8 @@ private:
 	//Saving / Loading
 	std::string currentFilePath;
 	bool isSaved = true;
+
+	std::string levelName = "New Level";
 
 #if PRODUCTION_BUILD 
 	const char* resourcesPath = RESOURCES_PATH;

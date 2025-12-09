@@ -107,8 +107,8 @@ Väčšina systémov už existuje, teraz ide o ich prepojenie, testovanie a dola
 **Cieľ:** Pridať základy užívateľského rozhrania a prvé vizuálne efekty.
 
 - [ ] 🧱 Pridaj základné UI (HP, skóre, level name)
-- [ ] 🕶️ Pridaj jednoduché animácie – napr. pohyb nepriateľa, bliknutie pri poškodení
-- [x] 🌫️ Pridaj vizuálne efekty (napr. fade-in/out medzi levelmi)
+- [x] 🕶️ Pridaj jednoduché animácie – napr. pohyb nepriateľa, bliknutie pri poškodení
+- [ ] 🌫️ Pridaj vizuálne efekty (napr. fade-in/out medzi levelmi)
 - [ ] 🎧 Voliteľné: základný sound system (SFX pri skoku, zásahu, respawne)
 > 🎯 **Cieľ týždňa:** Hra pôsobí živšie, hráč má spätnú väzbu na svoje akcie.
 
@@ -119,8 +119,8 @@ Väčšina systémov už existuje, teraz ide o ich prepojenie, testovanie a dola
 **Cieľ:** Otestovať celé flow – editor → uloženie → gameplay → návrat do editora.
 
 - [ ] 🧩 Prejsť všetky testovacie levely a zistiť, či sa správne načítavajú
-- [ ] 🐛 Odchytiť a zapísať najčastejšie chyby (napr. neplatné spawn pointy, chýbajúce textúry)
-- [ ] 📊 Pridať logovanie (napr. std::cout alebo debug overlay cez ImGui)
+- [x] 🐛 Odchytiť a zapísať najčastejšie chyby (napr. neplatné spawn pointy, chýbajúce textúry)
+- [x] 📊 Pridať logovanie (napr. **std::cout** alebo debug overlay cez ImGui)
 - [ ] 🧠 Pripraviť si poznámky pre decembrový cieľ – bojový systém alebo animácie
 > 🎯 **Cieľ mesiaca:** Stabilná hrateľná verzia, ktorú môžeš ukázať alebo zdieľať so spolužiakom na testovanie.
 
@@ -131,3 +131,52 @@ Väčšina systémov už existuje, teraz ide o ich prepojenie, testovanie a dola
 - 🎯 Ak zvládneš polovicu úloh, budeš mať do decembra hotový kompletný gameplay základ.
 - 🧠 Hlavné je testovať často – aj malé chyby v dátach (napr. spawn bez typu) sa dajú ľahko zachytiť.
 - 🧩 V decembri sa môžeme zamerať na bojový systém, animácie alebo HUD polish – podľa toho, čo budeš chcieť prioritizovať.
+
+# ----------------------------------------------------------------------
+
+# 🗓️ December 2025 – AI, boj a polish
+
+## 🧠 Týždeň 9 – AI základ: stavový stroj pre nepriateľa
+**Cieľ:** Zaviesť prvú verziu AI, ktorá je jednoduchá, ale rozšíriteľná.
+
+- [ ] 🔄 Navrhnúť jednoduchý state machine pre nepriateľa (Idle → Patrol → Chase → Attack)
+- [ ] 👣 Dokončiť patrolovanie (chôdza tam a späť, obracanie sa, limity pohybu)
+- [ ] 👀 Pridať základné „vnímanie hráča“ (rádius alebo raycast dopredu)
+- [ ] 📏 Nastaviť parametre pre každý typ nepriateľa (speed, vision range, damage)
+
+---
+
+## ⚔️ Týždeň 10 – Základy boja
+**Cieľ:** Zaviesť jednoduché útočenie a spätnú väzbu.
+
+- [ ] 💥 Implementovať „attack“ fázu nepriateľa (dotyk/kolízia alebo animovaný útok)
+- [ ] 🛡️ Uistiť sa, že hráč dostáva damage len raz, nie kontinuálne
+- [x] ✨ Pridať vizuálnu spätnú väzbu (bliknutie hráča alebo efekt)
+- [ ] 🔊 Voliteľné: pridať základné zvuky (attack, hit, krok)
+
+---
+
+## 🎮 Týždeň 11 – Prepojenie AI s gameplayom
+**Cieľ:** AI sa správa konzistentne v každom levele.
+
+- [ ] 🧩 Pri respawne hráča resetovať aj správanie nepriateľov
+- [ ] 🔁 Otestovať AI vo viacerých leveloch s rôznymi platformami
+- [ ] 🧭 Uistiť sa, že EnemySpawnPoint a EnemyDef sa prenášajú správne
+- [ ] 🧹 Refaktor: odstrániť magic numbers a spraviť z nich parametre (speed, ranges, damage)
+
+---
+
+## ✨ Týždeň 12 – Polish, efekty a stabilita
+**Cieľ:** Spraviť gameplay hladší a čitateľnejší.
+
+- [ ] 🩹 Pridať krátke „invincibility frames“ po zásahu hráča
+- [ ] 🚶 Pridať jednoduché animácie nepriateľov (otáčanie, idle animácia)
+- [ ] 🌫️ Pridať efekt pri smrti nepriateľa
+- [ ] 📈 Doladiť hodnoty AI (spravodlivý a čitateľný gameplay)
+- [ ] 🧪 Otestovať celý flow: editor → hra → smrť → respawn → späť do editora
+
+---
+
+## Poznámky
+- December má menej dní, plán je modulárny a môžeš ho presúvať do januára.
+- Najťažšia časť bude návrh AI a samotný state machine.

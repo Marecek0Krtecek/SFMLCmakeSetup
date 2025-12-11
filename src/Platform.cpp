@@ -4,6 +4,8 @@ Platform::Platform(sf::Vector2f size, sf::Vector2f position) {
 	body.setSize(size);
 	body.setOrigin(size / 2.f);
 	body.setPosition(position);
+
+	this->top = GetPosition().y - GetCollider().GetHalfSize().y;
 }
 
 Platform::Platform(sf::Vector2f size, sf::Vector2f position, sf::Texture* texture) {
@@ -11,6 +13,8 @@ Platform::Platform(sf::Vector2f size, sf::Vector2f position, sf::Texture* textur
 	body.setOrigin(size / 2.f);
 	body.setPosition(position);
 	body.setTexture(texture);
+
+	this->top = GetPosition().y - GetCollider().GetHalfSize().y;
 }
 
 Platform::Platform(sf::Vector2f size, sf::Vector2f position, sf::Texture* texture, const sf::IntRect& uvRect) {
@@ -21,6 +25,8 @@ Platform::Platform(sf::Vector2f size, sf::Vector2f position, sf::Texture* textur
 	body.setTextureRect(uvRect);
 
 	this->uvRect = uvRect;
+
+	this->top = GetPosition().y - GetCollider().GetHalfSize().y;
 }
 
 Platform::Platform(sf::Vector2f size, sf::Vector2f position, sf::Texture* texture, const sf::IntRect& uvRect, const std::string& platfomTexture) {
@@ -32,4 +38,6 @@ Platform::Platform(sf::Vector2f size, sf::Vector2f position, sf::Texture* textur
 
 	this->platformTexture = platfomTexture;
 	this->uvRect = uvRect;
+
+	this->top = GetPosition().y - GetCollider().GetHalfSize().y;
 }

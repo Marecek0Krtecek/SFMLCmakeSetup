@@ -5,6 +5,7 @@
 #include <string>
 #include "EnemyManager.h"
 #include "TextureManager.h"
+#include "Platform.h"
 
 class Enemy
 {
@@ -12,10 +13,11 @@ public:
 	Enemy(const EnemyManager& enemyManager, const EnemySpawnPoint& spawnPoint, TextureManager& textures, int SPID);
 
 	void Update(float deltaTime);
+	void UpdateBehavior(float deltaTime, std::vector<Platform>& platforms);
 	void OnCollision(sf::Vector2f direction);
 	bool OnPlayerColision(Player& player);
 
-	void draw(sf::RenderWindow& window) { window.draw(body); }
+	void draw(sf::RenderWindow& window) { window.draw(body); /*window.draw(probe);*/ }
 	
 	void setScale(sf::Vector2f scale) { body.setScale(scale); }
 	void SetDirection(sf::Vector2f direction) { velocity = sf::Vector2f(velocity.x * direction.x, velocity.y * direction.y); }
@@ -29,9 +31,17 @@ public:
 	float GetSpeed() const { return speed; }
 	std::string GetEnemyName() const { return name; }
 
+private:
+	float getDistance(sf::Vector2f otherPosition);
+	Collision getFeetCollider() { return Collision(probe); }
+
+	bool nextStep(std::vector<Platform>& platforms);
+
+
 public:
 	float gravity = 50.f;
 	int spawnPointID = -1;
+	
 
 private:
 	sf::RectangleShape body;
@@ -43,4 +53,8 @@ private:
 	sf::Vector2f velocity;
 
 	std::string name;
+
+	bool foundGround = false;
+
+	sf::RectangleShape probe;
 };

@@ -415,7 +415,7 @@
         "x": 4,
         "y": 3
       },
-      "switchTime": 0.1,
+      "switchTime": 0.15,
       "speed": 250.0
     },
     {
@@ -431,8 +431,8 @@
         "x": 4,
         "y": 3
       },
-      "switchTime": 0.1,
-      "speed": 250.0
+      "switchTime": 0.15,
+      "speed": 100.0
     }
   ]
 }

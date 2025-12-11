@@ -1,64 +1,87 @@
 {
     "background": {
-        "backgroundCount": 1,
-        "backgrounds": [
-            {
-                "height": 216.0,
-                "parllax": 0.9950000047683716,
-                "texture": "/Glacial-mountains-parallax-background_vnitti/background_glacial_mountains.png",
-                "width": 384.0
-            }
-        ]
+        "backgroundCount": 0,
+      "backgrounds": [
+        {
+          "height": 2160.0,
+          "parllax": 0.5,
+          "texture": "/Glacial-mountains-parallax-background_vnitti/background_glacial_mountains.png",
+          "width": 3840.0
+        }
+      ]
     },
     "checkpoint": {
         "checkpointCount": 1,
         "checkpoints": [
             {
                 "name": "spawn",
-                "x": -192.0,
-                "y": -64.0
+                "x": -416.0,
+                "y": -192.0
             }
         ]
     },
     "enemy": {
-        "enemyCount": 2,
+        "enemyCount": 1,
         "enemySpawnPoints": [
             {
-                "type": "Green Slime",
-                "x": 320.0,
-                "y": -64.0
-            },
-            {
                 "type": "Purple Slime",
-                "x": 0.0,
-                "y": -64.0
+                "x": -256.0,
+                "y": -96.0
             }
         ]
     },
-    "level": "Level 0",
+    "level": "New Level",
     "platform": {
-        "platformCount": 3,
+        "platformCount": 7,
         "platforms": [
             {
-                "height": 50.0,
-                "tile": "Dry Grass",
-                "width": 100.0,
-                "x": 0.0,
-                "y": 0.0
+                "height": 32.0,
+                "tile": "Grass Block",
+                "width": 32.0,
+                "x": -320.0,
+                "y": -64.0
             },
             {
-                "height": 50.0,
-                "tile": "Grass",
-                "width": 100.0,
-                "x": 320.0,
-                "y": 32.0
+                "height": 32.0,
+                "tile": "Grass Block",
+                "width": 32.0,
+                "x": -288.0,
+                "y": -64.0
             },
             {
-                "height": 50.0,
-                "tile": "Winter Grass",
-                "width": 100.0,
+                "height": 32.0,
+                "tile": "Dirt Lucky Block",
+                "width": 32.0,
+                "x": -256.0,
+                "y": -64.0
+            },
+            {
+                "height": 32.0,
+                "tile": "Dirt Block",
+                "width": 32.0,
+                "x": -224.0,
+                "y": -64.0
+            },
+            {
+                "height": 32.0,
+                "tile": "Dry Cracked Dirt Block 1",
+                "width": 32.0,
                 "x": -192.0,
-                "y": -32.0
+                "y": -64.0
+            },
+            {
+                "height": 32.0,
+                "tile": "Fall Dirt Block",
+                "width": 32.0,
+                "x": -160.0,
+                "y": -64.0
+            },
+            {
+                "height": 32.0,
+                "tile": "Winter Grass",
+                "width": 64.0,
+                "x": -416.0,
+                "y": -160.0
             }
         ]
     }

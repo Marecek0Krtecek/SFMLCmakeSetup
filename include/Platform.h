@@ -25,8 +25,7 @@ public:
 	sf::FloatRect GetGlobalBounds() const { return body.getGlobalBounds(); }
 
 public:
-	bool canHaveEnemy = false;
-	bool hasEnemy = false;
+	float top;
 
 private:
 	sf::RectangleShape body;

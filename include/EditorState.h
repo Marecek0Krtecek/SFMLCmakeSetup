@@ -88,7 +88,7 @@ private:
 	int pSelectedIndex = -1;
 
 	sf::Vector2f selectPos = {};
-	sf::Vector2f selectSize = {100.f, 50.f};
+	sf::Vector2f selectSize = { 32.f, 32.f};
 
 	//Textures
 	TextureManager textures;

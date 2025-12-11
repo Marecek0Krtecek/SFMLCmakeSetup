@@ -40,11 +40,12 @@
         "enemySpawnPoints": [
             {
                 "type": "Purple Slime",
-                "x": 2400.0,
+                "x": 2496.0,
                 "y": 224.0
             }
         ]
     },
+    "level": "New Level",
     "platform": {
         "platformCount": 55,
         "platforms": [

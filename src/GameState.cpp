@@ -13,7 +13,7 @@ GameState::GameState(sf::RenderWindow& window, StateManager& manager) :
 	
 	std::ifstream file(RESOURCES_PATH "levels/level_1.json");
 	nlohmann::json j;
-
+	
 	file >> j;
 
 	Serializer::loadPlatforms(j, platforms, textures, tiles);
@@ -60,13 +60,16 @@ void GameState::update(float deltaTime) {
 	for (size_t i = 0; i < enemies.size(); i++) {
 		auto& enemy = enemies[i];
 
+		enemy.UpdateBehavior(deltaTime, platforms);
+
 		enemy.Update(deltaTime);
 		if (enemy.GetCollider().CheckCollision(player.GetCollider(), sf::Vector2f(), 0.5f)) {
 			enemy.OnPlayerColision(player);
 		}
 
-		if (player.GetDistance(enemy.getPosition()) > view.getSize().x / 1.5f) {
-			enemySpawnPoints[enemy.spawnPointID].hasChild = false;
+		if (player.GetDistance(enemy.getPosition()) > view.getSize().x / 1.8f) {
+			if(enemy.spawnPointID >= 0)
+				enemySpawnPoints[enemy.spawnPointID].hasChild = false;
 
 			enemies.erase(enemies.begin() + i);
 		}
@@ -180,6 +183,9 @@ void GameState::ResizeView(const sf::RenderWindow& window, sf::View& view)
 void GameState::RestartGame(Player& player, std::vector<Enemy>& enemies) {
 	player.Restrart();
 	enemies.clear();
+	for (auto& enemy : enemySpawnPoints) {
+		enemy.hasChild = false;
+	}
 }
 
 void GameState::SpawnEnemy(std::vector<Enemy>& enemies,const EnemySpawnPoint& spawnPoint, int SPID) {

@@ -1,10 +1,17 @@
 #include "MenuButton.h"
+#include "MenuButton.h"
 
 MenuButton::MenuButton(sf::Vector2f pos, sf::Vector2f size, sf::Color backgroundColor) {
 	body.setSize(size);
 	body.setPosition(pos);
 	body.setOrigin(size / 2.f);
 	this->defaultColor = backgroundColor;
+}
+
+MenuButton::MenuButton(sf::Vector2f pos, sf::Vector2f size, sf::Texture* texture) {
+	body.setSize(size);
+	body.setPosition(pos);
+	body.setOrigin(size / 2.f);
 }
 
 bool MenuButton::Update(sf::Vector2f cursorPos) {

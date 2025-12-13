@@ -9,6 +9,11 @@ MenuState::MenuState(sf::RenderWindow& window, StateManager& manager) :
 
 	GameButton = MenuButton(sf::Vector2f(0.f, -200.f), sf::Vector2f(500.f, 100.f), sf::Color::Red);
 	EditorButton = MenuButton(sf::Vector2f(0.f, 0.f), sf::Vector2f(500.f, 100.f), sf::Color::Green);
+
+	background.setSize(sf::Vector2f(843.f, 596.f));
+	background.setOrigin(background.getSize() / 2.f);
+	background.setPosition(0.f, 0.f);
+	background.setTexture(&textures.get("menu_design/menu_background.png"));
 }
 
 void MenuState::handleEvent(const sf::Event& event, sf::RenderWindow& window) {
@@ -52,8 +57,7 @@ void MenuState::render(sf::RenderWindow& window) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void MenuState::ResizeView(const sf::RenderWindow& window, sf::View& view)
-{
+void MenuState::ResizeView(const sf::RenderWindow& window, sf::View& view) {
 	float aspectRatio = float(window.getSize().x / float(window.getSize().y));
 	view.setSize(VIEW_HEIGHT * aspectRatio, VIEW_HEIGHT);
 }

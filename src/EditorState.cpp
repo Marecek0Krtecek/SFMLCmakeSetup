@@ -345,19 +345,19 @@ void EditorState::update(float deltaTime) {
 
 	if (ImGui::Button("Platform Creation")) {
 		platformWindow = !platformWindow;
-		currentItem = 0;
+		pCurrentItem = 0;
 	}
 	if (ImGui::Button("Platform Editing")) {
 		platformEditWindow = !platformEditWindow;
-		currentItem = 0;
+		pCurrentItem = 0;
 	}
 	if (ImGui::Button("Enemy Spawn Poind Creation")) {
 		enemyWindow = !enemyWindow;
-		currentItem = 0;
+		pCurrentItem = 0;
 	}
 	if (ImGui::Button("Enemy SP Editing")) {
 		enemyEditWindow = !enemyEditWindow;
-		currentItem = 0;
+		pCurrentItem = 0;
 	}
 	if (ImGui::Button("Grid Settings")) {
 		gridSettingWindow = !gridSettingWindow;
@@ -390,8 +390,8 @@ void EditorState::update(float deltaTime) {
 			selectPos = snapToGridFunc(selectPos, gridSize, snapToGrid);
 		}
 
-		ImGui::Combo("Texture", &currentItem, tileNames.data(), (int)tileNames.size());
-		auto* def = tileManager.getTile(strTileNames[currentItem]);
+		ImGui::Combo("Texture", &pCurrentItem, tileNames.data(), (int)tileNames.size());
+		auto* def = tileManager.getTile(strTileNames[pCurrentItem]);
 		if (def) {
 			auto& atlasTexture = textures.get(def->textureAdress);
 			sf::Sprite texturePreview(atlasTexture, def->rect);
@@ -413,7 +413,7 @@ void EditorState::update(float deltaTime) {
 		if (ImGui::Button("Clear Choices")) {
 			selectSize = {};
 			selectPos = {};
-			currentItem = 0;
+			pCurrentItem = 0;
 		}
 		ImGui::End();
 	}
@@ -456,18 +456,18 @@ void EditorState::update(float deltaTime) {
 					resizePlatform(pSelectedIndex, platform.GetSize(), size);
 			}
 
-			if (strTileNames[currentItem] != platform.GetTexture()) {
+			if (strTileNames[pCurrentItem] != platform.GetTexture()) {
 				for (int i = 0; i < strTileNames.size(); i++) {
 					if (strTileNames[i] == platform.GetTexture()) {
-						currentItem = i;
+						pCurrentItem = i;
 						break;
 					}
 				}
 			}
 
 
-			if (ImGui::Combo("Texture", &currentItem, tileNames.data(), (int)tileNames.size())) {
-					changePlatformTile(pSelectedIndex, platform.GetTexture(), strTileNames[currentItem]);
+			if (ImGui::Combo("Texture", &pCurrentItem, tileNames.data(), (int)tileNames.size())) {
+					changePlatformTile(pSelectedIndex, platform.GetTexture(), strTileNames[pCurrentItem]);
 			}
 
 			if (ImGui::Button("Delete Platform")) {
@@ -541,8 +541,8 @@ void EditorState::update(float deltaTime) {
 			selectPos = snapToGridFunc(selectPos, gridSize, snapToGrid);
 		}
 
-		ImGui::Combo("Texture", &currentItem, enemyTxNames.data(), enemyTxNames.size());
-		auto* def = enemyManager.getEnemy(strEnemyTxNames[currentItem]);
+		ImGui::Combo("Texture", &eCurrentItem, enemyTxNames.data(), enemyTxNames.size());
+		auto* def = enemyManager.getEnemy(strEnemyTxNames[eCurrentItem]);
 
 		if (def) {
 			auto& atlasTexture = textures.get(def->textureAdress);
@@ -599,17 +599,17 @@ void EditorState::update(float deltaTime) {
 					moveEnemy(eSelectedIndex, enemySP.GetPosition(), pos);
 			}
 
-			if (strEnemyTxNames[currentItem] != enemySP.GetName()) {
+			if (strEnemyTxNames[eCurrentItem] != enemySP.GetName()) {
 				for (int i = 0; i < strEnemyTxNames.size(); i++) {
 					if (strEnemyTxNames[i] == enemySP.GetName()) {
-						currentItem = i;
+						eCurrentItem = i;
 						break;
 					}
 				}
 			}
 
-			if (ImGui::Combo("Enemy Type", &currentItem, enemyTxNames.data(), enemyTxNames.size())) {
-				changeEnemyType(eSelectedIndex, enemySP.GetName(), strEnemyTxNames[currentItem]);
+			if (ImGui::Combo("Enemy Type", &eCurrentItem, enemyTxNames.data(), enemyTxNames.size())) {
+				changeEnemyType(eSelectedIndex, enemySP.GetName(), strEnemyTxNames[eCurrentItem]);
 			}
 
 			auto* def = enemyManager.getEnemy(enemySP.GetName());

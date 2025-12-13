@@ -1,14 +1,14 @@
 {
     "background": {
-        "backgroundCount": 0,
-      "backgrounds": [
-        {
-          "height": 2160.0,
-          "parllax": 0.5,
-          "texture": "/Glacial-mountains-parallax-background_vnitti/background_glacial_mountains.png",
-          "width": 3840.0
-        }
-      ]
+        "backgroundCount": 1,
+        "backgrounds": [
+            {
+                "height": 2160.0,
+                "parllax": 0.5,
+                "texture": "/Glacial-mountains-parallax-background_vnitti/background_glacial_mountains.png",
+                "width": 3840.0
+            }
+        ]
     },
     "checkpoint": {
         "checkpointCount": 1,
@@ -32,7 +32,7 @@
     },
     "level": "New Level",
     "platform": {
-        "platformCount": 7,
+        "platformCount": 13,
         "platforms": [
             {
                 "height": 32.0,
@@ -81,6 +81,48 @@
                 "tile": "Winter Grass",
                 "width": 64.0,
                 "x": -416.0,
+                "y": -160.0
+            },
+            {
+                "height": 16.0,
+                "tile": "Dry Grass",
+                "width": 32.0,
+                "x": -320.0,
+                "y": -160.0
+            },
+            {
+                "height": 16.0,
+                "tile": "Dry Grass",
+                "width": 32.0,
+                "x": -288.0,
+                "y": -160.0
+            },
+            {
+                "height": 16.0,
+                "tile": "Dry Grass",
+                "width": 32.0,
+                "x": -256.0,
+                "y": -160.0
+            },
+            {
+                "height": 16.0,
+                "tile": "Dry Grass",
+                "width": 32.0,
+                "x": -192.0,
+                "y": -160.0
+            },
+            {
+                "height": 16.0,
+                "tile": "Dry Grass",
+                "width": 32.0,
+                "x": -224.0,
+                "y": -160.0
+            },
+            {
+                "height": 16.0,
+                "tile": "Dry Grass",
+                "width": 32.0,
+                "x": -160.0,
                 "y": -160.0
             }
         ]

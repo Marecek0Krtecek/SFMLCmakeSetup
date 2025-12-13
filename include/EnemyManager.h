@@ -15,6 +15,12 @@ struct EnemyDef
 	float speed;
 };
 
+enum EnemyState {
+	Idle,
+	Patrol,
+	Chase
+};
+
 class EnemySpawnPoint
 {
 public:

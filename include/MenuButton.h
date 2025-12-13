@@ -7,6 +7,7 @@ class MenuButton
 public:
 	MenuButton() = default;
 	MenuButton(sf::Vector2f pos, sf::Vector2f size, sf::Color backgroundColor);
+	MenuButton(sf::Vector2f pos, sf::Vector2f size, sf::Texture* texture);
 	~MenuButton() = default;
 
 	bool Update(sf::Vector2f cursorPos);

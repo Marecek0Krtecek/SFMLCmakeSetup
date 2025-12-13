@@ -17,11 +17,12 @@ private:
 private:
 	StateManager& manager;
 	sf::RenderWindow& window;
+	TextureManager textures;
 
 	sf::View view;
-	const float VIEW_HEIGHT = 1024.f;
+	const float VIEW_HEIGHT = 596.f;
 
-	sf::Sprite background;
+	sf::RectangleShape background;
 
 	sf::Vector2i mousePos;
 	sf::Vector2f cursorPos;

@@ -60,7 +60,7 @@ void GameState::update(float deltaTime) {
 	for (size_t i = 0; i < enemies.size(); i++) {
 		auto& enemy = enemies[i];
 
-		enemy.UpdateBehavior(deltaTime, platforms);
+		enemy.UpdateBehavior(deltaTime, platforms, player);
 
 		enemy.Update(deltaTime);
 		if (enemy.GetCollider().CheckCollision(player.GetCollider(), sf::Vector2f(), 0.5f)) {

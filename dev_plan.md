@@ -23,7 +23,7 @@ Každý víkend máš priestor na väčšie úlohy alebo refaktorovanie.
 
 - [x] 👾 Vytvoriť základnú triedu `Enemy` a systém `EnemyManager`
 - [x] 🔁 Prepojiť `EnemySpawnPoint` s `EnemyDef`
-- [ ] 🧱 Implementovať jednoduché správanie (napr. chôdza tam a späť)
+- [x] 🧱 Implementovať jednoduché správanie (napr. chôdza tam a späť)
 - [x] 🎨 V editore pridať zmenu typu nepriateľa a farby/ikonky podľa typu
 - [x] 🧪 Otestovať spawnovanie počas gameplayu
 
@@ -48,7 +48,7 @@ Každý víkend máš priestor na väčšie úlohy alebo refaktorovanie.
 **Cieľ:** Všetko, čo si vytvoril, prepojiť do hrateľného základu.
 
 - [x] 🎮 Spustiť level z editora a otestovať gameplay loop
-- [ ] ⚙️ Doladiť pohyb hráča (kolízie, rýchlosť, skok)
+- [x] ⚙️ Doladiť pohyb hráča (kolízie, rýchlosť, skok)
 - [x] 💥 Implementovať základný systém kolízie s nepriateľmi
 - [x] 💡 Začať pripravovať základ pre UI (HP, skóre, level name)
 - [x] 🧹 Refaktor: vyčistiť redundantné include-y a premenovať funkcie pre čitateľnosť
@@ -83,7 +83,7 @@ Väčšina systémov už existuje, teraz ide o ich prepojenie, testovanie a dola
 - [ ] 👣 Zjednotiť pohyb hráča (vyhladený pohyb, lepší skok)
 - [x] 💥 Implementovať systém poškodenia (hráč stratí HP pri kontakte s nepriateľom)
 - [x] ❤️ Pridať HP bar alebo jednoduchý indikátor zdravia
-- [ ] ⚙️ Rozšíriť EnemyManager o update logiku (napr. patrolovanie, sledovanie hráča)
+- [x] ⚙️ Rozšíriť EnemyManager o update logiku (napr. patrolovanie, sledovanie hráča)
 - [x] 💀 Implementovať respawn alebo restart levelu po smrti hráča
 > 🎯 **Cieľ týždňa:** Nepriatelia a hráč majú základnú interakciu – dá sa „zomrieť“ a znova hrať.
 
@@ -121,7 +121,7 @@ Väčšina systémov už existuje, teraz ide o ich prepojenie, testovanie a dola
 - [ ] 🧩 Prejsť všetky testovacie levely a zistiť, či sa správne načítavajú
 - [x] 🐛 Odchytiť a zapísať najčastejšie chyby (napr. neplatné spawn pointy, chýbajúce textúry)
 - [x] 📊 Pridať logovanie (napr. **std::cout** alebo debug overlay cez ImGui)
-- [ ] 🧠 Pripraviť si poznámky pre decembrový cieľ – bojový systém alebo animácie
+- [x] 🧠 Pripraviť si poznámky pre decembrový cieľ – bojový systém alebo animácie
 > 🎯 **Cieľ mesiaca:** Stabilná hrateľná verzia, ktorú môžeš ukázať alebo zdieľať so spolužiakom na testovanie.
 
 ---
@@ -140,8 +140,8 @@ Väčšina systémov už existuje, teraz ide o ich prepojenie, testovanie a dola
 **Cieľ:** Zaviesť prvú verziu AI, ktorá je jednoduchá, ale rozšíriteľná.
 
 - [ ] 🔄 Navrhnúť jednoduchý state machine pre nepriateľa (Idle → Patrol → Chase → Attack)
-- [ ] 👣 Dokončiť patrolovanie (chôdza tam a späť, obracanie sa, limity pohybu)
-- [ ] 👀 Pridať základné „vnímanie hráča“ (rádius alebo raycast dopredu)
+- [x] 👣 Dokončiť patrolovanie (chôdza tam a späť, obracanie sa, limity pohybu)
+- [x] 👀 Pridať základné „vnímanie hráča“ (rádius alebo raycast dopredu)
 - [ ] 📏 Nastaviť parametre pre každý typ nepriateľa (speed, vision range, damage)
 
 ---

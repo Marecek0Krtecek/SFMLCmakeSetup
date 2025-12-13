@@ -95,7 +95,8 @@ private:
 
 	TileManager tileManager;
 
-	int currentItem = 0;
+	int pCurrentItem = 0;
+	int eCurrentItem = 0;
 	std::vector<const char*> tileNames;
 	std::vector<std::string> strTileNames;
 

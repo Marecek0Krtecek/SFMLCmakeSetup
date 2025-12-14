@@ -7,8 +7,8 @@ MenuState::MenuState(sf::RenderWindow& window, StateManager& manager) :
 {
 	ResizeView(window, view);
 
-	GameButton = MenuButton(sf::Vector2f(0.f, -200.f), sf::Vector2f(500.f, 100.f), sf::Color::Red);
-	EditorButton = MenuButton(sf::Vector2f(0.f, 0.f), sf::Vector2f(500.f, 100.f), sf::Color::Green);
+	GameButton = MenuButton(sf::Vector2f(0.f, -150.f), sf::Vector2f(500.f, 100.f), &textures.get("menu_design/boxes_sharp.png"), sf::IntRect(0, 0, 1020, 296));
+	EditorButton = MenuButton(sf::Vector2f(0.f, 0.f), sf::Vector2f(500.f, 100.f), &textures.get("menu_design/boxes_sharp.png"), sf::IntRect(2049, 0, 1020, 296));
 
 	background.setSize(sf::Vector2f(843.f, 596.f));
 	background.setOrigin(background.getSize() / 2.f);
@@ -32,13 +32,13 @@ void MenuState::update(float deltaTime) {
 	cursorPos = window.mapPixelToCoords(mousePos, view);
 
 	if (GameButton.Update(cursorPos)) {
-		GameButton.Hower();
+		GameButton.Hower(sf::IntRect(sf::Vector2i(GameButton.GetUvRect().left, GameButton.GetUvRect().height), GameButton.GetUvRect().getSize()));
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
 			manager.changeState<GameState>(window, manager);
 		}
 	}
 	if (EditorButton.Update(cursorPos)) {
-		EditorButton.Hower();
+		EditorButton.Hower(sf::IntRect(EditorButton.GetUvRect().left, EditorButton.GetUvRect().height, EditorButton.GetUvRect().width, 300));
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
 			manager.changeState<EditorState>(window, manager);
 		}

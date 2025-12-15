@@ -7,8 +7,8 @@ MenuState::MenuState(sf::RenderWindow& window, StateManager& manager) :
 {
 	ResizeView(window, view);
 
-	GameButton = MenuButton(sf::Vector2f(0.f, -150.f), sf::Vector2f(500.f, 100.f), &textures.get("menu_design/boxes_sharp.png"), sf::IntRect(0, 0, 1020, 296));
-	EditorButton = MenuButton(sf::Vector2f(0.f, 0.f), sf::Vector2f(500.f, 100.f), &textures.get("menu_design/boxes_sharp.png"), sf::IntRect(2049, 0, 1020, 296));
+	GameButton = MenuButton(sf::Vector2f(0.f, -150.f), sf::Vector2f(500.f, 100.f), &textures.get("menu_design/boxes_sharp_1.png"), sf::IntRect(0, 0, 1020, 296));
+	EditorButton = MenuButton(sf::Vector2f(0.f, 0.f), sf::Vector2f(500.f, 100.f), &textures.get("menu_design/boxes_sharp_1.png"), sf::IntRect(2049, 0, 1020, 296));
 
 	background.setSize(sf::Vector2f(843.f, 596.f));
 	background.setOrigin(background.getSize() / 2.f);

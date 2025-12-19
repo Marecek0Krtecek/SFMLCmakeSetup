@@ -22,7 +22,7 @@ public:
 	void setScale(sf::Vector2f scale) { body.setScale(scale); }
 	void SetDirection(sf::Vector2f direction) { velocity = sf::Vector2f(velocity.x * direction.x, velocity.y * direction.y); }
 
-	sf::Vector2f GetSize() const { return body.getPosition(); }
+	sf::Vector2f GetSize() const { return body.getSize(); }
 	sf::Vector2f getPosition() const { return body.getPosition(); }
 	sf::Vector2f GetVelocity() const { return velocity; }
 	Collision GetCollider() { return Collision(body); }
@@ -32,10 +32,12 @@ public:
 	std::string GetEnemyName() const { return name; }
 
 private:
-	float getDistance(sf::Vector2f otherPosition);
+	float getDistance(sf::Vector2f otherPosition) const;
 	sf::Vector2f getDirectionOfOther(sf::Vector2f otherPosition) const;
 	sf::Vector2f getDirectionOfOtherN(sf::Vector2f otherPosition) const;
 	Collision getFeetCollider() { return Collision(probe); }
+	Collision getColliderOf(sf::RectangleShape& otherBody) { return Collision(otherBody); }
+	sf::FloatRect getGlobalBounds() const { return body.getGlobalBounds(); }
 
 	bool nextStep(std::vector<Platform>& platforms);
 	void lookForPlayer(Player& player);
@@ -65,7 +67,16 @@ private:
 	float idleTimer = 0.f;
 	float patrolTimer = 0.f;
 
-	float agroRange = 256.f;
+	float agroRange = 256.f * 4;
+
+	float attackRange = 128.f;
+	float attackTimer = 0.f;
+	float attackDurration = 0.65f;
+	float attackDelay = 0.5f;
+	float attackCooldown = 2.f;
+	float attackCooldownTimer = 0.f;
+
+	sf::RectangleShape attackShape;
 
 	//Preview stuff
 	sf::RectangleShape probe;

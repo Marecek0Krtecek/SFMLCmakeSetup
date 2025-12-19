@@ -20,6 +20,8 @@ public:
 	void setCheckpoint(std::string checkpoint) { lastCheckpoint = checkpoint; }
 
 	sf::Vector2f getPosition() const { return body.getPosition(); }
+	sf::FloatRect getGlobalBounds() const { return body.getGlobalBounds(); }
+	sf::Vector2f getScale() const { return body.getScale(); }
 	sf::Vector2f GetVelocity() const { return velocity; }
 	sf::Vector2f GetSize() const { return body.getSize(); }
 	Collision GetCollider() { return Collision(body); }

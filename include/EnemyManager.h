@@ -18,7 +18,8 @@ struct EnemyDef
 enum EnemyState {
 	Idle,
 	Patrol,
-	Chase
+	Chase,
+	Attack
 };
 
 class EnemySpawnPoint

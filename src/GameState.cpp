@@ -11,7 +11,7 @@ GameState::GameState(sf::RenderWindow& window, StateManager& manager) :
 	enemyManager.loadFromFile(RESOURCES_PATH "config.json");
 	tiles.loadFromFile(RESOURCES_PATH "config.json");
 	
-	std::ifstream file(RESOURCES_PATH "levels/level_1.json");
+	std::ifstream file(RESOURCES_PATH "levels/level.json");
 	nlohmann::json j;
 	
 	file >> j;
@@ -63,9 +63,6 @@ void GameState::update(float deltaTime) {
 		enemy.UpdateBehavior(deltaTime, platforms, player);
 
 		enemy.Update(deltaTime);
-		if (enemy.GetCollider().CheckCollision(player.GetCollider(), sf::Vector2f(), 0.5f)) {
-			enemy.OnPlayerColision(player);
-		}
 
 		if (player.GetDistance(enemy.getPosition()) > view.getSize().x / 1.8f) {
 			if(enemy.spawnPointID >= 0)

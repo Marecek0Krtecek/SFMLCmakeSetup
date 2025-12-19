@@ -139,7 +139,7 @@ Väčšina systémov už existuje, teraz ide o ich prepojenie, testovanie a dola
 ## 🧠 Týždeň 9 – AI základ: stavový stroj pre nepriateľa
 **Cieľ:** Zaviesť prvú verziu AI, ktorá je jednoduchá, ale rozšíriteľná.
 
-- [ ] 🔄 Navrhnúť jednoduchý state machine pre nepriateľa (Idle → Patrol → Chase → Attack)
+- [x] 🔄 Navrhnúť jednoduchý state machine pre nepriateľa (Idle → Patrol → Chase → Attack)
 - [x] 👣 Dokončiť patrolovanie (chôdza tam a späť, obracanie sa, limity pohybu)
 - [x] 👀 Pridať základné „vnímanie hráča“ (rádius alebo raycast dopredu)
 - [ ] 📏 Nastaviť parametre pre každý typ nepriateľa (speed, vision range, damage)

@@ -21,6 +21,10 @@ Enemy::Enemy(const EnemyManager& enemyManager, const EnemySpawnPoint& spawnPoint
 
 	probe.setOrigin(probe.getSize() / 2.f);
 
+	attackShape.setSize(sf::Vector2f(attackRange * 1.5f, attackRange));
+	attackShape.setOrigin(attackShape.getSize() / 2.f);
+	attackShape.setFillColor(sf::Color::Yellow);
+
 #if PRODUCTION_BUILD == 0
 	agro.setFillColor(sf::Color::Transparent);
 	agro.setOutlineColor(sf::Color::Red);
@@ -61,14 +65,17 @@ void Enemy::Update(float deltaTime) {
 }
 
 void Enemy::UpdateBehavior(float deltaTime, std::vector<Platform>& platforms, Player& player) {
-	
+	auto noScalePlayer = player;
+	noScalePlayer.setScale(sf::Vector2f(1.f, 1.f));
+
 	foundGround = nextStep(platforms);
-	lookForPlayer(player);
 
 	switch (state) {
 	case Idle:
 		idleTimer += deltaTime;
 		velocity.x = 0.f;
+
+		lookForPlayer(player);
 
 		if (idleTimer >= stayIdle) {
 			idleTimer = 0.f;
@@ -80,12 +87,14 @@ void Enemy::UpdateBehavior(float deltaTime, std::vector<Platform>& platforms, Pl
 
 			faceRight = !faceRight;
 
-			if (!foundGround) velocity.x = -velocity.x;
+			if (!nextStep(platforms)) velocity.x = -velocity.x;
 		}
 
 		break;
 	case Patrol:
 		patrolTimer += deltaTime;
+
+		lookForPlayer(player);
 
 		if (patrolTimer >= patrol) {
 			patrolTimer = 0.f;
@@ -100,13 +109,55 @@ void Enemy::UpdateBehavior(float deltaTime, std::vector<Platform>& platforms, Pl
 
 		break;
 	case Chase:
+		lookForPlayer(player);
 		if (!foundGround && getDirectionOfOtherN(player.getPosition()).x == (faceRight ? 1 : -1)) velocity.x = 0;
-		else if (!foundGround && getDirectionOfOtherN(player.getPosition()).x != (faceRight ? 1 : -1)) velocity.x = speed * (!faceRight ? 1 : -1);
+		//else if (!foundGround && getDirectionOfOtherN(player.getPosition()).x != (faceRight ? 1 : -1)) velocity.x = speed * (!faceRight ? 1 : -1);
+		if (getGlobalBounds().intersects(player.getGlobalBounds()) || (abs(getPosition().x - player.getPosition().x) <= (player.GetSize().x * player.getScale().x) / 2.f)) velocity.x = 0;
+		
+		attackCooldownTimer += deltaTime;
+		attackCooldownTimer = std::min(std::max(attackCooldownTimer, 0.f), attackCooldown);
+
+		if (getDistance(player.getPosition()) <= attackRange) {
+
+			if (attackCooldownTimer >= attackCooldown) {
+				state = Attack;
+				attackCooldownTimer = 0.f;
+			}
+		}
+
+		//ImGui::Begin("Timer for attack");
+		//ImGui::Text("attackTimer: %.3f / %.1f", attackTimer, attackCooldown);
+		//ImGui::End();
+
+		break;
+	case Attack:
+		velocity.x = (faceRight ? speed : -speed) / 3.f;
+		if (getGlobalBounds().intersects(player.getGlobalBounds()) || (abs(getPosition().x - player.getPosition().x) <= (player.GetSize().x * player.getScale().x) / 2.f) || !foundGround) velocity.x = 0;
+		attackTimer += deltaTime;
+
+		attackShape.setPosition(getPosition().x + attackRange * (faceRight ? 1 : -1) + (GetSize().x / 2.f) * (!faceRight ? 1 : -1), getPosition().y);
+
+
+		if (attackTimer <= attackDurration && attackTimer >= attackDelay) {
+			if (attackShape.getGlobalBounds().intersects(noScalePlayer.getGlobalBounds())) {
+				if (player.Hit(0.1f)) {
+					state = Idle;
+					attackTimer = 0.f;
+				}
+				else {
+					state = Chase;
+					attackTimer = 0.f;
+				}
+			}
+		}
+		else if (attackTimer > attackDurration) {
+			attackTimer = 0;
+			state = Chase;
+		}
+
 
 		break;
 	}
-
-
 }
 
 void Enemy::OnCollision(sf::Vector2f direction) {
@@ -131,8 +182,15 @@ void Enemy::OnCollision(sf::Vector2f direction) {
 void Enemy::draw(sf::RenderWindow& window) {
 	window.draw(body);
 #if PRODUCTION_BUILD == 0
-	//window.draw(probe);
+	window.draw(probe);
 	//window.draw(agro);
+	//window.draw(attackShape);
+	//sf::CircleShape attack(attackRange);
+	//attack.setFillColor(sf::Color::Transparent);
+	//attack.setOutlineColor(sf::Color::Black);
+	//attack.setOutlineThickness(5.f);
+	//attack.setPosition(getPosition().x - attackRange, getPosition().y - attackRange);
+	//window.draw(attack);
 #endif
 }
 
@@ -140,7 +198,7 @@ bool Enemy::OnPlayerColision(Player& player) {
 	return player.Hit(1.f);
 }
 
-float Enemy::getDistance(sf::Vector2f otherPosition) {
+float Enemy::getDistance(sf::Vector2f otherPosition) const {
 	return sqrtf(powf(otherPosition.x - getPosition().x, 2.f) + powf(otherPosition.y - getPosition().y, 2.f));
 }
 
@@ -175,7 +233,8 @@ bool Enemy::nextStep(std::vector<Platform>& platforms) {
 		if (abs(platform.GetPosition().x - futureFeet.x) < platform.GetSize().x) {
 			sf::Vector2f dir;
 			if (getFeetCollider().CheckCollision(platform.GetCollider(), dir, 0.f)) {
-				if (dir.y > 0.f) return true;
+				//if (dir.y > 0.f) 
+				return true;
 			}
 		}
 	}
@@ -190,10 +249,9 @@ void Enemy::lookForPlayer(Player& player) {
 			//player is seen
 			//go chase him
 			state = Chase;
-			velocity.x = speed;
 		}
 		
-		velocity.x = abs(velocity.x) * playerDirN.x;
+		if (state == Chase) velocity.x = speed * playerDirN.x;
 	}
 	else if (state == Chase) {
 		state = Idle;

@@ -182,7 +182,7 @@ void Enemy::OnCollision(sf::Vector2f direction) {
 void Enemy::draw(sf::RenderWindow& window) {
 	window.draw(body);
 #if PRODUCTION_BUILD == 0
-	window.draw(probe);
+	//window.draw(probe);
 	//window.draw(agro);
 	//window.draw(attackShape);
 	//sf::CircleShape attack(attackRange);

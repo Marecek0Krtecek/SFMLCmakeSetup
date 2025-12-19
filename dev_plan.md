@@ -149,8 +149,8 @@ Väčšina systémov už existuje, teraz ide o ich prepojenie, testovanie a dola
 ## ⚔️ Týždeň 10 – Základy boja
 **Cieľ:** Zaviesť jednoduché útočenie a spätnú väzbu.
 
-- [ ] 💥 Implementovať „attack“ fázu nepriateľa (dotyk/kolízia alebo animovaný útok)
-- [ ] 🛡️ Uistiť sa, že hráč dostáva damage len raz, nie kontinuálne
+- [x] 💥 Implementovať „attack“ fázu nepriateľa (dotyk/kolízia alebo animovaný útok)
+- [x] 🛡️ Uistiť sa, že hráč dostáva damage len raz, nie kontinuálne
 - [x] ✨ Pridať vizuálnu spätnú väzbu (bliknutie hráča alebo efekt)
 - [ ] 🔊 Voliteľné: pridať základné zvuky (attack, hit, krok)
 
@@ -159,7 +159,7 @@ Väčšina systémov už existuje, teraz ide o ich prepojenie, testovanie a dola
 ## 🎮 Týždeň 11 – Prepojenie AI s gameplayom
 **Cieľ:** AI sa správa konzistentne v každom levele.
 
-- [ ] 🧩 Pri respawne hráča resetovať aj správanie nepriateľov
+- [x] 🧩 Pri respawne hráča resetovať aj správanie nepriateľov
 - [ ] 🔁 Otestovať AI vo viacerých leveloch s rôznymi platformami
 - [ ] 🧭 Uistiť sa, že EnemySpawnPoint a EnemyDef sa prenášajú správne
 - [ ] 🧹 Refaktor: odstrániť magic numbers a spraviť z nich parametre (speed, ranges, damage)

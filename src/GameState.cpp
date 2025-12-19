@@ -11,7 +11,7 @@ GameState::GameState(sf::RenderWindow& window, StateManager& manager) :
 	enemyManager.loadFromFile(RESOURCES_PATH "config.json");
 	tiles.loadFromFile(RESOURCES_PATH "config.json");
 	
-	std::ifstream file(RESOURCES_PATH "levels/level.json");
+	std::ifstream file(RESOURCES_PATH "levels/level_1.json");
 	nlohmann::json j;
 	
 	file >> j;

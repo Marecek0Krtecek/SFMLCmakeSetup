@@ -13,6 +13,12 @@ struct EnemyDef
 	sf::Vector2u imageCount;
 	float switchTime;
 	float speed;
+
+	float agroRange = 256.f;
+	float attackRange = 128.f;
+	float attackDurration = 0.65f;
+	float attackCooldown = 2.f;
+	float strength = 0.1f;
 };
 
 enum EnemyState {

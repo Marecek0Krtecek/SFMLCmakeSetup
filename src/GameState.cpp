@@ -128,6 +128,13 @@ void GameState::update(float deltaTime) {
 	if (ImGui::Button("Restart Game"))
 		RestartGame(player, enemies);
 
+	static std::string tp = "EnemyLookout";
+
+	ImGui::InputText("Spawnpoint To Teleport To", &tp);
+	if (ImGui::Button("Teleport")) {
+		player.setPosition(checkpoints[tp].GetPosition());
+	}
+
 	ImGui::End();
 
 

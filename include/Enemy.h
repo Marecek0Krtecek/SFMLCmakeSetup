@@ -67,20 +67,19 @@ private:
 	float idleTimer = 0.f;
 	float patrolTimer = 0.f;
 
-	float agroRange = 256.f * 4;
+	float agroRange = 256.f;
 
 	float attackRange = 128.f;
-	float attackTimer = 0.f;
 	float attackDurration = 0.65f;
-	float attackDelay = 0.5f;
 	float attackCooldown = 2.f;
+	float strength = 0.1f;
+
+	float attackDelay = 0.5f;
+	float attackTimer = 0.f;
 	float attackCooldownTimer = 0.f;
 
 	sf::RectangleShape attackShape;
 
 	//Preview stuff
 	sf::RectangleShape probe;
-#if PRODUCTION_BUILD == 0
-	sf::CircleShape agro;
-#endif
 };

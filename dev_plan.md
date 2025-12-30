@@ -142,7 +142,7 @@ Väčšina systémov už existuje, teraz ide o ich prepojenie, testovanie a dola
 - [x] 🔄 Navrhnúť jednoduchý state machine pre nepriateľa (Idle → Patrol → Chase → Attack)
 - [x] 👣 Dokončiť patrolovanie (chôdza tam a späť, obracanie sa, limity pohybu)
 - [x] 👀 Pridať základné „vnímanie hráča“ (rádius alebo raycast dopredu)
-- [ ] 📏 Nastaviť parametre pre každý typ nepriateľa (speed, vision range, damage)
+- [x] 📏 Nastaviť parametre pre každý typ nepriateľa (speed, vision range, damage)
 
 ---
 
@@ -160,7 +160,7 @@ Väčšina systémov už existuje, teraz ide o ich prepojenie, testovanie a dola
 **Cieľ:** AI sa správa konzistentne v každom levele.
 
 - [x] 🧩 Pri respawne hráča resetovať aj správanie nepriateľov
-- [ ] 🔁 Otestovať AI vo viacerých leveloch s rôznymi platformami
+- [x] 🔁 Otestovať AI vo viacerých leveloch s rôznymi platformami
 - [ ] 🧭 Uistiť sa, že EnemySpawnPoint a EnemyDef sa prenášajú správne
 - [ ] 🧹 Refaktor: odstrániť magic numbers a spraviť z nich parametre (speed, ranges, damage)
 

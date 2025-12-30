@@ -4,9 +4,6 @@ Enemy::Enemy(const EnemyManager& enemyManager, const EnemySpawnPoint& spawnPoint
 	name(spawnPoint.GetName()),
 	animation(&textures.get(enemyManager.getEnemy(spawnPoint.GetName())->textureAdress), enemyManager.getEnemy(spawnPoint.GetName())->imageCount, enemyManager.getEnemy(spawnPoint.GetName())->switchTime),
 	speed(enemyManager.getEnemy(spawnPoint.GetName())->speed),
-#if PRODUCTION_BUILD == 0
-	agro(agroRange),
-#endif
 	probe(sf::Vector2f(10.f, 10.f))
 {
 	body.setSize(sf::Vector2f(50.f, 70.f));
@@ -14,6 +11,14 @@ Enemy::Enemy(const EnemyManager& enemyManager, const EnemySpawnPoint& spawnPoint
 	body.setPosition(spawnPoint.GetPosition());
 	body.setTexture(&textures.get(enemyManager.getEnemy(name)->textureAdress));
 	body.setTextureRect(enemyManager.getEnemy(name)->rect);
+
+	auto* enemyPars = enemyManager.getEnemy(spawnPoint.GetName());
+
+	agroRange = enemyPars->agroRange;
+	attackRange = enemyPars->attackRange;
+	attackDurration = enemyPars->attackDurration;
+	attackCooldown = enemyPars->attackCooldown;
+	strength = enemyPars->strength;
 
 	//velocity.x = speed;
 
@@ -25,11 +30,6 @@ Enemy::Enemy(const EnemyManager& enemyManager, const EnemySpawnPoint& spawnPoint
 	attackShape.setOrigin(attackShape.getSize() / 2.f);
 	attackShape.setFillColor(sf::Color::Yellow);
 
-#if PRODUCTION_BUILD == 0
-	agro.setFillColor(sf::Color::Transparent);
-	agro.setOutlineColor(sf::Color::Red);
-	agro.setOutlineThickness(5.f);
-#endif
 }
 
 void Enemy::Update(float deltaTime) {
@@ -59,9 +59,6 @@ void Enemy::Update(float deltaTime) {
 	body.setTextureRect(animation.uvRect);
 
 	body.move(velocity * deltaTime);
-#if PRODUCTION_BUILD == 0
-	agro.setPosition(getPosition().x - agro.getRadius(), getPosition().y - agro.getRadius());
-#endif
 }
 
 void Enemy::UpdateBehavior(float deltaTime, std::vector<Platform>& platforms, Player& player) {
@@ -140,7 +137,7 @@ void Enemy::UpdateBehavior(float deltaTime, std::vector<Platform>& platforms, Pl
 
 		if (attackTimer <= attackDurration && attackTimer >= attackDelay) {
 			if (attackShape.getGlobalBounds().intersects(noScalePlayer.getGlobalBounds())) {
-				if (player.Hit(0.1f)) {
+				if (player.Hit(strength)) { // did he die?
 					state = Idle;
 					attackTimer = 0.f;
 				}
@@ -183,14 +180,19 @@ void Enemy::draw(sf::RenderWindow& window) {
 	window.draw(body);
 #if PRODUCTION_BUILD == 0
 	//window.draw(probe);
-	//window.draw(agro);
+	sf::CircleShape agro(agroRange);
+	agro.setFillColor(sf::Color::Transparent);
+	agro.setOutlineColor(sf::Color::Red);
+	agro.setOutlineThickness(5.f);
+	agro.setPosition(getPosition().x - agro.getRadius(), getPosition().y - agro.getRadius());
+	window.draw(agro);
 	//window.draw(attackShape);
-	//sf::CircleShape attack(attackRange);
-	//attack.setFillColor(sf::Color::Transparent);
-	//attack.setOutlineColor(sf::Color::Black);
-	//attack.setOutlineThickness(5.f);
-	//attack.setPosition(getPosition().x - attackRange, getPosition().y - attackRange);
-	//window.draw(attack);
+	sf::CircleShape attack(attackRange);
+	attack.setFillColor(sf::Color::Transparent);
+	attack.setOutlineColor(sf::Color::Black);
+	attack.setOutlineThickness(5.f);
+	attack.setPosition(getPosition().x - attackRange, getPosition().y - attackRange);
+	window.draw(attack);
 #endif
 }
 
@@ -224,7 +226,7 @@ bool Enemy::nextStep(std::vector<Platform>& platforms) {
 
 	float offset = 2.f;
 
-	sf::Vector2f futureFeet(getPosition().x + (faceRight ? 1 : -1) * (halfW + offset), getPosition().y + halfH + 5.f);
+	sf::Vector2f futureFeet(getPosition().x + (faceRight ? 1 : -1) * (halfW + offset), getPosition().y + halfH + offset);
 
 	probe.setPosition(futureFeet);
 

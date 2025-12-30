@@ -35,6 +35,12 @@ bool EnemyManager::loadFromFile(const std::string& fileName) {
 			def.switchTime = jEnemy["switchTime"].get<float>();
 			def.speed = jEnemy["speed"].get<float>();
 
+			if (jEnemy.contains("agroRange")) def.agroRange = jEnemy["agroRange"].get<float>();
+			if (jEnemy.contains("attackRange")) def.attackRange = jEnemy["attackRange"].get<float>();
+			if (jEnemy.contains("attackDurration")) def.attackDurration = jEnemy["attackDurration"].get<float>();
+			if (jEnemy.contains("attackCooldown")) def.attackCooldown = jEnemy["attackCooldown"].get<float>();
+			if (jEnemy.contains("strength")) def.strength = jEnemy["strength"].get<float>();
+
 			enemyDefs[def.name] = def;
 		}
 

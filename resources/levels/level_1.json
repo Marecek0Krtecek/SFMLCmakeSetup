@@ -11,7 +11,7 @@
         ]
     },
     "checkpoint": {
-        "checkpointCount": 4,
+        "checkpointCount": 5,
         "checkpoints": [
             {
                 "name": "spawn",
@@ -32,6 +32,11 @@
                 "name": "checkEnd",
                 "x": 7424.0,
                 "y": 704.0
+            },
+            {
+                "name": "EnemyLookout",
+                "x": 1856.0,
+                "y": -32.0
             }
         ]
     },

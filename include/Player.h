@@ -13,7 +13,7 @@ public:
 	void Restrart();
 	bool Hit(float damage);
 
-	void draw(sf::RenderWindow& window) { window.draw(body); }
+	void draw(sf::RenderWindow& window);
 	void setScale(sf::Vector2f scale) { body.setScale(scale); }
 	void setPosition(sf::Vector2f position) { body.setPosition(position); }
 	void setPosition(float x, float y) { body.setPosition(x, y); }
@@ -53,4 +53,7 @@ private:
 	
 	std::string lastCheckpoint = "spawn";
 	std::unordered_map<std::string, Checkpoint>& checkpoints;
+
+	sf::RectangleShape HPBar;
+	sf::RectangleShape HPShow;
 };

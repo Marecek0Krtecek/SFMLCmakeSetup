@@ -14,6 +14,17 @@ Player::Player(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, 
 	body.setOrigin(sf::Vector2f(body.getSize() / 2.f));
 	//body.setPosition(checkpoints["spawn"].GetPosition());
 	body.setTexture(texture);
+
+	HPBar = sf::RectangleShape(sf::Vector2f(50.f, 5.f));
+	HPBar.setFillColor(sf::Color(100, 0, 0));
+	HPBar.setOrigin(HPBar.getSize() / 2.f);
+	HPBar.setPosition(getPosition().x, getPosition().y - 40.f);
+	HPBar.setOutlineColor(sf::Color(75, 0, 0));
+	HPBar.setOutlineThickness(3.f);
+
+	HPShow = sf::RectangleShape(HPBar.getSize());
+	HPShow.setFillColor(sf::Color(255, 0, 0));
+	HPShow.setPosition(HPBar.getPosition().x - (HPBar.getSize().x / 2.f), HPBar.getPosition().y - (HPBar.getSize().y / 2.f));
 }
 
 void Player::Update(float deltaTime) {
@@ -83,6 +94,12 @@ void Player::Update(float deltaTime) {
 	body.setTextureRect(animation.uvRect);
 
 	body.move(velocity * deltaTime);
+
+	HPBar.setPosition(getPosition().x, getPosition().y - 40.f);
+
+	HPShow.setPosition(HPBar.getPosition().x - (HPBar.getSize().x / 2.f), HPBar.getPosition().y - (HPBar.getSize().y / 2.f));
+	HPShow.setSize(sf::Vector2f(HPBar.getSize().x * (health / GetMaxHealth()), HPBar.getSize().y));
+
 }
 
 void Player::OnCollision(sf::Vector2f direction) {
@@ -122,6 +139,12 @@ bool Player::Hit(float damage) {
 		return true;
 	}
 	return false;
+}
+
+void Player::draw(sf::RenderWindow& window) {
+	window.draw(body);
+	window.draw(HPBar);
+	window.draw(HPShow);
 }
 
 void Player::Die() {

@@ -3,8 +3,7 @@
 GameState::GameState(sf::RenderWindow& window, StateManager& manager) :
 	stateManager(manager),
 	view(sf::Vector2f(0.f, 0.f), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT)),
-	player(&textures.get(playerTexture), sf::Vector2u(8, 4), 0.15f, 500.f, 200.f, 1.f, checkpoints),
-	gameUI(view, player)
+	player(&textures.get(playerTexture), sf::Vector2u(8, 4), 0.15f, 500.f, 200.f, 1.f, checkpoints)
 {
 	ResizeView(window, view);
 
@@ -55,8 +54,6 @@ void GameState::update(float deltaTime) {
 
 	player.Update(deltaTime);
 
-	gameUI.update(deltaTime);
-	
 	for (size_t i = 0; i < enemies.size(); i++) {
 		auto& enemy = enemies[i];
 
@@ -163,8 +160,6 @@ void GameState::render(sf::RenderWindow& window) {
 	}
 
 	player.draw(window);
-
-	gameUI.Draw(window);
 
 #pragma endregion
 

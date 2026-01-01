@@ -27,6 +27,8 @@ private:
 	sf::Vector2i mousePos;
 	sf::Vector2f cursorPos;
 
-	MenuButton GameButton;
-	MenuButton EditorButton;
+	sf::Vector2f backgroundSize = sf::Vector2f(843.f, 596.f);
+	sf::IntRect defRect;
+
+	std::unordered_map<std::string, MenuButton> buttons;
 };

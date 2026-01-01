@@ -1,7 +1,6 @@
 #pragma once
 #include "EditorState.h"
 #include "Player.h"
-#include "GameUI.h"
 
 class GameState : public State
 {
@@ -25,8 +24,6 @@ private:
 	const float VIEW_HEIGHT = 1024.f;
 
 	sf::View view;
-
-	GameUI gameUI;
 
 	//Textures
 	TextureManager textures;

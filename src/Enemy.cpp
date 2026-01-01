@@ -180,19 +180,19 @@ void Enemy::draw(sf::RenderWindow& window) {
 	window.draw(body);
 #if PRODUCTION_BUILD == 0
 	//window.draw(probe);
-	sf::CircleShape agro(agroRange);
-	agro.setFillColor(sf::Color::Transparent);
-	agro.setOutlineColor(sf::Color::Red);
-	agro.setOutlineThickness(5.f);
-	agro.setPosition(getPosition().x - agro.getRadius(), getPosition().y - agro.getRadius());
-	window.draw(agro);
+	//sf::CircleShape agro(agroRange);
+	//agro.setFillColor(sf::Color::Transparent);
+	//agro.setOutlineColor(sf::Color::Red);
+	//agro.setOutlineThickness(5.f);
+	//agro.setPosition(getPosition().x - agro.getRadius(), getPosition().y - agro.getRadius());
+	//window.draw(agro);
 	//window.draw(attackShape);
-	sf::CircleShape attack(attackRange);
-	attack.setFillColor(sf::Color::Transparent);
-	attack.setOutlineColor(sf::Color::Black);
-	attack.setOutlineThickness(5.f);
-	attack.setPosition(getPosition().x - attackRange, getPosition().y - attackRange);
-	window.draw(attack);
+	//sf::CircleShape attack(attackRange);
+	//attack.setFillColor(sf::Color::Transparent);
+	//attack.setOutlineColor(sf::Color::Black);
+	//attack.setOutlineThickness(5.f);
+	//attack.setPosition(getPosition().x - attackRange, getPosition().y - attackRange);
+	//window.draw(attack);
 #endif
 }
 

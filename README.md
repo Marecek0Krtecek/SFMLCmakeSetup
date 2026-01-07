@@ -1,44 +1,87 @@
-# PLUG AND PLAY SFMLCmakeSetup!
+# Hansov paradox
+
+Hansov paradox je 2D hra vytvorená ako vlastný projekt pre praktickú časť odbornej zložky maturitnej skúšky.
+Projekt obsahuje samotnú hru aj editor úrovní, ktorý umožňuje vytvárať a upravovať levely bez zásahu do zdrojového kódu.
 
 ---
 
-## What is it?
+## 🎮 Základné informácie
 
-I already set up an SFML project for you! Take it and enjoy! You don't need to know CMake!
+- **Žáner:** 2D platformová hra
+- **Platforma:** Windows
+- **Jazyk:** C++
+- **Grafická knižnica:** SFML
+- **UI:** ImGui
+- **Build:** Release verzia (spustiteľný `.exe` súbor)
 
-![image](https://github.com/meemknight/SFMLCmakeSetup/assets/36445656/8d4d20b9-6b59-41cc-b2c4-b3c410f78b63)
+---
 
+## 🧩 Funkcionalita
 
-<p>Opening the Solution:</p> 
+### Hra
+- pohyb hráča po platformách
+- základná fyzika a gravitácia
+- nepriatelia so stavovým správaním (Idle, Patrol, Chase, Attack)
+- kolízia hráča s nepriateľmi
+- checkpointy
+- pause menu počas hry
 
-<img src="https://raw.githubusercontent.com/meemknight/photos/master/llge1.gif" width="350">
+### Level editor
+- tvorba a úprava platforiem
+- umiestňovanie nepriateľov a spawn pointov
+- úprava pozadia (vrstvy, parallax)
+- ukladanie a načítavanie levelov zo súborov
+- rýchle prepínanie medzi editorom a hrou
 
-Or
+---
 
-<img src="https://raw.githubusercontent.com/meemknight/photos/master/llge2.gif" width="500">
+## 🕹️ Ovládanie
 
-Running the setup
+### Hra
+- **Pohyb:** A / D
+- **Skok:** Space alebo W
+- **Pause menu:** ESC
+- **Prepnutie do editora:** F5
 
-Go to CMakeLists.txt, <kbd>CTRL + S</kbd> to make sure the solution was built.
+### Editor
+- **Prepnutie do hry:** F5
+- **Zobrazenie/skrytie nápovedy:** F1
+- Ovládanie prebieha pomocou myši a editorových nástrojov
 
-Then, from this dropdown select mygame.exe
+---
 
-<img src="https://raw.githubusercontent.com/meemknight/photos/master/llge3.gif" width="200">
+## ▶️ Spustenie projektu
 
-<kbd>Ctrl + F5</kbd> to build (<kbd>F5</kbd> oppens the debugger, you usually want to press <kbd>Ctrl + F5</kbd> because it oppens faster like this.
+1. Stiahni alebo rozbaľ priečinok s projektom
+2. Spusti súbor `mygame.exe`
+3. Nie je potrebné mať nainštalované Visual Studio ani ďalšie nástroje
 
-<p>Adding files:<br>
-You should add .cpp in src/ and .h in include/ Whenever you add a new file CMake will ask you if you want to add that thing, say NO every time! I am already adding all of the things automatically!
-If you accidentally say YES, just remove that file from the CMake.lists
-</p>
+> Poznámka: Projekt je distribuovaný ako release verzia určená na spustenie, nie na ďalší vývoj.
 
-<p>Refreshing your changes:<br>
-After you add a file, the changes should be automatically added but if you want to be sure, you can refresh changes by saving the CMake file. If you want to make a hard refresh (you might have to do that sometimes) close Visual Studio, delete the out folder, reopen VS, <kbd>CTRL + S</kbd> on CMakeLists.txt</p>
+---
 
+## ⚠️ Známe obmedzenia
 
-# IMPORTANT!
-  To ship the game: 
-  In Cmakelists.txt, set the PRODUCTION_BUILD flag to ON to build a shippable version of your game. This will change the file paths to be relative to your exe (RESOURCES_PATH macro), will remove the console, and also will change the asserts to not allow people to debug them. To make sure the changes take effect I recommend deleting the out folder to make a new clean build!
+- hra zatiaľ obsahuje iba jeden demo level
+- hráč nemá implementovaný útok
+- niektoré debug nástroje (ImGui okná) sú stále aktívne
+- file dialog knižnica môže byť nestabilná pri práci s priečinkami
 
+Tieto obmedzenia sú známe a zodpovedajú rozsahu projektu.
 
-  Also, if you read the CMAKE, even if you don't know CMAKE you should understand what happens with the comments there and you can add libraries and also remove the console from there if you need to! (there is a commented line for that!)
+---
+
+## 🎓 Kontext projektu
+
+Projekt bol vytvorený ako:
+- vlastný maturitný projekt (forma b)
+- praktická ukážka práce s C++ a hernými systémami
+- základ pre ďalšie rozširovanie (bojový systém, animácie, nové levely)
+
+---
+
+## 👤 Autor
+
+**Marek Papajčík**  
+Technické lýceum, 4.C  
+Školský rok 2025/2026

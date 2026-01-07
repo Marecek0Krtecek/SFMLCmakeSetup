@@ -76,6 +76,7 @@ private:
 private:
 	//State references
 	StateManager& stateManager;
+	sf::RenderWindow& window;
 
 	//Editor variables
 	const float VIEW_HEIGHT = 1024.f;
@@ -132,6 +133,8 @@ private:
 	bool enemyEditWindow = false;
 
 	bool newLevelIsNotSaved = false;
+	bool levelIsNotSaved = false;
+	bool goToGame = false;
 
 	bool showHelpWindow = true;
 

@@ -246,17 +246,17 @@
             },
             {
                 "height": 32.0,
-                "tile": "Fall Dirt Block",
-                "width": 32.0,
-                "x": 416.0,
-                "y": -64.0
-            },
-            {
-                "height": 32.0,
                 "tile": "Fall Grass",
                 "width": 64.0,
                 "x": 800.0,
                 "y": -192.0
+            },
+            {
+                "height": 32.0,
+                "tile": "Fall Dirt Block",
+                "width": 32.0,
+                "x": 416.0,
+                "y": -64.0
             }
         ]
     }

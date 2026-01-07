@@ -19,6 +19,7 @@
 - **Ctrl + Z** — Undo  
 - **Ctrl + Y** — Redo  
 - **F1** — Zobraziť pomoc / legendu
+- **Esc** - Opustiť editor do hlavného menu
 - **Q** - Zoom -
 - **E** - Zoom +
 

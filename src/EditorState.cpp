@@ -2,6 +2,7 @@
 
 EditorState::EditorState(sf::RenderWindow& window, StateManager& manager) :
 	stateManager(manager),
+	window(window),
 	view(sf::Vector2f(0.f, 0.f), sf::Vector2f(VIEW_HEIGHT, VIEW_HEIGHT))
 {
 	ResizeView(window, view);
@@ -39,7 +40,15 @@ void EditorState::handleEvent(const sf::Event& event, sf::RenderWindow& window) 
 	{
 	case sf::Event::KeyPressed:
 
-		//if (event.key.code == sf::Keyboard::Escape) window.close();
+		if (event.key.code == sf::Keyboard::Escape) {
+			if (isSaved) {
+				stateManager.changeState<MenuState>(window, stateManager);
+				return;
+			}
+			else {
+				levelIsNotSaved = true;
+			}
+		}
 		if (event.key.code == sf::Keyboard::Q) view.zoom(zoomFactor);
 		if (event.key.control && event.key.code == sf::Keyboard::E);
 		else if (event.key.code == sf::Keyboard::E) view.zoom(1.f / zoomFactor);
@@ -80,7 +89,13 @@ void EditorState::handleEvent(const sf::Event& event, sf::RenderWindow& window) 
 		}
 
 		// state change
-		if (event.key.code == sf::Keyboard::F5) stateManager.changeState<GameState>(window, stateManager);
+		if (event.key.code == sf::Keyboard::F5) {
+			if (isSaved) {
+				stateManager.changeState<GameState>(window, stateManager);
+				return;
+			}
+			else goToGame = true;
+		}
 
 		break;
 	case sf::Event::Resized:
@@ -207,6 +222,59 @@ void EditorState::update(float deltaTime) {
 
 		if (ImGui::Button("Cancel")) {
 			newLevelIsNotSaved = false;
+		}
+
+		ImGui::End();
+	}
+
+	if (levelIsNotSaved) {
+		ImGui::Begin("Are You Sure?");
+
+		ImGui::Text("The Level Is Not Saved,\ndo you wish to leave the level editor?");
+		if (ImGui::Button("Yes")) {
+			ImGui::End();
+			ImGui::End();
+			stateManager.changeState<MenuState>(window, stateManager);
+			return;
+		}
+
+		if (ImGui::Button("Save")) {
+			if (currentFilePath != std::string()) {
+				save();
+				ImGui::End();
+				ImGui::End();
+				stateManager.changeState<MenuState>(window, stateManager);
+				return;
+			}
+			else {
+				saveAs();
+			}
+			levelIsNotSaved = false;
+
+			
+		}
+
+		if (ImGui::Button("Cancel")) {
+			levelIsNotSaved = false;
+		}
+
+		ImGui::End();
+	}
+
+	if (goToGame) {
+
+		ImGui::Begin("Are You Sure?");
+
+		ImGui::Text("The level is not saved, do you wish to proceed into the Game?");
+
+		if (ImGui::Button("Yes")) {
+			ImGui::End();
+			ImGui::End();
+			stateManager.changeState<GameState>(window, stateManager);
+			return;
+		}
+		if (ImGui::Button("No")) {
+			goToGame = false;
 		}
 
 		ImGui::End();
@@ -524,6 +592,7 @@ void EditorState::update(float deltaTime) {
 		ImGui::Text("Q: Zoom -");
 		ImGui::Text("E: Zoom +");
 		ImGui::Separator(); 
+		ImGui::Text("Esc: Opustit editor do hlavneho menu");
 		ImGui::Text("F1: Zobrazit tuto napovedu");
 		ImGui::Text("F5: Zmenit mod");
 

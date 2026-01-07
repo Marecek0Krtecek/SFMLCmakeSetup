@@ -37,7 +37,7 @@ void GameState::handleEvent(const sf::Event& event, sf::RenderWindow& window) {
 		window.close();
 		break;
 	case sf::Event::KeyPressed:
-		//if (event.key.code == sf::Keyboard::Escape) window.close();
+		if (event.key.code == sf::Keyboard::Escape) stateManager.addState<PauseState>(window, stateManager);
 
 		if (event.key.code == sf::Keyboard::F5) stateManager.changeState<EditorState>(window, stateManager);
 

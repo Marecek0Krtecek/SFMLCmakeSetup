@@ -161,8 +161,8 @@ Väčšina systémov už existuje, teraz ide o ich prepojenie, testovanie a dola
 
 - [x] 🧩 Pri respawne hráča resetovať aj správanie nepriateľov
 - [x] 🔁 Otestovať AI vo viacerých leveloch s rôznymi platformami
-- [ ] 🧭 Uistiť sa, že EnemySpawnPoint a EnemyDef sa prenášajú správne
-- [ ] 🧹 Refaktor: odstrániť magic numbers a spraviť z nich parametre (speed, ranges, damage)
+- [x] 🧭 Uistiť sa, že EnemySpawnPoint a EnemyDef sa prenášajú správne
+- [x] 🧹 Refaktor: odstrániť magic numbers a spraviť z nich parametre (speed, ranges, damage)
 
 ---
 

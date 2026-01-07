@@ -16,6 +16,7 @@
 #include "EnemyManager.h"
 #include "ImGuiFileDialog.h"
 #include "Checkpoint.h"
+#include "PauseState.h"
 #include "GameState.h"
 
 	
@@ -132,7 +133,7 @@ private:
 
 	bool newLevelIsNotSaved = false;
 
-	bool showHelpWindow = false;
+	bool showHelpWindow = true;
 
 	bool backgroundWindow = false;
 

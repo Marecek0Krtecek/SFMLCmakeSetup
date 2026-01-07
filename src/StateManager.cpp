@@ -1,13 +1,15 @@
 #include "StateManager.h"
 
 void StateManager::handleEvent(const sf::Event& event, sf::RenderWindow& winodw) {
-	if (currentState) currentState->handleEvent(event, winodw);
+	if (activeStates[activeStates.size() - 1]) activeStates[activeStates.size() - 1]->handleEvent(event, winodw);
 }
 
 void StateManager::update(float deltaTime) {
-	if (currentState) currentState->update(deltaTime);
+	if (activeStates[activeStates.size() - 1]) activeStates[activeStates.size() - 1]->update(deltaTime);
 }
 
 void StateManager::render(sf::RenderWindow& window) {
-	if (currentState) currentState->render(window);
+	for (auto& state : activeStates) {
+		if (state) state->render(window);
+	}
 }

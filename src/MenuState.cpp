@@ -29,6 +29,11 @@ void MenuState::handleEvent(const sf::Event& event, sf::RenderWindow& window) {
 	case sf::Event::Resized:
 		ResizeView(window, view);
 		break;
+	case sf::Event::MouseButtonPressed:
+		if (event.mouseButton.button == sf::Mouse::Left) isButtonPressed = true;
+		break;
+	default:
+		break;
 	}
 }
 
@@ -38,26 +43,30 @@ void MenuState::update(float deltaTime) {
 
 	if (buttons["GameButton"].Update(cursorPos)) {
 		buttons["GameButton"].Hower(sf::IntRect(sf::Vector2i(buttons["GameButton"].GetUvRect().left, buttons["GameButton"].GetUvRect().height), buttons["GameButton"].GetUvRect().getSize()));
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+		if (isButtonPressed) {
+			isButtonPressed = false;
 			manager.changeState<GameState>(window, manager);
 			return;
 		}
 	}
 	if (buttons["EditorButton"].Update(cursorPos)) {
 		buttons["EditorButton"].Hower(sf::IntRect(sf::Vector2i(buttons["EditorButton"].GetUvRect().left, buttons["EditorButton"].GetUvRect().height), buttons["EditorButton"].GetUvRect().getSize()));
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+		if (isButtonPressed) {
+			isButtonPressed = false;
 			manager.changeState<EditorState>(window, manager);
 			return;
 		}
 	}
 	if (buttons["EndButton"].Update(cursorPos)) {
 		buttons["EndButton"].Hower(sf::IntRect(sf::Vector2i(buttons["EndButton"].GetUvRect().left, buttons["EndButton"].GetUvRect().height), buttons["EndButton"].GetUvRect().getSize()));
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+		if (isButtonPressed) {
+			isButtonPressed = false;
 			window.close();
 			return;
 		}
 	}
 
+	isButtonPressed = false;
 }
 
 void MenuState::render(sf::RenderWindow& window) {

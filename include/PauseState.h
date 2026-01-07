@@ -26,4 +26,6 @@ private:
 	std::unordered_map<std::string, MenuButton> buttons;
 
 	sf::RectangleShape background;
+
+	bool isButtonPressed = false;
 };

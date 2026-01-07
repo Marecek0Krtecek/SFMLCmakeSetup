@@ -20,6 +20,9 @@ void PauseState::handleEvent(const sf::Event& event, sf::RenderWindow& window) {
 	case sf::Event::KeyPressed:
 		if (event.key.code == sf::Keyboard::Escape) stateManager.popState();
 		break;
+	case sf::Event::MouseButtonPressed:
+		if (event.mouseButton.button == sf::Mouse::Left) isButtonPressed = true;
+		break;
 	default:
 		break;
 	}
@@ -31,7 +34,8 @@ void PauseState::update(float deltaTime) {
 
 	if (buttons["ResumeGame"].Update(cursorPos)) {
 		buttons["ResumeGame"].Hower(sf::IntRect(sf::Vector2i(buttons["ResumeGame"].GetUvRect().left, buttons["ResumeGame"].GetUvRect().height), buttons["ResumeGame"].GetUvRect().getSize()));
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+		if (isButtonPressed) {
+			isButtonPressed = false;
 			stateManager.popState();
 			return;
 		}
@@ -39,19 +43,23 @@ void PauseState::update(float deltaTime) {
 
 	if (buttons["ChangeEditor"].Update(cursorPos)) {
 		buttons["ChangeEditor"].Hower(sf::IntRect(sf::Vector2i(buttons["ChangeEditor"].GetUvRect().left, buttons["ChangeEditor"].GetUvRect().height), buttons["ChangeEditor"].GetUvRect().getSize()));
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+		if (isButtonPressed) {
+			isButtonPressed = false;
 			stateManager.changeState<EditorState>(window, stateManager);
 			return;
 		}
 	}
-	
+
 	if (buttons["ExitGame"].Update(cursorPos)) {
 		buttons["ExitGame"].Hower(sf::IntRect(sf::Vector2i(buttons["ExitGame"].GetUvRect().left, buttons["ExitGame"].GetUvRect().height), buttons["ExitGame"].GetUvRect().getSize()));
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+		if (isButtonPressed) {
+			isButtonPressed = false;
 			stateManager.changeState<MenuState>(window, stateManager);
 			return;
 		}
 	}
+
+	isButtonPressed = false;
 }
 
 void PauseState::render(sf::RenderWindow& window) {

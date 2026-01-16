@@ -1,0 +1,448 @@
+{
+  "tiles": [
+    {
+      "name": "Grass",
+      "texture": "brackeys_platformer_assets/sprites/platforms.png",
+      "rect": {
+        "left": 0,
+        "top": 0,
+        "width": 16,
+        "height": 9
+      }
+    },
+    {
+      "name": "Grass Left",
+      "texture": "brackeys_platformer_assets/sprites/platforms.png",
+      "rect": {
+        "left": 16,
+        "top": 0,
+        "width": 16,
+        "height": 9
+      }
+    },
+    {
+      "name": "Grass Right",
+      "texture": "brackeys_platformer_assets/sprites/platforms.png",
+      "rect": {
+        "left": 32,
+        "top": 0,
+        "width": 16,
+        "height": 9
+      }
+    },
+    {
+      "name": "Dry Grass",
+      "texture": "brackeys_platformer_assets/sprites/platforms.png",
+      "rect": {
+        "left": 0,
+        "top": 16,
+        "width": 16,
+        "height": 9
+      }
+    },
+    {
+      "name": "Dry Grass Left",
+      "texture": "brackeys_platformer_assets/sprites/platforms.png",
+      "rect": {
+        "left": 16,
+        "top": 16,
+        "width": 16,
+        "height": 9
+      }
+    },
+    {
+      "name": "Dry Grass Right",
+      "texture": "brackeys_platformer_assets/sprites/platforms.png",
+      "rect": {
+        "left": 32,
+        "top": 16,
+        "width": 16,
+        "height": 9
+      }
+    },
+    {
+      "name": "Fall Grass",
+      "texture": "brackeys_platformer_assets/sprites/platforms.png",
+      "rect": {
+        "left": 0,
+        "top": 32,
+        "width": 16,
+        "height": 9
+      }
+    },
+    {
+      "name": "Fall Grass Left",
+      "texture": "brackeys_platformer_assets/sprites/platforms.png",
+      "rect": {
+        "left": 16,
+        "top": 32,
+        "width": 16,
+        "height": 9
+      }
+    },
+    {
+      "name": "Fall Grass Right",
+      "texture": "brackeys_platformer_assets/sprites/platforms.png",
+      "rect": {
+        "left": 32,
+        "top": 32,
+        "width": 16,
+        "height": 9
+      }
+    },
+    {
+      "name": "Winter Grass",
+      "texture": "brackeys_platformer_assets/sprites/platforms.png",
+      "rect": {
+        "left": 0,
+        "top": 48,
+        "width": 16,
+        "height": 9
+      }
+    },
+    {
+      "name": "Winter Grass Left",
+      "texture": "brackeys_platformer_assets/sprites/platforms.png",
+      "rect": {
+        "left": 16,
+        "top": 48,
+        "width": 16,
+        "height": 9
+      }
+    },
+    {
+      "name": "Winter Grass Right",
+      "texture": "brackeys_platformer_assets/sprites/platforms.png",
+      "rect": {
+        "left": 32,
+        "top": 48,
+        "width": 16,
+        "height": 9
+      }
+    },
+    {
+      "name": "Grass Block",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 0,
+        "top": 0,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Dirt Block",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 0,
+        "top": 16,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Dirt Lucky Block",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 0,
+        "top": 32,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Cracked Dirt Block 0",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 16,
+        "top": 0,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Cracked Dirt Block 1",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 16,
+        "top": 16,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Dirt Exclamation Block",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 16,
+        "top": 32,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Dry Grass Block",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 32,
+        "top": 0,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Dry Dirt Block",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 32,
+        "top": 16,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Dry Grass Block Alt",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 32,
+        "top": 32,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Dry Dirt Exclamation Block",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 32,
+        "top": 48,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Dry Cracked Dirt Block 0",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 48,
+        "top": 0,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Dry Cracked Dirt Block 1",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 48,
+        "top": 16,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Dry Dirt Lucky Block",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 48,
+        "top": 32,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Fall Grass Block",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 64,
+        "top": 0,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Fall Dirt Block",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 64,
+        "top": 16,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Fall Dirt Lucky Block",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 64,
+        "top": 32,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Fall Cracked Dirt Block 0",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 80,
+        "top": 0,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Fall Cracked Dirt Block 1",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 80,
+        "top": 16,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Fall Dirt Exclamation Block",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 80,
+        "top": 32,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Winter Grass Block",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 96,
+        "top": 0,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Winter Dirt Block",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 96,
+        "top": 16,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Ice Block",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 96,
+        "top": 32,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Winter Frozen Grass Block On Ice",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 112,
+        "top": 0,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Winter Frozen Grass Block",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 112,
+        "top": 16,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Winter Dirt Lucky Block",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 112,
+        "top": 32,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Winter Cracked Dirt Block 0",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 128,
+        "top": 0,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Winter Cracked Dirt Block 1",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 128,
+        "top": 16,
+        "width": 16,
+        "height": 16
+      }
+    },
+    {
+      "name": "Winter Dirt Exclamation Block",
+      "texture": "brackeys_platformer_assets/sprites/world_tileset.png",
+      "rect": {
+        "left": 128,
+        "top": 32,
+        "width": 16,
+        "height": 16
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "name": "Green Slime",
+      "texture": "brackeys_platformer_assets/sprites/slime_green.png",
+      "rect": {
+        "left": 29,
+        "top": 35,
+        "width": 13,
+        "height": 12
+      },
+      "imageCount": {
+        "x": 4,
+        "y": 3
+      },
+      "switchTime": 0.15,
+      "speed": 250.0,
+      "agroRange": 256.0,
+      "attackRange": 128.0,
+      "attackDurration": 0.65,
+      "attackCooldown": 2.0,
+      "strength": 0.1
+    },
+    {
+      "name": "Purple Slime",
+      "texture": "brackeys_platformer_assets/sprites/slime_purple.png",
+      "rect": {
+        "left": 29,
+        "top": 35,
+        "width": 13,
+        "height": 12
+      },
+      "imageCount": {
+        "x": 4,
+        "y": 3
+      },
+      "switchTime": 0.15,
+      "speed": 100.0,
+      "agroRange": 256.0,
+      "attackRange": 128.0,
+      "attackDurration": 0.65,
+      "attackCooldown": 2.0,
+      "strength": 0.1
+    }
+  ]
+}

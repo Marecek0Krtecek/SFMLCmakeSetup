@@ -75,13 +75,14 @@ Tieto obmedzenia sú známe a zodpovedajú rozsahu projektu.
 
 Projekt bol vytvorený ako:
 - vlastný maturitný projekt (forma b)
-- praktická ukážka práce s C++ a hernými systémami
-- základ pre ďalšie rozširovanie (bojový systém, animácie, nové levely)
+- vytvorenie potrebnej grafiky pre prostredie, postavy a iné potrebné elementy
+- návrh, dizajnovanie a postavenie levelov, ktoré budú sa nejako líšiť
+- napísať vhodný scénar pre príbeh hry
 
 ---
 
 ## 👤 Autor
 
-**Marek Papajčík**  
+**Tomáš Turčina**  
 Technické lýceum, 4.C  
 Školský rok 2025/2026

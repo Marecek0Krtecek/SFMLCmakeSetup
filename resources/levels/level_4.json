@@ -1,0 +1,425 @@
+{
+    "background": {
+        "backgroundCount": 1,
+        "backgrounds": [
+            {
+                "height": 2160.0,
+                "parllax": 1.0,
+                "texture": "/backgrounds/background_corruption_question.png",
+                "width": 3840.0
+            }
+        ]
+    },
+    "checkpoint": {
+        "checkpointCount": 3,
+        "checkpoints": [
+            {
+                "name": "spawn",
+                "x": -896.0,
+                "y": 192.0
+            },
+            {
+                "name": "checkpoint_1",
+                "x": 4352.0,
+                "y": 128.0
+            },
+            {
+                "name": "end",
+                "x": 15840.0,
+                "y": -320.0
+            }
+        ]
+    },
+    "enemy": {
+        "enemyCount": 2,
+        "enemySpawnPoints": [
+            {
+                "type": "Green Slime",
+                "x": 3584.0,
+                "y": 480.0
+            },
+            {
+                "type": "Purple Slime",
+                "x": 10912.0,
+                "y": -160.0
+            }
+        ]
+    },
+    "level": "Level 1",
+    "platform": {
+        "platformCount": 53,
+        "platforms": [
+            {
+                "height": 60.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": -800.0,
+                "y": 256.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": -704.0,
+                "y": 256.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": -896.0,
+                "y": 256.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": -608.0,
+                "y": 256.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": -512.0,
+                "y": 256.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": -64.0,
+                "y": 224.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": 288.0,
+                "y": 64.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": 864.0,
+                "y": 256.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": 1280.0,
+                "y": 32.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": 1792.0,
+                "y": -32.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": 2304.0,
+                "y": 32.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": 2816.0,
+                "y": 512.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": 3840.0,
+                "y": 288.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": 5824.0,
+                "y": 288.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": 7232.0,
+                "y": 256.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": 4832.0,
+                "y": 96.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": 4448.0,
+                "y": 224.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": 6432.0,
+                "y": 224.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": 6848.0,
+                "y": 32.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": 5120.0,
+                "y": 256.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": 4256.0,
+                "y": 224.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": 5472.0,
+                "y": 128.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": 4352.0,
+                "y": 192.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": 7584.0,
+                "y": 128.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": 7936.0,
+                "y": -32.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": 8384.0,
+                "y": -32.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": 8800.0,
+                "y": 224.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": 9216.0,
+                "y": 64.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": 9600.0,
+                "y": -96.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": 9984.0,
+                "y": -192.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": 10432.0,
+                "y": 32.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": 10912.0,
+                "y": -128.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": 11680.0,
+                "y": -128.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": 11968.0,
+                "y": -0.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": 12448.0,
+                "y": 128.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": 12864.0,
+                "y": 0.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": 13280.0,
+                "y": -128.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": 13696.0,
+                "y": -32.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": 14176.0,
+                "y": -64.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": 11264.0,
+                "y": -192.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": 14528.0,
+                "y": -224.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": 14912.0,
+                "y": -192.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": 15232.0,
+                "y": -256.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": 15744.0,
+                "y": -224.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": 15840.0,
+                "y": -256.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": 2912.0,
+                "y": 512.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": 3008.0,
+                "y": 512.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": 3104.0,
+                "y": 512.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": 3200.0,
+                "y": 512.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": 3296.0,
+                "y": 512.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": 3392.0,
+                "y": 512.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Grass",
+                "width": 100.0,
+                "x": 3488.0,
+                "y": 512.0
+            },
+            {
+                "height": 60.0,
+                "tile": "Dry Grass",
+                "width": 100.0,
+                "x": 3584.0,
+                "y": 512.0
+            }
+        ]
+    }
+}
